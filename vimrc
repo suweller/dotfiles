@@ -141,7 +141,7 @@ nmap <Leader>gac :Gcommit -m -a ""<LEFT>
 nmap <Leader>gc :Gcommit -m ""<LEFT>
 nmap <Leader>gs :Gstatus<CR>
 
-" command-t
+" Ctrl-P 
 nmap <Leader>h :CtrlP<CR>
 nmap <Leader>rf :CtrlPClearCache<CR>
 

@@ -1,4 +1,4 @@
-function s:Cursor_Moved()
+function! s:Cursor_Moved()
   let cur_pos = winline()
   if g:last_pos == 0
     set cul

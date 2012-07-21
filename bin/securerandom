@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+require 'secure_random'
+
+puts "This calls SecureRandom.base64 in ruby"
+puts SecureRandom.base64

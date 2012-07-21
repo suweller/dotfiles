@@ -1,0 +1,20 @@
+[user]
+	name = Steven Weller
+	email = github@suweller.com
+[alias]
+	co = checkout
+	st = status
+	br = branch
+[merge]
+	tool = vimdiff
+[color]
+	ui = true
+[core]
+	excludesfile = ~/.gitignore
+	editor = vim
+[push]
+	default = current
+[github]
+	user = suweller
+[init]
+	templatedir = ~/.git_template

@@ -1,0 +1,58 @@
+# Handle the fact that this file will be used with multiple OSs
+platform=`uname`
+if [[ $platform == 'Linux' ]]; then
+  alias a='ls -lrth --color'
+elif [[ $platform == 'Darwin' ]]; then
+  alias a='ls -lrthG'
+fi
+
+alias -g G='| grep'
+
+# Editor
+#alias vim='mvim -v'
+alias vi='vim'
+
+# Quick file access
+alias aliases='vim ~/.dotfiles/zsh/aliases'
+alias so='source ~/.dotfiles/zsh/aliases'
+alias zshconf='vim ~/.dotfiles/zshrc'
+alias vimrc='vim ~/.dotfiles/vimrc'
+
+# Quick dir access
+alias c='cd ~/Documents/80beans/'
+alias o='cd ~/Documents/open-source/'
+alias d='cd ~/.dotfiles'
+alias dr='cd ~/Dropbox'
+alias u='cd ..'
+
+# Git aliases
+alias amend="git commit --amend"
+alias gad='git add .'
+alias gadu='git add -u .'
+alias gca='git commit -a'
+alias gcaa='git commit -a --amend -C HEAD'
+alias gcl='git clone'
+alias gcm='git commit -m'
+alias gco='git checkout'
+alias gd='git diff'
+alias gdc='git diff --cached'
+alias get='sudo apt-get install'
+alias gg='git lg'
+alias gpush='git push'
+alias gpsuh='git push'
+alias gpr='git pull --rebase'
+alias grc='git rebase --continue'
+alias hpush='git push heroku'
+
+# Bundle aliases
+alias be='bundle exec'
+alias bi='bundle install'
+alias bu='bundle update'
+alias bunbang='bundle install && !!'
+
+alias bake='bundle exec rake'
+alias ber='bundle exec rspec'
+alias bes='bundle exec rails s'
+alias bec='bundle exec rails c'
+
+alias killrb='killall -9 ruby'

@@ -146,8 +146,8 @@ nmap <Leader>h :CtrlP<CR>
 nmap <Leader>rf :CtrlPClearCache<CR>
 
 " Quick insert stuff
-nmap <Leader>p osave_and_open_page=h
-nmap <Leader>d obinding.pry<cr>
+nmap <Leader>p osave_and_open_page # DEBUG
+nmap <Leader>d obinding.pry # DEBUG
 
 " Edit another file in the same directory as the current file
 " uses expression to extract path from current file's path

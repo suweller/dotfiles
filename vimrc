@@ -1,6 +1,3 @@
-"call pathogen#runtime_append_all_bundles()
-"call pathogen#helptags()
-
 filetype off " Turn off _before_ loading all Bundles
 
 set rtp+=~/.vim/bundle/vundle/

@@ -1,20 +1,40 @@
 [user]
-	name = Steven Weller
-	email = github@suweller.com
+  name = Steven Weller
+  email = github@suweller.com
 [alias]
-	co = checkout
-	st = status
-	br = branch
+  co = checkout
+  st = status
+  br = branch
+  st = status -sb
+  today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
 [merge]
-	tool = vimdiff
+  tool = vimdiff
 [color]
-	ui = true
+  ui = true
 [core]
-	excludesfile = ~/.gitignore
-	editor = vim
+  excludesfile = ~/.gitignore
+  editor = vim
 [push]
-	default = current
+  default = current
 [github]
-	user = suweller
+  user = suweller
 [init]
-	templatedir = ~/.git_template
+  templatedir = ~/.git_template
+[help]
+  autocorrect = 1
+
+[diff]
+  # For Github-style word diffs
+  wordRegex = [^[:space:]]
+[color "diff"]
+  # Color syntax: <foreground> <background>
+  # So "normal red" is normal foreground, red background
+  # BUT bold is a modifier, so "bold green red" means
+  #   "bold green" foreground, red background
+  whitespace = red reverse
+  plain = white
+  meta = cyan
+  frag = magenta bold
+  old = red
+  new = green
+  commit = yellow

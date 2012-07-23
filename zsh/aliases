@@ -26,6 +26,7 @@ alias dr='cd ~/Dropbox'
 alias u='cd ..'
 
 # Git aliases
+alias gits='git st'
 alias amend="git commit --amend"
 alias gad='git add .'
 alias gadu='git add -u .'

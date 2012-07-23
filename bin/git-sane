@@ -1,9 +1,3 @@
 #!/bin/bash
 
-grep "raise" spec config lib app -r
-echo "------------------------"
-grep "save_and_open_page" spec -r
-echo "------------------------"
-grep "sleep" spec -r
-echo "------------------------"
-grep "binding.pry" spec -r
+grep "# DEBUG" spec config lib app -r

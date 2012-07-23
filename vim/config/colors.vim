@@ -1,4 +1,5 @@
-hi Pmenu        ctermbg=90
+hi Pmenu        ctermbg=233 ctermfg=255
+hi PmenuSel     ctermbg=53  ctermfg=255
 hi ColorColumn  ctermbg=233 ctermfg=255
 hi LineNr       ctermfg=233 ctermbg=0
 hi StatusLine   ctermbg=255 ctermfg=234

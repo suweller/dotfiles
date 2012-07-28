@@ -4,7 +4,6 @@
 " ====================
 nmap <Leader>rf :CtrlPClearCache<CR>
 
-let g:ctrlp_map = '<Leader>h'
 let g:ctrlp_use_caching = 1
 let g:ctrlp_clear_cache_on_exit = 1
 let g:ctrlp_switch_buffer = 2

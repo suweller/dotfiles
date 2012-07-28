@@ -106,21 +106,6 @@ autocmd BufWinLeave * call clearmatches()
 
 imap § <esc>
 
-" ====================
-" CtrlP options
-" :help ctrlp-commands
-" ====================
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 1
-let g:ctrlp_switch_buffer = 2
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\.git$\|\.hg$\|\.svn$|^vendor$|^coverage$|^tmp$|^rdoc$|',
-  \ 'file': '\.png$\|\.jpg$\|\.gif$|',
-  \ }
-" \ 'link': 'SOME_BAD_SYMBOLIC_LINKS',
-let g:ctrlp_max_depth = 10      " Directory depth to recurse into when scanning
-let g:ctrlp_open_new_file = 't' " open files in new tab
-
 let mapleader = ","
 
 " Quick open some default locations
@@ -138,10 +123,6 @@ map <Leader>bl :Gblame<CR>
 nmap <Leader>gac :Gcommit -m -a ""<LEFT>
 nmap <Leader>gc :Gcommit -m ""<LEFT>
 nmap <Leader>gs :Gstatus<CR>
-
-" Ctrl-P 
-nmap <Leader>h :CtrlP<CR>
-nmap <Leader>rf :CtrlPClearCache<CR>
 
 " Quick insert stuff
 nmap <Leader>p osave_and_open_page # DEBUG<esc>

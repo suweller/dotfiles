@@ -107,7 +107,7 @@ autocmd BufWinLeave * call clearmatches()
 
 imap § <esc>
 
-let mapleader = ","
+let mapleader = " "
 
 " Quick open some default locations
 nmap <Leader>bi :source ~/.vimrc<cr>:BundleInstall<cr>

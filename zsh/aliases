@@ -52,7 +52,7 @@ alias bu='bundle update'
 alias bunbang='bundle install && !!'
 
 alias bake='bundle exec rake'
-alias ber='bundle exec rspec'
+alias ber='bundle exec rspec -f p'
 alias bes='bundle exec rails s'
 alias bec='bundle exec rails c'
 

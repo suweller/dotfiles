@@ -105,60 +105,60 @@ autocmd User Rails Rnavcommand jspec       spec/javascripts                   -g
 " Fix some performance issues
 autocmd BufWinLeave * call clearmatches()
 
-imap § <esc>
+imap § <ESC>
 
 let mapleader = " "
 
 " Quick open some default locations
-nmap <Leader>bi :source ~/.vimrc<cr>:BundleInstall<cr>
-nmap <Leader>bx :tabe ~/Dropbox<cr>
-nmap <Leader>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
-nmap <Leader>vi :tabe ~/.vimrc<CR>
+nmap <LEADER>bi :source ~/.vimrc<CR>:BundleInstall<CR>
+nmap <LEADER>bx :tabe ~/Dropbox<CR>
+nmap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
+nmap <LEADER>vi :tabe ~/.vimrc<CR>
 
-nmap <Leader>f :sp spec/fabricators<CR>
-nmap <Leader>fa :sp test/factories.rb<CR>
-nmap <Leader>sc :sp db/schema.rb<cr>
+nmap <LEADER>f :sp spec/fabricators<CR>
+nmap <LEADER>fa :sp test/factories.rb<CR>
+nmap <LEADER>sc :sp db/schema.rb<CR>
 
 " vim-fugitive
-map <Leader>bl :Gblame<CR>
-nmap <Leader>gac :Gcommit -m -a ""<LEFT>
-nmap <Leader>gc :Gcommit -m ""<LEFT>
-nmap <Leader>gs :Gstatus<CR>
+map <LEADER>bl :Gblame<CR>
+nmap <LEADER>gac :Gcommit -m -a ""<LEFT>
+nmap <LEADER>gc :Gcommit -m ""<LEFT>
+nmap <LEADER>gs :Gstatus<CR>
 
 " Quick insert/rewrite stuff
-nmap <Leader>p osave_and_open_page # DEBUG<esc>
-nmap <Leader>d obinding.pry # DEBUG<esc>
-nmap <Leader>rw :%s/\s\+$//<cr>
+nmap <LEADER>p osave_and_open_page # DEBUG<ESC>
+nmap <LEADER>d obinding.pry # DEBUG<ESC>
+nmap <LEADER>rw :%s/\s\+$//<CR>
 
 " Edit another file in the same directory as the current file
 " uses expression to extract path from current file's path
-nmap <Leader>e :e <C-R>=expand("%:p:h") . '/'<CR>
-nmap <Leader>s :split <C-R>=expand("%:p:h") . '/'<CR>
-nmap <Leader>v :vnew <C-R>=expand("%:p:h") . '/'<CR>
+nmap <LEADER>e :e <C-R>=expand("%:p:h") . '/'<CR>
+nmap <LEADER>s :split <C-R>=expand("%:p:h") . '/'<CR>
+nmap <LEADER>v :vnew <C-R>=expand("%:p:h") . '/'<CR>
 " Merge a tab into a split in the previous window
-nmap <c-w>u :call MergeTabs()<CR>
+nmap <C-W>u :call MergeTabs()<CR>
 
-map <c-h> :set hlsearch!<cr>
-imap <c-l> :<space>
-map <c-s> <esc>:w<cr>
-imap <c-s> <esc>:w<cr>
-map <c-t> <esc>:tabnew<cr>
-" map <c-x> <c-w>c
-map <c-n> :cn<cr>
-map <c-p> :cp<cr>
+map <C-H> :set hlsearch!<CR>
+imap <C-L> :<SPACE>
+map <C-S> <ESC>:w<CR>
+imap <C-S> <ESC>:w<CR>
+map <C-T> <ESC>:tabnew<CR>
+" map <C-X> <C-W>c
+map <C-N> :cn<CR>
+map <C-P> :cp<CR>
 
 " Emacs-like beginning and end of line.
-imap <c-e> <c-o>$
-imap <c-a> <c-o>^
+imap <C-E> <C-O>$
+imap <C-A> <C-O>^
 " Disable Ex mode
-map Q <Nop>
+map Q <NOP>
 " Disable K looking stuff up
-map K <Nop>
+map K <NOP>
 " Center search matches when jumping
 map N Nzz
 map n nzz
 
-imap <Tab> <C-P>
+imap <TAB> <C-P>
 
 " Skip buffer lines, not actual (wrapped) lines
 nmap k gk

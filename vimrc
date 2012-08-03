@@ -125,9 +125,10 @@ nmap <Leader>gac :Gcommit -m -a ""<LEFT>
 nmap <Leader>gc :Gcommit -m ""<LEFT>
 nmap <Leader>gs :Gstatus<CR>
 
-" Quick insert stuff
+" Quick insert/rewrite stuff
 nmap <Leader>p osave_and_open_page # DEBUG<esc>
 nmap <Leader>d obinding.pry # DEBUG<esc>
+nmap <Leader>rw :%s/\s\+$//<cr>
 
 " Edit another file in the same directory as the current file
 " uses expression to extract path from current file's path

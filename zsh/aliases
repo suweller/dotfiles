@@ -44,6 +44,7 @@ alias gpsuh='git push'
 alias gpr='git pull --rebase'
 alias grc='git rebase --continue'
 alias hpush='git push heroku'
+alias fix='$EDITOR `git diff --name-only | uniq`'
 
 # Bundle aliases
 alias be='bundle exec'

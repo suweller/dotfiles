@@ -45,7 +45,7 @@ stty stop undef
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(vi-mode git rails3 ruby bundler rvm terminalapp history-substring-search cap compleat)
+plugins=(git rails3 ruby bundler rvm terminalapp history-substring-search cap compleat)
 
 source $ZSH/oh-my-zsh.sh
 setopt interactivecomments

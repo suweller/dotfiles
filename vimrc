@@ -61,7 +61,7 @@ set shiftwidth=2
 set expandtab
 set smarttab
 set colorcolumn=80              " mark the 80th character
-set ignorecase                  " searches are case insensitive...
+" set ignorecase                  " searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
 set scrolloff=5                 " don't show search results as the first line
 set laststatus=2                " Always show status line.

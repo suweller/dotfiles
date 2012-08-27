@@ -1,6 +1,16 @@
-highlight ExtraWhitespace ctermbg=red guibg=red
-autocmd ColorScheme * highlight ExtraWhitespace ctermbg=red guibg=red
-" Show trailing whitespace:
-match ExtraWhitespace /\s\+$/
-" Show trailing whitespace and spaces before a tab:
-match ExtraWhitespace /\s\+$\| \+\ze\t/
+autocmd InsertEnter * syn clear EOLWS | syn match EOLWS excludenl /\s\+\%#\@!$/
+autocmd InsertLeave * syn clear EOLWS | syn match EOLWS excludenl /\s\+$/
+highlight EOLWS ctermbg=red guibg=red
+autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
+
+function! <SID>StripTrailingWhitespace()
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  %s/\s\+$//e
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction

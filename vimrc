@@ -60,7 +60,7 @@ set incsearch                   " incremental searching
 set shiftwidth=2
 set expandtab
 set smarttab
-set colorcolumn=80              " mark the 80th character
+set colorcolumn=80,115          " mark the 80th character, and github code window width
 " set ignorecase                  " searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
 set scrolloff=5                 " don't show search results as the first line

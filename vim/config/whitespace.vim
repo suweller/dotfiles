@@ -4,6 +4,10 @@ highlight EOLWS ctermbg=red guibg=red
 autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 
 function! <SID>StripTrailingWhitespace()
+  " Don't strip any spaces when the filetype is markdown
+  if &ft =~ 'markdown'
+    return
+  endif
   " Preparation: save last search, and cursor position.
   let _s=@/
   let l = line(".")

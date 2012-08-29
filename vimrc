@@ -26,11 +26,9 @@ Bundle 'vim-scripts/bufkill.vim'
 
 filetype plugin indent on " Turn on _after_ loading all Bundles
 
-" Switch syntax highlighting on, when the terminal has colors
-" Also switch on highlighting the last used search pattern.
+" Switch syntax highlighting on, when the terminal has colors.
 if &t_Co > 2 || has("gui_running")
   syntax on
-  set hlsearch
 endif
 
 set encoding=utf-8

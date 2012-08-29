@@ -37,7 +37,7 @@ set directory=~/.vim/tmp        " Don't clutter up dirs with swp and tmp files
 set history=500		        " keep 500 lines of command line history
 set autoread                    " reload files only changed outside vim from disk
 
-set ttyfast                     " u got a fast terminal
+set ttyfast                     " you got a fast terminal
 
 set nocompatible                " We're running VIM, not vi
 set mouse=a                     " allow ... mouse ...
@@ -59,7 +59,6 @@ set shiftwidth=2
 set expandtab
 set smarttab
 set colorcolumn=80,115          " mark the 80th character, and github code window width
-" set ignorecase                  " searches are case insensitive...
 set smartcase                   " ... unless they contain at least one capital letter
 set scrolloff=5                 " don't show search results as the first line
 set laststatus=2                " Always show status line.
@@ -136,14 +135,14 @@ nmap <LEADER>v :vnew <C-R>=expand("%:p:h") . '/'<CR>
 " Merge a tab into a split in the previous window
 nmap <C-W>u :call MergeTabs()<CR>
 
-map <C-H> :set hlsearch!<CR>
+map <C-H> :noh<CR>
 imap <C-L> :<SPACE>
 map <C-S> <ESC>:w<CR>
 imap <C-S> <ESC>:w<CR>
 map <C-T> <ESC>:tabnew<CR>
-" map <C-X> <C-W>c
 map <C-N> :cn<CR>
 map <C-P> :cp<CR>
+map <F9> :set spell! spell?<CR>
 
 " Emacs-like beginning and end of line.
 imap <C-E> <C-O>$
@@ -156,13 +155,9 @@ map K <NOP>
 map N Nzz
 map n nzz
 
-imap <TAB> <C-P>
-
 " Skip buffer lines, not actual (wrapped) lines
 nmap k gk
 nmap j gj
-
-noremap <F9> :set spell! spell?<CR>
 
 command! Q q " Bind :Q to :q
 command! Qall qall

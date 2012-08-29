@@ -1,4 +1,3 @@
-
 let g:jellybeans_background_color_256=0 " truly black background
 let g:indent_guides_auto_colors = 0     " custom indent guide colors
 

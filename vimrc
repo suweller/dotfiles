@@ -12,6 +12,7 @@ Bundle 'leshill/vim-json'
 Bundle 'lmeijvogel/vim-yaml-helper'
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'nathanaelkane/vim-indent-guides'
+Bundle 'nvie/vim-togglemouse'
 Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-cucumber'
 Bundle 'tpope/vim-endwise'
@@ -24,17 +25,21 @@ Bundle 'tpope/vim-surround'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/bufkill.vim'
 
-filetype plugin indent on " Turn on _after_ loading all Bundles
-
 " Switch syntax highlighting on, when the terminal has colors.
 if &t_Co > 2 || has("gui_running")
   syntax on
 endif
+if &t_Co == 256 || has("gui_running")
+  set t_Co=256
+  colorscheme jellybeans
+endif
+
+filetype plugin indent on " Turn on _after_ loading all Bundles
 
 set encoding=utf-8
 set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp        " Don't clutter up dirs with swp and tmp files
-set history=500		        " keep 500 lines of command line history
+set history=500                 " keep 500 lines of command line history
 set autoread                    " reload files only changed outside vim from disk
 
 set ttyfast                     " you got a fast terminal
@@ -42,10 +47,10 @@ set ttyfast                     " you got a fast terminal
 set nocompatible                " We're running VIM, not vi
 set mouse=a                     " allow ... mouse ...
 
-set ruler		        " show the cursor position all the time
+set ruler                       " show the cursor position all the time
 set relativenumber              " show line numbers relative to cursor
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
-set showcmd		        " display incomplete commands
+set showcmd                     " display incomplete commands
 set showmatch
 set wmh=0                       " minimum unfocussed window height
 set viminfo+=!
@@ -66,7 +71,7 @@ set autoindent                  " always set autoindenting on
 set shiftround                  " When at 3 spaces and I hit >>, go to 4, not 5.
 
 set gdefault                    " assume the /g flag on :s
-set tags=./tags;                " Set the tag file search order
+" set tags=./tags;                " Set the tag file search order
 set grepprg=ack                 " Use Ack instead of grep
 " set iskeyword-=_               " Use _ as a word-separator
 set wildmenu                    " Better? completion on command line
@@ -106,7 +111,7 @@ imap § <ESC>
 
 let mapleader = " "
 
-" Quick open some default locations
+" quick open some default locations
 nmap <LEADER>bi :source ~/.vimrc<CR>:BundleInstall<CR>
 nmap <LEADER>bx :tabe ~/Dropbox<CR>
 nmap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
@@ -117,28 +122,30 @@ nmap <LEADER>fa :sp test/factories.rb<CR>
 nmap <LEADER>sc :sp db/schema.rb<CR>
 
 " vim-fugitive
-map <LEADER>bl :Gblame<CR>
+map <LEADER>gb :Gblame<CR>
 nmap <LEADER>gac :Gcommit -m -a ""<LEFT>
 nmap <LEADER>gc :Gcommit -m ""<LEFT>
 nmap <LEADER>gs :Gstatus<CR>
 
-" Quick insert/rewrite stuff
-nmap <LEADER>p osave_and_open_page # DEBUG<ESC>
-nmap <LEADER>d obinding.pry # DEBUG<ESC>
+" quick insert/rewrite stuff
+nmap <LEADER>pa osave_and_open_page # DEBUG<ESC>
+nmap <LEADER>de obinding.pry # DEBUG<ESC>
+nmap <LEADER>pu j^y$Oputs '<C-R>"' # DEBUG<ESC>
+nmap <LEADER>rh oraise 'hell' # DEBUG<ESC>
 nmap <LEADER>rw :%s/\s\+$//<CR>
+nmap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
+nmap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
 
-" Edit another file in the same directory as the current file
-" uses expression to extract path from current file's path
-nmap <LEADER>e :e <C-R>=expand("%:p:h") . '/'<CR>
-nmap <LEADER>s :split <C-R>=expand("%:p:h") . '/'<CR>
-nmap <LEADER>v :vnew <C-R>=expand("%:p:h") . '/'<CR>
-" Merge a tab into a split in the previous window
-nmap <C-W>u :call MergeTabs()<CR>
+nmap <LEADER>q :q<CR>
+nmap <LEADER>Q :qal<CR>
+nmap <LEADER>bn :bn<CR>
+nmap <LEADER>n :bn<CR>
 
 map <C-H> :noh<CR>
 imap <C-L> :<SPACE>
 map <C-S> <ESC>:w<CR>
 imap <C-S> <ESC>:w<CR>
+map <LEADER><LEADER> :w<CR>
 map <C-T> <ESC>:tabnew<CR>
 map <C-N> :cn<CR>
 map <C-P> :cp<CR>
@@ -154,10 +161,6 @@ map K <NOP>
 " Center search matches when jumping
 map N Nzz
 map n nzz
-
-" Skip buffer lines, not actual (wrapped) lines
-nmap k gk
-nmap j gj
 
 command! Q q " Bind :Q to :q
 command! Qall qall

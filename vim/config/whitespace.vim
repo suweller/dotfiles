@@ -1,6 +1,6 @@
-autocmd InsertEnter * syn clear EOLWS | syn match EOLWS excludenl /\s\+\%#\@!$/
-autocmd InsertLeave * syn clear EOLWS | syn match EOLWS excludenl /\s\+$/
-highlight EOLWS ctermbg=red guibg=red
+set list
+set listchars=tab:⇁•,trail:•,extends:#,nbsp:•
+
 autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 
 function! <SID>StripTrailingWhitespace()

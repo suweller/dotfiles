@@ -1,5 +1,4 @@
 #!/bin/sh
-echo "FFUUUUU"
 set -e
 PATH="/usr/local/bin:$PATH"
 trap "rm -f .git/tags.$$" EXIT

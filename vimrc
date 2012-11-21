@@ -1,4 +1,7 @@
-filetype off " Turn off _before_ loading all Bundles
+set nocompatible      " We're running VIM, not vi
+filetype off          " Turn off _before_ loading all Bundles
+let mapleader = " "
+inoremap § <ESC>
 
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
@@ -25,6 +28,8 @@ Bundle 'tpope/vim-surround'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/bufkill.vim'
 
+filetype plugin indent on " Turn on _after_ loading all Bundles
+
 " Switch syntax highlighting on, when the terminal has colors.
 if &t_Co > 2 || has("gui_running")
   syntax on
@@ -34,8 +39,6 @@ if &t_Co == 256 || has("gui_running")
   colorscheme jellybeans
 endif
 
-filetype plugin indent on " Turn on _after_ loading all Bundles
-
 set encoding=utf-8
 set backupdir=~/.vim/tmp
 set directory=~/.vim/tmp        " Don't clutter up dirs with swp and tmp files
@@ -44,7 +47,6 @@ set autoread                    " reload files only changed outside vim from dis
 
 set ttyfast                     " you got a fast terminal
 
-set nocompatible                " We're running VIM, not vi
 set mouse=a                     " allow ... mouse ...
 
 set ruler                       " show the cursor position all the time
@@ -106,10 +108,6 @@ autocmd User Rails Rnavcommand jrouter     app/assets/javascripts/routers     -g
 autocmd User Rails Rnavcommand jspec       spec/javascripts                   -glob=**/*  -suffix=.coffee
 " Fix some performance issues
 autocmd BufWinLeave * call clearmatches()
-
-imap § <ESC>
-
-let mapleader = " "
 
 " quick open some default locations
 nmap <LEADER>bi :source ~/.vimrc<CR>:BundleInstall<CR>

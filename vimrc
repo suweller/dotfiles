@@ -78,7 +78,6 @@ set grepprg=ack                 " Use Ack instead of grep
 " set iskeyword-=_               " Use _ as a word-separator
 set wildmenu                    " Better? completion on command line
 set wildmode=list:longest,full
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 
 " ================

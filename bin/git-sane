@@ -1,3 +1,4 @@
 #!/bin/bash
 
-git grep "# DEBUG" spec config lib app
+git grep -n "# DEBUG" spec config lib app
+git grep -n "<<<<<<<"

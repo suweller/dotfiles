@@ -9,6 +9,7 @@ call vundle#rc()
 Bundle 'gmarik/vundle'
 " My bundles
 Bundle 'AndrewRadev/switch.vim'
+Bundle 'airblade/vim-gitgutter'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'danchoi/ri.vim'
 Bundle 'ervandew/supertab'

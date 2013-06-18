@@ -8,16 +8,22 @@ call vundle#rc()
 " Let Vundle manage Vundle (required)!
 Bundle 'gmarik/vundle'
 " My bundles
+Bundle 'AndrewRadev/switch.vim'
+Bundle 'christoomey/vim-tmux-navigator'
+Bundle 'danchoi/ri.vim'
 Bundle 'ervandew/supertab'
+Bundle 'GutenYe/gem.vim'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'kien/ctrlp.vim'
 Bundle 'leshill/vim-json'
 Bundle 'lmeijvogel/vim-yaml-helper'
+Bundle 'Lokaltog/vim-powerline'
 Bundle 'nanotech/jellybeans.vim'
 Bundle 'nathanaelkane/vim-indent-guides'
 Bundle 'nvie/vim-togglemouse'
+Bundle 'scrooloose/syntastic'
 Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-cucumber'
+Bundle 'tpope/vim-dispatch'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-fugitive'
 Bundle 'tpope/vim-haml'
@@ -25,6 +31,7 @@ Bundle 'tpope/vim-markdown'
 Bundle 'tpope/vim-rails'
 Bundle 'tpope/vim-rvm'
 Bundle 'tpope/vim-surround'
+Bundle 'tpope/vim-unimpaired'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'vim-scripts/bufkill.vim'
 
@@ -65,7 +72,7 @@ set incsearch                   " incremental searching
 set shiftwidth=2
 set expandtab
 set smarttab
-set colorcolumn=80,115          " mark the 80th character, and github code window width
+set colorcolumn=80,105,115      " mark the 80th character, and (old and new) github code window width
 set smartcase                   " ... unless they contain at least one capital letter
 set scrolloff=5                 " don't show search results as the first line
 set laststatus=2                " Always show status line.
@@ -109,58 +116,76 @@ autocmd User Rails Rnavcommand jspec       spec/javascripts                   -g
 autocmd BufWinLeave * call clearmatches()
 
 " quick open some default locations
-nmap <LEADER>bi :source ~/.vimrc<CR>:BundleInstall<CR>
-nmap <LEADER>bx :tabe ~/Dropbox<CR>
-nmap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
-nmap <LEADER>vi :tabe ~/.vimrc<CR>
+nnoremap <LEADER>bi :source ~/.vimrc<CR>:BundleInstall<CR>
+nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
+nnoremap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
+nnoremap <LEADER>vi :tabe ~/.vimrc<CR>
 
-nmap <LEADER>f :sp spec/fabricators<CR>
-nmap <LEADER>fa :sp test/factories.rb<CR>
-nmap <LEADER>sc :sp db/schema.rb<CR>
+nnoremap <LEADER>f :sp spec/fabricators<CR>
+nnoremap <LEADER>fa :sp test/factories.rb<CR>
+nnoremap <LEADER>sc :sp db/schema.rb<CR>
 
 " vim-fugitive
-map <LEADER>gb :Gblame<CR>
-nmap <LEADER>gac :Gcommit -m -a ""<LEFT>
-nmap <LEADER>gc :Gcommit -m ""<LEFT>
-nmap <LEADER>gs :Gstatus<CR>
+noremap <LEADER>gb :Gblame<CR>
+nnoremap <LEADER>gac :Gcommit -m -a ""<LEFT>
+nnoremap <LEADER>gc :Gcommit -m ""<LEFT>
+nnoremap <LEADER>gs :Gstatus<CR>
 
 " quick insert/rewrite stuff
-nmap <LEADER>pa osave_and_open_page # DEBUG<ESC>
-nmap <LEADER>de obinding.pry # DEBUG<ESC>
-nmap <LEADER>pu j^y$Oputs '<C-R>"' # DEBUG<ESC>
-nmap <LEADER>rh oraise 'hell' # DEBUG<ESC>
-nmap <LEADER>rw :%s/\s\+$//<CR>
-nmap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
-nmap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
+nnoremap <LEADER>pa osave_and_open_page # DEBUG<ESC>
+nnoremap <LEADER>de orequire 'pry'; binding.pry # DEBUG<ESC>
+nnoremap <LEADER>db obefore { require 'pry'; binding.pry } # DEBUG<ESC>
+nnoremap <LEADER>pu j^y$Oputs '<C-R>"' # DEBUG<ESC>
+nnoremap <LEADER>rh oraise 'hell' # DEBUG<ESC>
+nnoremap <LEADER>rw :%s/\s\+$//<CR>
+nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
+nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
+nnoremap - :Switch<cr>
 
-nmap <LEADER>q :q<CR>
-nmap <LEADER>Q :qal<CR>
-nmap <LEADER>bn :bn<CR>
-nmap <LEADER>n :bn<CR>
+" Run tests
+noremap <LEADER>sl :w \| :call RunRspecOnCurrentLine() \| :redraw!<CR>
 
-map <C-H> :noh<CR>
-imap <C-L> :<SPACE>
-map <C-S> <ESC>:w<CR>
-imap <C-S> <ESC>:w<CR>
-map <LEADER><LEADER> :w<CR>
-map <C-T> <ESC>:tabnew<CR>
-map <C-N> :cn<CR>
-map <C-P> :cp<CR>
-map <F9> :set spell! spell?<CR>
+nnoremap <LEADER>q :q<CR>
+nnoremap <LEADER>Q :qal<CR>
+nnoremap <LEADER>bn :bn<CR>
+nnoremap <LEADER>n :bn<CR>
+
+nnoremap <LEADER>l :setlocal relativenumber!<CR>
+nnoremap <LEADER>o :set paste!<CR>
+nnoremap <LEADER>w :setlocal wrap!<CR>:setlocal wrap?<CR>
+
+noremap <C-H> :noh<CR>
+inoremap <C-L> :<SPACE>
+noremap <C-S> <ESC>:w<CR>
+inoremap <C-S> <ESC>:w<CR>
+noremap <LEADER><LEADER> :w<CR>
+noremap <C-T> <ESC>:tabnew<CR>
+noremap <C-N> :cn<CR>
+noremap <C-P> :cp<CR>
+noremap <F9> :set spell! spell?<CR>
 
 " Emacs-like beginning and end of line.
-imap <C-E> <C-O>$
-imap <C-A> <C-O>^
+inoremap <C-E> <C-O>$
+inoremap <C-A> <C-O>^
 " Disable Ex mode
-map Q <NOP>
+noremap Q <NOP>
 " Disable K looking stuff up
-map K <NOP>
+noremap K <NOP>
 " Center search matches when jumping
-map N Nzz
-map n nzz
+noremap N Nzz
+noremap n nzz
 
 command! Q q " Bind :Q to :q
 command! Qall qall
 
 runtime macros/matchit.vim
 runtime! config/**/*.vim
+
+let g:syntastic_enable_signs=1
+let g:syntastic_error_symbol='☠'
+let g:syntastic_warning_symbol='☹'
+let g:syntastic_style_error_symbol='⚠'
+
+command! Fixline :s/{\|\(,\ze \)\|\( }\ze\)/
+      \\=submatch(0) =~ "[,{]" ? submatch(0)."\r\t" : "\r}"/
+

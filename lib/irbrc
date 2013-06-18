@@ -45,3 +45,4 @@ load File.dirname(__FILE__) + '/.railsrc' if $0 == 'irb' && ENV['RAILS_ENV']
 #   require 'logger'
 #   RAILS_DEFAULT_LOGGER = Logger.new(STDOUT)
 # end
+require 'irb/completion'

@@ -1,0 +1,8 @@
+#!/bin/sh
+.git/hooks/ctags >/dev/null 2>&1 &
+
+if [ $1 = 0000000000000000000000000000000000000000 ]; then
+  old=4b825dc642cb6eb9a060e54bf8d69288fbee4904
+else
+  old=$1
+fi

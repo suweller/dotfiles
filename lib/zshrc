@@ -45,7 +45,7 @@ stty stop undef
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git rails3 ruby bundler rvm terminalapp history-substring-search cap compleat)
+plugins=(git rails3 ruby terminalapp history-substring-search cap rbenv compleat)
 
 source $ZSH/oh-my-zsh.sh
 setopt interactivecomments
@@ -56,12 +56,36 @@ source $HOME/.dotfiles/zsh/functions
 
 # Customize to your needs...
 export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin
-export PATH=$PATH:~/.dotfiles/bin:~/.rvm/bin
+export PATH=$PATH:~/.dotfiles/bin
 
 export EDITOR='vim'
 
-[[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM
+# Load ruby version manager
+# [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM
+eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/bin:$PATH"
 
 export LANG="en_US.utf-8"
 export LC_ALL="en_US.utf-8"
 export LC_CTYPE="utf-8"
+
+# http://gcc.gnu.org/onlinedocs/gcc-4.7.2/gcc/Optimize-Options.html#Optimize-Options
+export CFLAGS="-march=core2 -O3"
+
+# Ruby performance tweaks, http://astrails.com/blog/2012/11/13/rvm-install-patched-ruby-for-faster-rails-startup
+export RUBY_HEAP_MIN_SLOTS=1000000
+export RUBY_HEAP_FREE_MIN=500000
+export RUBY_HEAP_SLOTS_INCREMENT=1000000
+export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
+export RUBY_GC_MALLOC_LIMIT=100000000
+
+# AWESOME SAUCE!
+tit() {
+  if [ ! -p test-commands ]; then
+    mkfifo test-commands
+  fi
+
+  while true; do
+    sh -c "$(cat test-commands)"
+  done
+}

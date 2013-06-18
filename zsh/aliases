@@ -48,7 +48,7 @@ alias grc='git rebase --continue'
 alias hpush='git push heroku'
 alias fix='$EDITOR `git diff --name-only | uniq`'
 
-# Bundle aliases
+# Bundle
 alias be='bundle exec'
 alias bi='bundle install'
 alias bu='bundle update'
@@ -60,3 +60,8 @@ alias bes='bundle exec rails s'
 alias bec='bundle exec rails c'
 
 alias killrb='killall -9 ruby'
+alias falcon='rvm use 1.9.3-p327-falcon'
+
+# EngineYard
+# alias ey='NOEXEC_DISABLE=1 ey'
+# alias eybackup='NOEXEC_DISABLE=1 eybackup'

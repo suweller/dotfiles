@@ -1,5 +1,3 @@
-vim/.netrwhist
-vim/.viminfo
-vim/bundle
-vim/tmp
+lib/vim/*
+lib/vim/**/*
 oh-my-zsh

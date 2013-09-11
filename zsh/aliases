@@ -16,9 +16,9 @@ alias vi='vim'
 # Quick file access
 alias aliases='vim ~/.dotfiles/zsh/aliases'
 alias so='source ~/.dotfiles/zsh/aliases'
-alias zshconf='vim ~/.dotfiles/zshrc'
-alias vimrc='vim ~/.dotfiles/vimrc'
-alias vimcf='vim ~/.dotfiles/vim/config'
+alias zshconf='vim ~/.dotfiles/lib/zshrc'
+alias vimrc='vim ~/.dotfiles/lib/vimrc'
+alias vimcf='vim ~/.dotfiles/lib/vim/config'
 
 # Quick dir access
 alias c='cd ~/Documents/80beans/'

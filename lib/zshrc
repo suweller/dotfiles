@@ -53,15 +53,15 @@ setopt interactivecomments
 # Source my custom files after oh-my-zsh so I can override things.
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions
+source $HOME/.zshrc_private
 
 # Customize to your needs...
-export PATH=/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin
-export PATH=$PATH:~/.dotfiles/bin
+export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin"
+export PATH="$PATH:$HOME/.dotfiles/bin"
 
 export EDITOR='vim'
 
 # Load ruby version manager
-# [[ -s "$HOME/.rvm/scripts/rvm" ]] && . "$HOME/.rvm/scripts/rvm"  # This loads RVM
 eval "$(rbenv init -)"
 export PATH="$HOME/.rbenv/bin:$PATH"
 
@@ -81,14 +81,3 @@ export RUBY_GC_MALLOC_LIMIT=100000000
 
 bindkey '^p' history-substring-search-up
 bindkey '^n' history-substring-search-down
-
-# AWESOME SAUCE!
-tit() {
-  if [ ! -p test-commands ]; then
-    mkfifo test-commands
-  fi
-
-  while true; do
-    sh -c "$(cat test-commands)"
-  done
-}

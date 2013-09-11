@@ -3,49 +3,131 @@ filetype off          " Turn off _before_ loading all Bundles
 let mapleader = " "
 inoremap § <ESC>
 
+" Vundle, Plug-In manager for Vim
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
-" Let Vundle manage Vundle (required)!
+
+" Let Vundle manage Vundle (required)! See, http://github.com/gmarik/vundle
 Bundle 'gmarik/vundle'
-" My bundles
-Bundle 'AndrewRadev/switch.vim'
-Bundle 'airblade/vim-gitgutter'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'danchoi/ri.vim'
-Bundle 'ervandew/supertab'
-Bundle 'GutenYe/gem.vim'
+
+" My bundles (fetched from github.com/vimscript.org by Vundle)
+
+" CoffeeScript: Syntax Highlighter
 Bundle 'kchmck/vim-coffee-script'
-Bundle 'kien/ctrlp.vim'
-Bundle 'leshill/vim-json'
-Bundle 'lmeijvogel/vim-yaml-helper'
-Bundle 'Lokaltog/vim-powerline'
+
+" Colorscheme:
 Bundle 'nanotech/jellybeans.vim'
-Bundle 'nathanaelkane/vim-indent-guides'
-Bundle 'nvie/vim-togglemouse'
-Bundle 'scrooloose/syntastic'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-dispatch'
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-haml'
-Bundle 'tpope/vim-markdown'
-Bundle 'tpope/vim-rails'
-Bundle 'tpope/vim-rvm'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'vim-scripts/bufkill.vim'
-
-filetype plugin indent on " Turn on _after_ loading all Bundles
-
-" Switch syntax highlighting on, when the terminal has colors.
-if &t_Co > 2 || has("gui_running")
+if &t_Co > 2 || has('gui_running')
   syntax on
 endif
-if &t_Co == 256 || has("gui_running")
+if &t_Co == 256 || has('gui_running')
   set t_Co=256
+  let g:jellybeans_background_color_256=0 " truly black background
   colorscheme jellybeans
+
+  highlight VertSplit    ctermbg=16  ctermfg=233
+  highlight LineNr       ctermfg=237 ctermbg=0
+  highlight TabLineFill  ctermbg=16  ctermfg=236 cterm=underline
+  highlight TabLine      ctermbg=16  ctermfg=236 cterm=underline
+  highlight TabLineSel   ctermbg=234 ctermfg=255
+  highlight StatusLine   ctermbg=234 ctermfg=255
+  highlight StatusLineNC ctermbg=233 ctermfg=244
+
+  highlight ColorColumn  ctermbg=233
+  highlight IndentGuidesOdd  ctermbg=233
+  highlight IndentGuidesEven ctermbg=16
+  highlight clear SignColumn
 endif
+
+" Git: Shows a git diff in the gutter
+" Bundle 'airblade/vim-gitgutter'
+" Git: command Integration
+Bundle 'tpope/vim-fugitive'
+" Syntax: Markdown Highlighter
+Bundle 'tpope/vim-markdown'
+" Syntax: Handlebars Highlighter
+Bundle 'nono/vim-handlebars'
+
+" Syntax: JSON Highlighter
+Bundle 'leshill/vim-json'
+" Syntax: Slim Highlighter
+Bundle 'slim-template/vim-slim'
+
+" Ruby Util Rails: Project Management
+Bundle 'tpope/vim-rails'
+" Ruby HAML Syntax: HAML Highlighter
+Bundle 'tpope/vim-haml'
+" Ruby Syntax: Ruby Highlighter
+Bundle 'vim-ruby/vim-ruby'
+" Ruby: Quick access to Ruby documentation
+Bundle 'danchoi/ri.vim'
+" Ruby: Gem Project Management
+Bundle 'GutenYe/gem.vim'
+" Ruby: +Rspec runner Integration
+Bundle 'thoughtbot/vim-rspec'
+
+" if filereadable('.zeus.sock')
+"   let g:rspec_command='Dispatch zeus rspec {spec}'
+" else
+"   let g:rspec_command='Dispatch rspec {spec}'
+" endif
+
+" Rspec.vim mappings
+map <Leader>sf :call RunCurrentSpecFile()<CR>
+map <Leader>sn :call RunNearestSpec()<CR>
+map <Leader>sl :call RunLastSpec()<CR>
+map <Leader>sa :call RunAllSpecs()<CR>
+
+" Util: Switch between predefined replacements (true <-> false)
+Bundle 'AndrewRadev/switch.vim'
+" Util: Seamless movement between VIM and tmux splits
+Bundle 'christoomey/vim-tmux-navigator'
+" Util: Fuzzy File Finder (blazingly fast when combined with git ls-files)
+Bundle 'kien/ctrlp.vim'
+" Util: Status line Enhancements (TRYING)
+Bundle 'bling/vim-airline'
+let g:airline_enable_syntastic=1
+let g:airline_powerline_fonts=1
+
+" Util: Toggle mouse for vim or terminal
+Bundle 'nvie/vim-togglemouse'
+" Util: Code lint
+Bundle 'scrooloose/syntastic'
+let g:syntastic_enable_signs=1
+let g:syntastic_error_symbol='☠'
+let g:syntastic_warning_symbol='☹'
+let g:syntastic_style_error_symbol='⚠'
+
+" Util: Complete with snippets
+" Bundle 'Valloric/YouCompleteMe'
+" Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
+Bundle 'tpope/vim-abolish'
+" Util: (Un)Comment made easy
+Bundle 'tpope/vim-commentary'
+" Util: Allow asynchronous tasks to be dispatched
+Bundle 'tpope/vim-dispatch'
+" Util: 'wisely' add `end` after `if` `do` etc.
+Bundle 'tpope/vim-endwise'
+" Util: Kill buffers without closing splits
+Bundle 'vim-scripts/bufkill.vim'
+" Util: Nice way to take and organise notes
+Bundle 'vimwiki'
+" Util: rbenv.vim
+Bundle 'tpope/vim-rbenv'
+" Util: quoting/parenthesizing Enhancements
+Bundle 'tpope/vim-surround'
+" Util: brakety Things
+Bundle 'tpope/vim-unimpaired'
+" Util: Show indentation guides
+Bundle 'nathanaelkane/vim-indent-guides'
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_indent_levels = 6
+
+" YAML: Management
+Bundle 'lmeijvogel/vim-yaml-helper'
+
+filetype plugin indent on " Turn on _after_ loading all Bundles
 
 set encoding=utf-8
 set backupdir=~/.vim/tmp
@@ -55,10 +137,7 @@ set autoread                    " reload files only changed outside vim from dis
 
 set ttyfast                     " you got a fast terminal
 
-set mouse=a                     " allow ... mouse ...
-
 set ruler                       " show the cursor position all the time
-set relativenumber              " show line numbers relative to cursor
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set showcmd                     " display incomplete commands
 set showmatch
@@ -69,6 +148,7 @@ set guifont=Triskweline_10:h10
 set guioptions-=T
 set hlsearch                    " highlight matches
 set incsearch                   " incremental searching
+set lazyredraw
 
 set shiftwidth=2
 set expandtab
@@ -86,6 +166,8 @@ set grepprg=ack                 " Use Ack instead of grep
 " set iskeyword-=_               " Use _ as a word-separator
 set wildmenu                    " Better? completion on command line
 set wildmode=list:longest,full
+set wildignore+=tags
+set winaltkeys=no
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 
 " ================
@@ -95,7 +177,19 @@ augroup myfiletypes
   " Clear old autocmds in group
   autocmd!
   " autoindent with two spaces, always expand tabs
+  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
   autocmd FileType ruby,eruby,yaml set ai sw=2 sts=2 et
+
+  " Set up some useful Rails.vim bindings for working with Backbone.js
+  autocmd User Rails Rnavcommand template    app/assets/templates               -glob=**/*  -suffix=.jst.ejs
+  autocmd User Rails Rnavcommand jmodel      app/assets/javascripts/models      -glob=**/*  -suffix=.coffee
+  autocmd User Rails Rnavcommand jview       app/assets/javascripts/views       -glob=**/*  -suffix=.coffee
+  autocmd User Rails Rnavcommand jcollection app/assets/javascripts/collections -glob=**/*  -suffix=.coffee
+  autocmd User Rails Rnavcommand jrouter     app/assets/javascripts/routers     -glob=**/*  -suffix=.coffee
+  autocmd User Rails Rnavcommand jspec       spec/javascripts                   -glob=**/*  -suffix=.coffee
 augroup END
 " ================
 
@@ -106,21 +200,16 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " When loading text files, wrap them and don't split up words.
 autocmd BufNewFile,BufRead *.txt setlocal wrap
 autocmd BufNewFile,BufRead *.txt setlocal lbr
-" Set up some useful Rails.vim bindings for working with Backbone.js
-autocmd User Rails Rnavcommand template    app/assets/templates               -glob=**/*  -suffix=.jst.ejs
-autocmd User Rails Rnavcommand jmodel      app/assets/javascripts/models      -glob=**/*  -suffix=.coffee
-autocmd User Rails Rnavcommand jview       app/assets/javascripts/views       -glob=**/*  -suffix=.coffee
-autocmd User Rails Rnavcommand jcollection app/assets/javascripts/collections -glob=**/*  -suffix=.coffee
-autocmd User Rails Rnavcommand jrouter     app/assets/javascripts/routers     -glob=**/*  -suffix=.coffee
-autocmd User Rails Rnavcommand jspec       spec/javascripts                   -glob=**/*  -suffix=.coffee
+autocmd BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
+
 " Fix some performance issues
 autocmd BufWinLeave * call clearmatches()
 
 " quick open some default locations
-nnoremap <LEADER>bi :source ~/.vimrc<CR>:BundleInstall<CR>
+nnoremap <LEADER>bi :source ~/.dotfiles/lib/vimrc<CR>:BundleInstall<CR>
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
-nnoremap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
-nnoremap <LEADER>vi :tabe ~/.vimrc<CR>
+" nnoremap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
+nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vimrc<CR>
 
 nnoremap <LEADER>f :sp spec/fabricators<CR>
 nnoremap <LEADER>fa :sp test/factories.rb<CR>
@@ -143,8 +232,9 @@ nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
 nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
 nnoremap - :Switch<cr>
 
-" Run tests
-noremap <LEADER>sl :w \| :call RunRspecOnCurrentLine() \| :redraw!<CR>
+" Jump to home and end using less awkward keys
+noremap H ^
+noremap L $
 
 nnoremap <LEADER>q :q<CR>
 nnoremap <LEADER>Q :qal<CR>
@@ -161,8 +251,8 @@ noremap <C-S> <ESC>:w<CR>
 inoremap <C-S> <ESC>:w<CR>
 noremap <LEADER><LEADER> :w<CR>
 noremap <C-T> <ESC>:tabnew<CR>
-noremap <C-N> :cn<CR>
-noremap <C-P> :cp<CR>
+" noremap <C-N> :cn<CR>
+" noremap <C-P> :cp<CR>
 noremap <F9> :set spell! spell?<CR>
 
 " Emacs-like beginning and end of line.
@@ -182,11 +272,17 @@ command! Qall qall
 runtime macros/matchit.vim
 runtime! config/**/*.vim
 
-let g:syntastic_enable_signs=1
-let g:syntastic_error_symbol='☠'
-let g:syntastic_warning_symbol='☹'
-let g:syntastic_style_error_symbol='⚠'
-
 command! Fixline :s/{\|\(,\ze \)\|\( }\ze\)/
       \\=submatch(0) =~ "[,{]" ? submatch(0)."\r\t" : "\r}"/
 
+autocmd FileType cucumber compiler cucumber | setl makeprg=cucumber\ \"%:p\"
+autocmd FileType ruby
+      \ if expand('%') =~# '_test\.rb$' |
+      \   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
+      \ elseif expand('%') =~# '_spec\.rb$' |
+      \   compiler rspec | setl makeprg=rspec\ \"%:p\" |
+      \ else |
+      \   compiler ruby | setl makeprg=ruby\ -wc\ \"%:p\" |
+      \ endif
+autocmd User Bundler
+      \ if &makeprg !~# 'bundle' | setl makeprg^=bundle\ exec\  | endif

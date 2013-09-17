@@ -206,10 +206,10 @@ autocmd BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
 autocmd BufWinLeave * call clearmatches()
 
 " quick open some default locations
-nnoremap <LEADER>bi :source ~/.dotfiles/lib/vimrc<CR>:BundleInstall<CR>
+nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:BundleInstall<CR>
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 " nnoremap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
-nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vimrc<CR>
+nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
 
 nnoremap <LEADER>f :sp spec/fabricators<CR>
 nnoremap <LEADER>fa :sp test/factories.rb<CR>

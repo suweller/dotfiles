@@ -14,14 +14,14 @@ alias grep='grep -n'
 alias vi='vim'
 
 # Quick file access
-alias aliases='vim ~/.dotfiles/zsh/aliases'
+alias aliases='vim ~/.dotfiles/zsh/aliases && so'
 alias so='source ~/.dotfiles/zsh/aliases'
 alias zshconf='vim ~/.dotfiles/lib/zshrc'
-alias vimrc='vim ~/.dotfiles/lib/vimrc'
+alias vimrc='vim ~/.dotfiles/lib/vim/vimrc'
 alias vimcf='vim ~/.dotfiles/lib/vim/config'
 
 # Quick dir access
-alias c='cd ~/Documents/80beans/'
+alias c='cd ~/Documents/Zilverline/'
 alias o='cd ~/Documents/open-source/'
 alias d='cd ~/.dotfiles'
 alias dr='cd ~/Dropbox'

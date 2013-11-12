@@ -55,6 +55,10 @@ Bundle 'slim-template/vim-slim'
 
 " Ruby Util Rails: Project Management
 Bundle 'tpope/vim-rails'
+
+" Ruby Util Bundler: Gem Ctags
+Bundle 'tpope/vim-bundler'
+
 " Ruby HAML Syntax: HAML Highlighter
 Bundle 'tpope/vim-haml'
 " Ruby Syntax: Ruby Highlighter

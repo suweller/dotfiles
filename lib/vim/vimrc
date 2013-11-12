@@ -58,6 +58,8 @@ Bundle 'tpope/vim-rails'
 
 " Ruby Util Bundler: Gem Ctags
 Bundle 'tpope/vim-bundler'
+" Ruby Util Non-Rails: Plain ruby project management
+Bundle 'tpope/vim-rake'
 
 " Ruby HAML Syntax: HAML Highlighter
 Bundle 'tpope/vim-haml'

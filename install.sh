@@ -39,7 +39,7 @@ fi
 cd ..
 
 # Install oh-my-zsh if its not present
-oh_my_zsh="$PWD/oh-my-zsh"
+oh_my_zsh="$HOME/oh-my-zsh"
 if [ -a $oh_my_zsh ]; then
   echo "oh-my-zsh is already installed"
 else
@@ -49,7 +49,7 @@ fi
 # # Handle ssh pubkey
 id_rsa=$HOME/.ssh/id_rsa.pub
 rm $id_rsa
-ln -s $PWD/id_rsa.pub $id_rsa
+ln -s $HOME/.ssh/id_rsa.pub $id_rsa
 
 echo "You can make zsh your default shell by running:"
 echo "chsh -s /bin/zsh"

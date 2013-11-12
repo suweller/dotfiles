@@ -60,7 +60,9 @@ alias bes='bundle exec rails s'
 alias bec='bundle exec rails c'
 
 alias killrb='killall -9 ruby'
-alias falcon='rvm use 1.9.3-p327-falcon'
+
+alias postgres='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
+alias migrate='bundle exec rake db:migrate db:test:clone'
 
 # EngineYard
 # alias ey='NOEXEC_DISABLE=1 ey'

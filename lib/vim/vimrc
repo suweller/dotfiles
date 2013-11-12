@@ -87,10 +87,6 @@ Bundle 'AndrewRadev/switch.vim'
 Bundle 'christoomey/vim-tmux-navigator'
 " Util: Fuzzy File Finder (blazingly fast when combined with git ls-files)
 Bundle 'kien/ctrlp.vim'
-" Util: Status line Enhancements (TRYING)
-Bundle 'bling/vim-airline'
-let g:airline_enable_syntastic=1
-let g:airline_powerline_fonts=1
 
 " Util: Toggle mouse for vim or terminal
 Bundle 'nvie/vim-togglemouse'
@@ -272,18 +268,3 @@ command! Qall qall
 
 runtime macros/matchit.vim
 runtime! config/**/*.vim
-
-command! Fixline :s/{\|\(,\ze \)\|\( }\ze\)/
-      \\=submatch(0) =~ "[,{]" ? submatch(0)."\r\t" : "\r}"/
-
-autocmd FileType cucumber compiler cucumber | setl makeprg=cucumber\ \"%:p\"
-autocmd FileType ruby
-      \ if expand('%') =~# '_test\.rb$' |
-      \   compiler rubyunit | setl makeprg=testrb\ \"%:p\" |
-      \ elseif expand('%') =~# '_spec\.rb$' |
-      \   compiler rspec | setl makeprg=rspec\ \"%:p\" |
-      \ else |
-      \   compiler ruby | setl makeprg=ruby\ -wc\ \"%:p\" |
-      \ endif
-autocmd User Bundler
-      \ if &makeprg !~# 'bundle' | setl makeprg^=bundle\ exec\  | endif

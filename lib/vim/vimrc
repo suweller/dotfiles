@@ -210,12 +210,10 @@ nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
 
 nnoremap <LEADER>f :sp spec/fabricators<CR>
 nnoremap <LEADER>fa :sp test/factories.rb<CR>
-nnoremap <LEADER>sc :sp db/schema.rb<CR>
+nnoremap <LEADER>ds :tabe db/schema.rb<CR>
 
 " vim-fugitive
 noremap <LEADER>gb :Gblame<CR>
-nnoremap <LEADER>gac :Gcommit -m -a ""<LEFT>
-nnoremap <LEADER>gc :Gcommit -m ""<LEFT>
 nnoremap <LEADER>gs :Gstatus<CR>
 
 " quick insert/rewrite stuff

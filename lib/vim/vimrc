@@ -63,14 +63,11 @@ Bundle 'vim-ruby/vim-ruby'
 Bundle 'danchoi/ri.vim'
 " Ruby: Gem Project Management
 Bundle 'GutenYe/gem.vim'
+
 " Ruby: +Rspec runner Integration
 Bundle 'thoughtbot/vim-rspec'
 
-" if filereadable('.zeus.sock')
-"   let g:rspec_command='Dispatch zeus rspec {spec}'
-" else
-"   let g:rspec_command='Dispatch rspec {spec}'
-" endif
+let g:rspec_command='Dispatch ./bin/rspec {spec}'
 
 " Rspec.vim mappings
 map <Leader>sf :call RunCurrentSpecFile()<CR>

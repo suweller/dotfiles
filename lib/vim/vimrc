@@ -55,6 +55,25 @@ Bundle 'slim-template/vim-slim'
 
 " Ruby Util Rails: Project Management
 Bundle 'tpope/vim-rails'
+let g:rails_projections = {
+\ "app/presenters/*_presenter.rb": {
+\   "command": "presenter",
+\   "affinity": "model",
+\   "alternate": ["unit/presenters/%s_presenter_spec.rb", "spec/presenters/%s_presenter_spec.rb"],
+\   "related": "app/models/%s.rb",
+\   "template": "class %SPresenter\nend"
+\ },
+\ "app/assets/javascripts/*.js.coffee": { "alternate": "spec/javascripts/%s_spec.js.coffee" },
+\ "spec/javascripts/*_spec.js.coffee": { "alternate": "app/assets/javascripts/%s.js.coffee" },
+\ "spec/factories/*.rb": {
+\   "command":   "factory",
+\   "affinity":  "collection",
+\   "alternate": "app/models/%i.rb",
+\   "related":   "db/schema.rb#%s",
+\   "test":      ["unit/models/%i_test.rb", "spec/models/%i_spec.rb"],
+\   "template":  "FactoryGirl.define do\n  factory :%i do\n  end\nend",
+\   "keywords":  "factory sequence"
+\ }}
 
 " Ruby Util Bundler: Gem Ctags
 Bundle 'tpope/vim-bundler'
@@ -65,6 +84,7 @@ Bundle 'tpope/vim-rake'
 Bundle 'tpope/vim-haml'
 " Ruby Syntax: Ruby Highlighter
 Bundle 'vim-ruby/vim-ruby'
+
 " Ruby: Quick access to Ruby documentation
 Bundle 'danchoi/ri.vim'
 " Ruby: Gem Project Management
@@ -83,8 +103,15 @@ map <Leader>sa :call RunAllSpecs()<CR>
 
 " Util: Switch between predefined replacements (true <-> false)
 Bundle 'AndrewRadev/switch.vim'
+let g:switch_custom_definitions =
+    \ [
+    \   ['have_link', 'have_no_link'],
+    \   ['have_css', 'have_no_css']
+    \ ]
+
 " Util: Seamless movement between VIM and tmux splits
 Bundle 'christoomey/vim-tmux-navigator'
+
 " Util: Fuzzy File Finder (blazingly fast when combined with git ls-files)
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_switch_buffer = 2
@@ -109,6 +136,7 @@ endif
 
 " Util: Toggle mouse for vim or terminal
 Bundle 'nvie/vim-togglemouse'
+
 " Util: Code lint
 Bundle 'scrooloose/syntastic'
 let g:syntastic_enable_signs=1
@@ -116,31 +144,46 @@ let g:syntastic_error_symbol='☠'
 let g:syntastic_warning_symbol='☹'
 let g:syntastic_style_error_symbol='⚠'
 
-" Util: Complete with snippets
-" Bundle 'Valloric/YouCompleteMe'
 " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
 Bundle 'tpope/vim-abolish'
+
 " Util: (Un)Comment made easy
 Bundle 'tpope/vim-commentary'
+
 " Util: Allow asynchronous tasks to be dispatched
 Bundle 'tpope/vim-dispatch'
+
 " Util: 'wisely' add `end` after `if` `do` etc.
 Bundle 'tpope/vim-endwise'
+
 " Util: Kill buffers without closing splits
 Bundle 'vim-scripts/bufkill.vim'
+
 " Util: Nice way to take and organise notes
 Bundle 'vimwiki'
+let g:vimwiki_list = [
+  \ {'path': '~/vimwiki/work/'},
+  \ {'path': '~/vimwiki/play/'}
+  \ ]
+
 " Util: rbenv.vim
 Bundle 'tpope/vim-rbenv'
+
 " Util: quoting/parenthesizing Enhancements
 Bundle 'tpope/vim-surround'
+
 " Util: brakety Things
 Bundle 'tpope/vim-unimpaired'
+
 " Util: Show indentation guides
 Bundle 'nathanaelkane/vim-indent-guides'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 let g:indent_guides_indent_levels = 6
+
+" Util: ruby block navigation
+Bundle 'kana/vim-textobj-user'
+Bundle 'nelstrom/vim-textobj-rubyblock'
 
 " YAML: Management
 Bundle 'lmeijvogel/vim-yaml-helper'
@@ -231,6 +274,7 @@ nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
 nnoremap <LEADER>f :sp spec/fabricators<CR>
 nnoremap <LEADER>fa :sp test/factories.rb<CR>
 nnoremap <LEADER>ds :tabe db/schema.rb<CR>
+nnoremap <LEADER>dm :e db/migrate/<CR>GG
 
 " vim-fugitive
 noremap <LEADER>gb :Gblame<CR>

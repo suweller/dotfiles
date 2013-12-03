@@ -28,25 +28,16 @@ alias dr='cd ~/Dropbox'
 alias u='cd ..'
 
 # Git aliases
-alias gits='git st'
+alias g='git'
 alias amend="git commit --amend"
-alias gad='git add .'
-alias gadu='git add -u .'
-alias gca='git commit -a'
-alias gcaa='git commit -a --amend -C HEAD'
-alias gcl='git clone'
-alias gcm='git commit -m'
-alias gco='git checkout'
-alias gd='git diff'
-alias gdc='git diff --cached'
-alias get='sudo apt-get install'
+alias gs='git status'
 alias gg='git grep -n'
-alias gpush='git push'
-alias gpsuh='git push'
 alias gpr='git pull --rebase'
 alias grc='git rebase --continue'
-alias hpush='git push heroku'
-alias fix='$EDITOR `git diff --name-only | uniq`'
+alias fix='$EDITOR -p `git diff --name-only | uniq`'
+
+alias gpush='git push'
+alias gpsuh='git push'
 
 # Bundle
 alias be='bundle exec'

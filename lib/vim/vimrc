@@ -304,9 +304,8 @@ inoremap <C-A> <C-O>^
 noremap Q <NOP>
 " Disable K looking stuff up
 " noremap K <NOP>
-" bind F to grep word under cursor
-nnoremap F :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
-noremap <LEADER>/ :grep!
+nnoremap <LEADER>f :grep!<SPACE>
+nnoremap <LEADER>F :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Center search matches when jumping
 noremap N Nzz

@@ -1,3 +1,4 @@
+" vim:fdm=marker
 set nocompatible      " We're running VIM, not vi
 filetype off          " Turn off _before_ loading all Bundles
 let mapleader = " "
@@ -12,10 +13,25 @@ Bundle 'gmarik/vundle'
 
 " My bundles (fetched from github.com/vimscript.org by Vundle)
 
-" CoffeeScript: Syntax Highlighter
+" Syntax: Highlighters, Indenters, etc... {{{
 Bundle 'kchmck/vim-coffee-script'
+Bundle 'leshill/vim-json'
+Bundle 'nono/vim-handlebars'
+Bundle 'slim-template/vim-slim'
+Bundle 'tpope/vim-haml'
+Bundle 'tpope/vim-markdown'
 
-" Colorscheme:
+Bundle 'vim-ruby/vim-ruby'
+let ruby_space_errors = 1
+let g:ruby_indent_access_modifier_style = 'outdent'
+
+Bundle 'nathanaelkane/vim-indent-guides'
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_indent_levels = 6
+" }}}
+
+" Colorscheme: {{{
 Bundle 'nanotech/jellybeans.vim'
 if &t_Co > 2 || has('gui_running')
   syntax on
@@ -38,22 +54,15 @@ if &t_Co == 256 || has('gui_running')
   highlight IndentGuidesEven ctermbg=16
   highlight clear SignColumn
 endif
+" }}}
 
-" Git: Shows a git diff in the gutter
-" Bundle 'airblade/vim-gitgutter'
-" Git: command Integration
+" Git: command Integration {{{
 Bundle 'tpope/vim-fugitive'
-" Syntax: Markdown Highlighter
-Bundle 'tpope/vim-markdown'
-" Syntax: Handlebars Highlighter
-Bundle 'nono/vim-handlebars'
+noremap <LEADER>gb :Gblame<CR>
+nnoremap <LEADER>gs :Gstatus<CR>
+" }}}
 
-" Syntax: JSON Highlighter
-Bundle 'leshill/vim-json'
-" Syntax: Slim Highlighter
-Bundle 'slim-template/vim-slim'
-
-" Ruby Util Rails: Project Management
+" Ruby Util Rails: Project Management {{{
 Bundle 'tpope/vim-rails'
 let g:rails_projections = {
 \ "app/presenters/*_presenter.rb": {
@@ -74,45 +83,41 @@ let g:rails_projections = {
 \   "template":  "FactoryGirl.define do\n  factory :%i do\n  end\nend",
 \   "keywords":  "factory sequence"
 \ }}
+" }}}
 
 " Ruby Util Bundler: Gem Ctags
 Bundle 'tpope/vim-bundler'
 " Ruby Util Non-Rails: Plain ruby project management
 Bundle 'tpope/vim-rake'
 
-" Ruby HAML Syntax: HAML Highlighter
-Bundle 'tpope/vim-haml'
-" Ruby Syntax: Ruby Highlighter
-Bundle 'vim-ruby/vim-ruby'
-
 " Ruby: Quick access to Ruby documentation
 Bundle 'danchoi/ri.vim'
 " Ruby: Gem Project Management
 Bundle 'GutenYe/gem.vim'
 
-" Ruby: +Rspec runner Integration
+" Ruby: +Rspec runner Integration {{{
 Bundle 'thoughtbot/vim-rspec'
-
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
-
-" Rspec.vim mappings
 map <Leader>sf :call RunCurrentSpecFile()<CR>
 map <Leader>sn :call RunNearestSpec()<CR>
 map <Leader>sl :call RunLastSpec()<CR>
 map <Leader>sa :call RunAllSpecs()<CR>
+" }}}
 
-" Util: Switch between predefined replacements (true <-> false)
+" Util: Switch between predefined replacements (true <-> false) {{{
 Bundle 'AndrewRadev/switch.vim'
 let g:switch_custom_definitions =
     \ [
     \   ['have_link', 'have_no_link'],
     \   ['have_css', 'have_no_css']
     \ ]
+nnoremap - :Switch<cr>
+" }}}
 
 " Util: Seamless movement between VIM and tmux splits
 Bundle 'christoomey/vim-tmux-navigator'
 
-" Util: Fuzzy File Finder (blazingly fast when combined with git ls-files)
+" Util: Fuzzy File Finder (blazingly fast when combined with git ls-files) {{{
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_switch_buffer = 2
 let g:ctrlp_custom_ignore = {
@@ -121,28 +126,24 @@ let g:ctrlp_custom_ignore = {
   \ }
 let g:ctrlp_max_depth = 10      " Directory depth to recurse into when scanning
 let g:ctrlp_open_new_file = 't' " open files in new tab
-
-" The Silver Searcher
+" Use ag in CtrlP for listing files. fast enough not to use caching
 if executable('ag')
-  " Use ag over grep
   set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 endif
+" }}}
 
 " Util: Toggle mouse for vim or terminal
 Bundle 'nvie/vim-togglemouse'
 
-" Util: Code lint
+" Util: Code lint {{{
 Bundle 'scrooloose/syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='☠'
 let g:syntastic_warning_symbol='☹'
 let g:syntastic_style_error_symbol='⚠'
+" }}}
 
 " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
 Bundle 'tpope/vim-abolish'
@@ -159,12 +160,10 @@ Bundle 'tpope/vim-endwise'
 " Util: Kill buffers without closing splits
 Bundle 'vim-scripts/bufkill.vim'
 
-" Util: Nice way to take and organise notes
+" Util: Nice way to take and organise notes {{{
 Bundle 'vimwiki'
-let g:vimwiki_list = [
-  \ {'path': '~/vimwiki/work/'},
-  \ {'path': '~/vimwiki/play/'}
-  \ ]
+let g:vimwiki_list = [{'path': '~/vimwiki/work/'}, {'path': '~/vimwiki/play/'}]
+" }}}
 
 " Util: rbenv.vim
 Bundle 'tpope/vim-rbenv'
@@ -175,15 +174,10 @@ Bundle 'tpope/vim-surround'
 " Util: brakety Things
 Bundle 'tpope/vim-unimpaired'
 
-" Util: Show indentation guides
-Bundle 'nathanaelkane/vim-indent-guides'
-let g:indent_guides_enable_on_vim_startup = 1
-let g:indent_guides_auto_colors = 0
-let g:indent_guides_indent_levels = 6
-
-" Util: ruby block navigation
+" Util: ruby block navigation {{{
 Bundle 'kana/vim-textobj-user'
 Bundle 'nelstrom/vim-textobj-rubyblock'
+" }}}
 
 " YAML: Management
 Bundle 'lmeijvogel/vim-yaml-helper'
@@ -230,9 +224,7 @@ set wildignore+=tags
 set winaltkeys=no
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
 
-" ================
-" Ruby stuff
-" ================
+" Ruby autocmds {{{
 augroup myfiletypes
   " Clear old autocmds in group
   autocmd!
@@ -251,7 +243,7 @@ augroup myfiletypes
   autocmd User Rails Rnavcommand jrouter     app/assets/javascripts/routers     -glob=**/*  -suffix=.coffee
   autocmd User Rails Rnavcommand jspec       spec/javascripts                   -glob=**/*  -suffix=.coffee
 augroup END
-" ================
+" }}}
 
 " Format xml files
 autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
@@ -271,16 +263,10 @@ nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 " nnoremap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
 nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
 
-nnoremap <LEADER>f :sp spec/fabricators<CR>
-nnoremap <LEADER>fa :sp test/factories.rb<CR>
 nnoremap <LEADER>ds :tabe db/schema.rb<CR>
 nnoremap <LEADER>dm :e db/migrate/<CR>GG
 
-" vim-fugitive
-noremap <LEADER>gb :Gblame<CR>
-nnoremap <LEADER>gs :Gstatus<CR>
-
-" quick insert/rewrite stuff
+" quick insert/rewrite stuff {{{
 nnoremap <LEADER>pa osave_and_open_page # DEBUG<ESC>
 nnoremap <LEADER>de orequire 'pry'; binding.pry # DEBUG<ESC>
 nnoremap <LEADER>db obefore { require 'pry'; binding.pry } # DEBUG<ESC>
@@ -289,18 +275,13 @@ nnoremap <LEADER>rh oraise 'hell' # DEBUG<ESC>
 nnoremap <LEADER>rw :%s/\s\+$//<CR>
 nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
 nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
-nnoremap - :Switch<cr>
-
-" Jump to home and end using less awkward keys
-noremap H ^
-noremap L $
+" }}}
 
 nnoremap <LEADER>q :q<CR>
 nnoremap <LEADER>Q :qal<CR>
 nnoremap <LEADER>bn :bn<CR>
 nnoremap <LEADER>n :bn<CR>
 
-nnoremap <LEADER>l :setlocal relativenumber!<CR>
 nnoremap <LEADER>o :set paste!<CR>
 nnoremap <LEADER>w :setlocal wrap!<CR>:setlocal wrap?<CR>
 
@@ -334,3 +315,28 @@ command! Qall qall
 
 runtime macros/matchit.vim
 runtime! config/**/*.vim
+
+"-- Files & Directories {{{
+" Remember things when we exit
+"           +-> marks for up to # previously edited files
+"           |   +-> Global marks
+"           |   |  +-> Save up to # lines for each register
+"           |   |  |    +-> # lines of command-line history
+"           |   |  |    |   +-> # lines to save from the input line history
+"           |   |  |    |   |   +-> # lines to save from the search history
+"           |   |  |    |   |   |   +-> Disable 'hlsearch' highlights on start
+"           |   |  |    |   |   |   | +-> Where to save the viminfo files
+set viminfo='10,f1,<100,:20,@20,/20,h,n~/.vim/.viminfo
+
+function! RestoreCursorPosition()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup restoreCursorPosition
+  autocmd!
+  autocmd BufWinEnter * call RestoreCursorPosition()
+augroup END
+" }}}

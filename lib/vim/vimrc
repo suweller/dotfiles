@@ -106,11 +106,13 @@ map <Leader>sa :call RunAllSpecs()<CR>
 
 " Util: Switch between predefined replacements (true <-> false) {{{
 Bundle 'AndrewRadev/switch.vim'
-let g:switch_custom_definitions =
-    \ [
-    \   ['have_link', 'have_no_link'],
-    \   ['have_css', 'have_no_css']
-    \ ]
+autocmd FileType ruby let b:switch_custom_definitions = [
+  \   {
+  \     'have_no_\(\w\+\)': 'have_\1',
+  \     'have_\(\w\+\)': 'have_no_\1'
+  \   }
+  \ ]
+
 nnoremap - :Switch<cr>
 " }}}
 

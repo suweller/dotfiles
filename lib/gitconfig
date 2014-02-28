@@ -3,10 +3,12 @@
   email = github@suweller.com
 [alias]
   co = checkout
-  st = status
-  br = branch
+  c  = checkout
   st = status -sb
+  s  = status -sb
+  br = branch
   today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
+  lg = log --format='%Cred%h%Creset %s %Cgreen(%cr) %C(blue)<%an>%Creset%C(yellow)%d%Creset' --no-merges
 [merge]
   tool = vimdiff
 [color]

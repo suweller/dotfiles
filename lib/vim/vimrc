@@ -14,6 +14,7 @@ Bundle 'gmarik/vundle'
 " My bundles (fetched from github.com/vimscript.org by Vundle)
 
 " Syntax: Highlighters, Indenters, etc... {{{
+Bundle 'pangloss/vim-javascript'
 Bundle 'kchmck/vim-coffee-script'
 Bundle 'leshill/vim-json'
 Bundle 'nono/vim-handlebars'
@@ -41,18 +42,23 @@ if &t_Co == 256 || has('gui_running')
   let g:jellybeans_background_color_256=0 " truly black background
   colorscheme jellybeans
 
-  highlight VertSplit    ctermbg=16  ctermfg=233
+  highlight VertSplit    ctermbg=16  ctermfg=236
   highlight LineNr       ctermfg=237 ctermbg=0
   highlight TabLineFill  ctermbg=16  ctermfg=236 cterm=underline
   highlight TabLine      ctermbg=16  ctermfg=236 cterm=underline
   highlight TabLineSel   ctermbg=234 ctermfg=255
-  highlight StatusLine   ctermbg=234 ctermfg=255
+  highlight StatusLine   ctermbg=234 ctermfg=64
   highlight StatusLineNC ctermbg=233 ctermfg=244
+  highlight Folded       ctermbg=234 ctermfg=244
 
   highlight ColorColumn  ctermbg=233
   highlight IndentGuidesOdd  ctermbg=233
   highlight IndentGuidesEven ctermbg=16
   highlight clear SignColumn
+
+  " highlights all not yet matched repeating blocks of whitespace
+  " autocmd FileType * highlight ExcessiveWhitespace ctermbg=red guibg=red
+  " autocmd FileType * 2match ExcessiveWhitespace /\>\s\s\+\</
 endif
 " }}}
 
@@ -119,7 +125,7 @@ nnoremap - :Switch<cr>
 " Util: Seamless movement between VIM and tmux splits
 Bundle 'christoomey/vim-tmux-navigator'
 
-" Util: Fuzzy File Finder (blazingly fast when combined with git ls-files) {{{
+" Util: Fuzzy File Finder {{{
 Bundle 'kien/ctrlp.vim'
 let g:ctrlp_switch_buffer = 2
 let g:ctrlp_custom_ignore = {
@@ -129,6 +135,7 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_max_depth = 10      " Directory depth to recurse into when scanning
 let g:ctrlp_open_new_file = 't' " open files in new tab
 " Use ag in CtrlP for listing files. fast enough not to use caching
+" brew install silver_searcher
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
@@ -264,6 +271,7 @@ nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:BundleInstall<CR>
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 " nnoremap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
 nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
+nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>
 
 nnoremap <LEADER>ds :tabe db/schema.rb<CR>
 nnoremap <LEADER>dm :e db/migrate/<CR>GG
@@ -283,6 +291,7 @@ nnoremap <LEADER>q :q<CR>
 nnoremap <LEADER>Q :qal<CR>
 nnoremap <LEADER>bn :bn<CR>
 nnoremap <LEADER>n :bn<CR>
+nnoremap <LEADER>tn <ESC>:tabnew<CR>
 
 nnoremap <LEADER>o :set paste!<CR>
 nnoremap <LEADER>w :setlocal wrap!<CR>:setlocal wrap?<CR>
@@ -292,7 +301,6 @@ inoremap <C-L> :<SPACE>
 noremap <C-S> <ESC>:w<CR>
 inoremap <C-S> <ESC>:w<CR>
 noremap <LEADER><LEADER> :w<CR>
-noremap <C-T> <ESC>:tabnew<CR>
 " noremap <C-N> :cn<CR>
 " noremap <C-P> :cp<CR>
 noremap <F9> :set spell! spell?<CR>
@@ -300,6 +308,9 @@ noremap <F9> :set spell! spell?<CR>
 " Emacs-like beginning and end of line.
 inoremap <C-E> <C-O>$
 inoremap <C-A> <C-O>^
+noremap H ^
+noremap L $
+
 " Disable Ex mode
 noremap Q <NOP>
 " Disable K looking stuff up

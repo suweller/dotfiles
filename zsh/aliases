@@ -29,7 +29,7 @@ alias u='cd ..'
 
 # Git aliases
 alias g='git'
-alias amend="git commit --amend"
+alias amend="git commit --amend -v"
 alias gs='git status'
 alias gg='git grep -n'
 alias gpr='git pull --rebase'
@@ -53,7 +53,7 @@ alias bec='bundle exec rails c'
 alias killrb='killall -9 ruby'
 
 alias postgres='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
-alias migrate='bundle exec rake db:migrate db:test:clone'
+alias migrate='bundle exec rake db:migrate db:test:clone parallel:prepare'
 alias rollback='bundle exec rake db:rollback'
 
 # EngineYard

@@ -58,12 +58,13 @@ source $HOME/.zshrc_private
 # Customize to your needs...
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin"
 export PATH="$PATH:$HOME/.dotfiles/bin"
+[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
 export EDITOR='vim'
 
 # Load ruby version manager
 eval "$(rbenv init -)"
-export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.rbenv/shims:$PATH"
 
 export LANG="en_US.utf-8"
 export LC_ALL="en_US.utf-8"
@@ -73,12 +74,11 @@ export LC_CTYPE="utf-8"
 export CFLAGS="-march=core2 -O3"
 
 # Ruby performance tweaks, http://astrails.com/blog/2012/11/13/rvm-install-patched-ruby-for-faster-rails-startup
-export RUBY_HEAP_MIN_SLOTS=1000000
-export RUBY_HEAP_FREE_MIN=500000
-export RUBY_FREE_MIN=200000
 export RUBY_HEAP_SLOTS_INCREMENT=1000000
 export RUBY_HEAP_SLOTS_GROWTH_FACTOR=1
 export RUBY_GC_MALLOC_LIMIT=100000000
+export RUBY_GC_HEAP_FREE_SLOTS=500000
+export RUBY_GC_HEAP_INIT_SLOTS=1000000
 
 bindkey '^p' history-substring-search-up
 bindkey '^n' history-substring-search-down

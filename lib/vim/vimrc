@@ -183,6 +183,9 @@ Bundle 'tpope/vim-surround'
 " Util: brakety Things
 Bundle 'tpope/vim-unimpaired'
 
+" Util: vertically aligning things (not for code)
+Bundle 'godlygeek/tabular'
+
 " Util: ruby block navigation {{{
 Bundle 'kana/vim-textobj-user'
 Bundle 'nelstrom/vim-textobj-rubyblock'

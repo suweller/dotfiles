@@ -8,8 +8,6 @@ fi
 
 alias -g G='| grep'
 
-alias grep='grep -n'
-
 # Editor
 alias vi='vim'
 

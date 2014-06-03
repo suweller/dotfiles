@@ -1,6 +1,6 @@
 " vim:fdm=marker
 set nocompatible      " We're running VIM, not vi
-filetype off          " Turn off _before_ loading all Bundles
+filetype off          " Turn off _before_ loading all Plugins
 let mapleader = " "
 inoremap § <ESC>
 
@@ -9,31 +9,34 @@ set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
 " Let Vundle manage Vundle (required)! See, http://github.com/gmarik/vundle
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/vundle'
 
 " My bundles (fetched from github.com/vimscript.org by Vundle)
 
 " Syntax: Highlighters, Indenters, etc... {{{
-Bundle 'pangloss/vim-javascript'
-Bundle 'kchmck/vim-coffee-script'
-Bundle 'leshill/vim-json'
-Bundle 'nono/vim-handlebars'
-Bundle 'slim-template/vim-slim'
-Bundle 'tpope/vim-haml'
-Bundle 'tpope/vim-markdown'
+Plugin 'pangloss/vim-javascript'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'leshill/vim-json'
+Plugin 'nono/vim-handlebars'
+Plugin 'slim-template/vim-slim'
 
-Bundle 'vim-ruby/vim-ruby'
+Plugin 'tpope/vim-haml'
+set iskeyword+=-
+
+Plugin 'tpope/vim-markdown'
+
+Plugin 'vim-ruby/vim-ruby'
 let ruby_space_errors = 1
 let g:ruby_indent_access_modifier_style = 'outdent'
 
-Bundle 'nathanaelkane/vim-indent-guides'
+Plugin 'nathanaelkane/vim-indent-guides'
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 let g:indent_guides_indent_levels = 6
 " }}}
-
 " Colorscheme: {{{
-Bundle 'nanotech/jellybeans.vim'
+Plugin 'nanotech/jellybeans.vim'
+
 if &t_Co > 2 || has('gui_running')
   syntax on
 endif
@@ -41,6 +44,7 @@ if &t_Co == 256 || has('gui_running')
   set t_Co=256
   let g:jellybeans_background_color_256=0 " truly black background
   colorscheme jellybeans
+
 
   highlight VertSplit    ctermbg=16  ctermfg=236
   highlight LineNr       ctermfg=237 ctermbg=0
@@ -61,15 +65,13 @@ if &t_Co == 256 || has('gui_running')
   " autocmd FileType * 2match ExcessiveWhitespace /\>\s\s\+\</
 endif
 " }}}
-
 " Git: command Integration {{{
-Bundle 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive'
 noremap <LEADER>gb :Gblame<CR>
 nnoremap <LEADER>gs :Gstatus<CR>
 " }}}
-
 " Ruby Util Rails: Project Management {{{
-Bundle 'tpope/vim-rails'
+Plugin 'tpope/vim-rails'
 let g:rails_projections = {
 \ "app/presenters/*_presenter.rb": {
 \   "command": "presenter",
@@ -90,28 +92,24 @@ let g:rails_projections = {
 \   "keywords":  "factory sequence"
 \ }}
 " }}}
-
-" Ruby Util Bundler: Gem Ctags
-Bundle 'tpope/vim-bundler'
+" Ruby Util Pluginr: Gem Ctags
+Plugin 'tpope/vim-bundler'
 " Ruby Util Non-Rails: Plain ruby project management
-Bundle 'tpope/vim-rake'
-
+Plugin 'tpope/vim-rake'
 " Ruby: Quick access to Ruby documentation
-Bundle 'danchoi/ri.vim'
+Plugin 'danchoi/ri.vim'
 " Ruby: Gem Project Management
-Bundle 'GutenYe/gem.vim'
-
+Plugin 'GutenYe/gem.vim'
 " Ruby: +Rspec runner Integration {{{
-Bundle 'thoughtbot/vim-rspec'
+Plugin 'thoughtbot/vim-rspec'
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
 map <Leader>sf :call RunCurrentSpecFile()<CR>
 map <Leader>sn :call RunNearestSpec()<CR>
 map <Leader>sl :call RunLastSpec()<CR>
 map <Leader>sa :call RunAllSpecs()<CR>
 " }}}
-
 " Util: Switch between predefined replacements (true <-> false) {{{
-Bundle 'AndrewRadev/switch.vim'
+Plugin 'AndrewRadev/switch.vim'
 autocmd FileType ruby let b:switch_custom_definitions = [
   \   {
   \     'have_no_\(\w\+\)': 'have_\1',
@@ -121,12 +119,10 @@ autocmd FileType ruby let b:switch_custom_definitions = [
 
 nnoremap - :Switch<cr>
 " }}}
-
 " Util: Seamless movement between VIM and tmux splits
-Bundle 'christoomey/vim-tmux-navigator'
-
-" Util: Fuzzy File Finder {{{
-Bundle 'kien/ctrlp.vim'
+Plugin 'christoomey/vim-tmux-navigator'
+" Util: File Finder {{{
+Plugin 'kien/ctrlp.vim'
 let g:ctrlp_switch_buffer = 2
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\.git$\|\.hg$\|\.svn$|^vendor$|^coverage$|^tmp$|^rdoc$|',
@@ -135,66 +131,63 @@ let g:ctrlp_custom_ignore = {
 let g:ctrlp_max_depth = 10      " Directory depth to recurse into when scanning
 let g:ctrlp_open_new_file = 't' " open files in new tab
 " Use ag in CtrlP for listing files. fast enough not to use caching
-" brew install silver_searcher
+" brew install the_silver_searcher
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
   let g:ctrlp_use_caching = 0
 endif
+Plugin 'tpope/vim-vinegar'
 " }}}
-
+" Plugin 'Shougo/unite.vim'
 " Util: Toggle mouse for vim or terminal
-Bundle 'nvie/vim-togglemouse'
-
+Plugin 'nvie/vim-togglemouse'
 " Util: Code lint {{{
-Bundle 'scrooloose/syntastic'
+Plugin 'scrooloose/syntastic'
 let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='☠'
 let g:syntastic_warning_symbol='☹'
 let g:syntastic_style_error_symbol='⚠'
 " }}}
-
 " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
-Bundle 'tpope/vim-abolish'
-
+Plugin 'tpope/vim-abolish'
 " Util: (Un)Comment made easy
-Bundle 'tpope/vim-commentary'
-
+Plugin 'tpope/vim-commentary'
 " Util: Allow asynchronous tasks to be dispatched
-Bundle 'tpope/vim-dispatch'
-
+Plugin 'tpope/vim-dispatch'
 " Util: 'wisely' add `end` after `if` `do` etc.
-Bundle 'tpope/vim-endwise'
-
+Plugin 'tpope/vim-endwise'
 " Util: Kill buffers without closing splits
-Bundle 'vim-scripts/bufkill.vim'
+Plugin 'vim-scripts/bufkill.vim'
+" Util: Edit (small) images
+Plugin 'tpope/vim-afterimage'
 
 " Util: Nice way to take and organise notes {{{
-Bundle 'vimwiki'
+Plugin 'vimwiki'
 let g:vimwiki_list = [{'path': '~/vimwiki/work/'}, {'path': '~/vimwiki/play/'}]
 " }}}
 
 " Util: rbenv.vim
-Bundle 'tpope/vim-rbenv'
+Plugin 'tpope/vim-rbenv'
 
 " Util: quoting/parenthesizing Enhancements
-Bundle 'tpope/vim-surround'
+Plugin 'tpope/vim-surround'
 
 " Util: brakety Things
-Bundle 'tpope/vim-unimpaired'
+Plugin 'tpope/vim-unimpaired'
 
 " Util: vertically aligning things (not for code)
-Bundle 'godlygeek/tabular'
+Plugin 'godlygeek/tabular'
 
 " Util: ruby block navigation {{{
-Bundle 'kana/vim-textobj-user'
-Bundle 'nelstrom/vim-textobj-rubyblock'
+Plugin 'kana/vim-textobj-user'
+Plugin 'nelstrom/vim-textobj-rubyblock'
 " }}}
 
 " YAML: Management
-Bundle 'lmeijvogel/vim-yaml-helper'
+Plugin 'lmeijvogel/vim-yaml-helper'
 
-filetype plugin indent on " Turn on _after_ loading all Bundles
+filetype plugin indent on " Turn on _after_ loading all Plugins
 
 set encoding=utf-8
 set backupdir=~/.vim/tmp
@@ -270,7 +263,7 @@ autocmd BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
 autocmd BufWinLeave * call clearmatches()
 
 " quick open some default locations
-nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:BundleInstall<CR>
+nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:PluginInstall<CR>
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 " nnoremap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
 nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
@@ -318,7 +311,7 @@ noremap L $
 noremap Q <NOP>
 " Disable K looking stuff up
 " noremap K <NOP>
-nnoremap <LEADER>f :grep!<SPACE>
+nnoremap <LEADER>f :grep!<SPACE>""<LEFT>
 nnoremap <LEADER>F :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " Center search matches when jumping

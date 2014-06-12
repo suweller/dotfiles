@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+PATH="/usr/local/bin:$PATH"
+ctags \
+  -R \
+  --tag-relative \
+  --languages=-sql \
+  --exclude=.git \
+  --exclude=log \
+  --exclude=spec \
+  --exclude=*.min.* \
+  -f.git/tags-dependencies \
+  $(bundle list --paths)

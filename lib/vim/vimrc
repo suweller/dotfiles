@@ -225,6 +225,8 @@ set gdefault                    " assume the /g flag on :s
 " set iskeyword-=_               " Use _ as a word-separator
 set wildmenu                    " Better? completion on command line
 set wildmode=list:longest,full
+set tags+=.git/tags-project
+set tags+=.git/tags-dependencies
 set wildignore+=tags
 set winaltkeys=no
 set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P

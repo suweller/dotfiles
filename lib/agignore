@@ -1,6 +1,7 @@
 log
 tags
 tmp
-
 *.log
 fitnesse/*
+*.min.*
+*.bak/*

@@ -4,48 +4,41 @@ filetype off          " Turn off _before_ loading all Plugins
 let mapleader = " "
 inoremap § <ESC>
 
-" Vundle, Plug-In manager for Vim
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
+Plugin 'gmarik/vundle' " http://github.com/gmarik/vundle
 
-" Let Vundle manage Vundle (required)! See, http://github.com/gmarik/vundle
-Plugin 'gmarik/vundle'
-
-" My bundles (fetched from github.com/vimscript.org by Vundle)
-
-" Syntax: Highlighters, Indenters, etc... {{{
-Plugin 'pangloss/vim-javascript'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'leshill/vim-json'
-Plugin 'nono/vim-handlebars'
-Plugin 'slim-template/vim-slim'
-
-Plugin 'tpope/vim-haml'
-set iskeyword+=-
-
-Plugin 'tpope/vim-markdown'
-
-Plugin 'vim-ruby/vim-ruby'
-let ruby_space_errors = 1
+Plugin 'pangloss/vim-javascript' " Highlighter
+Plugin 'kchmck/vim-coffee-script' " Highlighter
+Plugin 'leshill/vim-json' " Highlighter
+Plugin 'nono/vim-handlebars' " Highlighter
+Plugin 'slim-template/vim-slim' " Highlighter
+Plugin 'tpope/vim-haml' " Highlighter
+Plugin 'tpope/vim-markdown' " Highlighter
+Plugin 'vim-ruby/vim-ruby' " Ruby: Motions, Text Objects, Access Modifier Indentation {{{
 let g:ruby_indent_access_modifier_style = 'outdent'
-
-Plugin 'nathanaelkane/vim-indent-guides'
+" }}}
+Plugin 'nathanaelkane/vim-indent-guides' " Highlighter, Indentation {{{
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 let g:indent_guides_indent_levels = 6
 " }}}
-" Colorscheme: {{{
-Plugin 'nanotech/jellybeans.vim'
+Plugin 'nanotech/jellybeans.vim' " Colorscheme: {{{
+Plugin 'altercation/vim-colors-solarized'
 
+set t_Co=256
 if &t_Co > 2 || has('gui_running')
   syntax on
 endif
 if &t_Co == 256 || has('gui_running')
-  set t_Co=256
+  let g:jellybeans_use_lowcolor_black = 0
   let g:jellybeans_background_color_256=0 " truly black background
+  let g:solarized_termcolors=256
+  let g:solarized_termtrans=1
   colorscheme jellybeans
+endif
 
-
+func! SusColorTweaks()
   highlight VertSplit    ctermbg=16  ctermfg=236
   highlight LineNr       ctermfg=237 ctermbg=0
   highlight TabLineFill  ctermbg=16  ctermfg=236 cterm=underline
@@ -63,15 +56,14 @@ if &t_Co == 256 || has('gui_running')
   " highlights all not yet matched repeating blocks of whitespace
   " autocmd FileType * highlight ExcessiveWhitespace ctermbg=red guibg=red
   " autocmd FileType * 2match ExcessiveWhitespace /\>\s\s\+\</
-endif
+endfunc
+au VimEnter,ColorScheme * call SusColorTweaks()
 " }}}
-" Git: command Integration {{{
-Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-fugitive' " Git: command Integration {{{
 noremap <LEADER>gb :Gblame<CR>
 nnoremap <LEADER>gs :Gstatus<CR>
 " }}}
-" Ruby Util Rails: Project Management {{{
-Plugin 'tpope/vim-rails'
+Plugin 'tpope/vim-rails' " Ruby Util Rails: Project Management {{{
 let g:rails_projections = {
 \ "app/presenters/*_presenter.rb": {
 \   "command": "presenter",
@@ -92,37 +84,28 @@ let g:rails_projections = {
 \   "keywords":  "factory sequence"
 \ }}
 " }}}
-" Ruby Util Pluginr: Gem Ctags
-Plugin 'tpope/vim-bundler'
-" Ruby Util Non-Rails: Plain ruby project management
-Plugin 'tpope/vim-rake'
-" Ruby: Quick access to Ruby documentation
-Plugin 'danchoi/ri.vim'
-" Ruby: Gem Project Management
-Plugin 'GutenYe/gem.vim'
-" Ruby: +Rspec runner Integration {{{
-Plugin 'thoughtbot/vim-rspec'
+Plugin 'tpope/vim-bundler' " Ruby Util Pluginr: Gem Ctags
+Plugin 'tpope/vim-rake' " Ruby Util Non-Rails: Plain ruby project management
+Plugin 'danchoi/ri.vim' " Ruby: Quick access to Ruby documentation
+Plugin 'GutenYe/gem.vim' " Ruby: Gem Project Management
+Plugin 'thoughtbot/vim-rspec' " Ruby: +Rspec runner Integration {{{
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
 map <Leader>sf :call RunCurrentSpecFile()<CR>
 map <Leader>sn :call RunNearestSpec()<CR>
 map <Leader>sl :call RunLastSpec()<CR>
 map <Leader>sa :call RunAllSpecs()<CR>
 " }}}
-" Util: Switch between predefined replacements (true <-> false) {{{
-Plugin 'AndrewRadev/switch.vim'
+Plugin 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
 autocmd FileType ruby let b:switch_custom_definitions = [
   \   {
   \     'have_no_\(\w\+\)': 'have_\1',
   \     'have_\(\w\+\)': 'have_no_\1'
   \   }
   \ ]
-
 nnoremap - :Switch<cr>
 " }}}
-" Util: Seamless movement between VIM and tmux splits
-Plugin 'christoomey/vim-tmux-navigator'
-" Util: File Finder {{{
-Plugin 'kien/ctrlp.vim'
+Plugin 'christoomey/vim-tmux-navigator' " Util: Seamless movement between VIM and tmux splits
+Plugin 'kien/ctrlp.vim' " Util: File Finder {{{
 let g:ctrlp_switch_buffer = 2
 let g:ctrlp_custom_ignore = {
   \ 'dir':  '\.git$\|\.hg$\|\.svn$|^vendor$|^coverage$|^tmp$|^rdoc$|',
@@ -139,96 +122,78 @@ if executable('ag')
 endif
 Plugin 'tpope/vim-vinegar'
 " }}}
-" Plugin 'Shougo/unite.vim'
-" Util: Toggle mouse for vim or terminal
-Plugin 'nvie/vim-togglemouse'
-" Util: Code lint {{{
-Plugin 'scrooloose/syntastic'
+Plugin 'nvie/vim-togglemouse' " Util: Toggle mouse for vim or terminal
+Plugin 'scrooloose/syntastic' " Util: Code lint {{{
 let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='☠'
 let g:syntastic_warning_symbol='☹'
 let g:syntastic_style_error_symbol='⚠'
 " }}}
-" Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
-Plugin 'tpope/vim-abolish'
-" Util: (Un)Comment made easy
-Plugin 'tpope/vim-commentary'
-" Util: Allow asynchronous tasks to be dispatched
-Plugin 'tpope/vim-dispatch'
-" Util: 'wisely' add `end` after `if` `do` etc.
-Plugin 'tpope/vim-endwise'
-" Util: Kill buffers without closing splits
-Plugin 'vim-scripts/bufkill.vim'
-" Util: Edit (small) images
-Plugin 'tpope/vim-afterimage'
-
-" Util: Nice way to take and organise notes {{{
-Plugin 'vimwiki'
+Plugin 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
+Plugin 'tpope/vim-commentary' " Util: (Un)Comment made easy
+Plugin 'tpope/vim-dispatch' " Util: Allow asynchronous tasks to be dispatched
+Plugin 'tpope/vim-endwise' " Util: 'wisely' add `end` after `if` `do` etc.
+Plugin 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
+Plugin 'tpope/vim-afterimage' " Util: Edit (small) images
+Plugin 'vimwiki' " Util: Nice way to take and organise notes {{{
 let g:vimwiki_list = [{'path': '~/vimwiki/work/'}, {'path': '~/vimwiki/play/'}]
 " }}}
-
-" Util: rbenv.vim
-Plugin 'tpope/vim-rbenv'
-
-" Util: quoting/parenthesizing Enhancements
-Plugin 'tpope/vim-surround'
-
-" Util: brakety Things
-Plugin 'tpope/vim-unimpaired'
-
-" Util: vertically aligning things (not for code)
-Plugin 'godlygeek/tabular'
-
-" Util: ruby block navigation {{{
-Plugin 'kana/vim-textobj-user'
-Plugin 'nelstrom/vim-textobj-rubyblock'
-" }}}
-
-" YAML: Management
-Plugin 'lmeijvogel/vim-yaml-helper'
+Plugin 'tpope/vim-rbenv' " Util: rbenv.vim
+Plugin 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
+Plugin 'tpope/vim-unimpaired' " Util: brakety Things
+Plugin 'godlygeek/tabular' " Util: vertically aligning things (not for code)
+Plugin 'kana/vim-textobj-user' " Motion: Custom text objects
+Plugin 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
+Plugin 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
 
 filetype plugin indent on " Turn on _after_ loading all Plugins
 
-set encoding=utf-8
-set backupdir=~/.vim/tmp
+" Cursor on a command word and let vim help you: `:help <C-R><C-W>`
+set viminfo='10,f1,<100,:20,@20,/20,h,n~/.vim/.viminfo "-- Files & Directories {{{
+"           |   |  |    |   |   |   | +-> Where to save the viminfo files
+"           |   |  |    |   |   |   +-> Disable 'hlsearch' highlights on start
+"           |   |  |    |   |   +-> # lines to save from the search history
+"           |   |  |    |   +-> # lines to save from the input line history
+"           |   |  |    +-> # lines of command-line history
+"           |   |  +-> Save up to # lines for each register
+"           |   +-> Global marks
+"           +-> marks for up to # previously edited files
+" Remember things when we exit
+" }}}
+set encoding=utf-8              " Explicitly set encoding to utf8, otherwise $LANG is used
 set directory=~/.vim/tmp        " Don't clutter up dirs with swp and tmp files
+set backupdir=~/.vim/tmp        "  "
 set history=500                 " keep 500 lines of command line history
 set autoread                    " reload files only changed outside vim from disk
-
 set ttyfast                     " you got a fast terminal
-
 set ruler                       " show the cursor position all the time
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set showcmd                     " display incomplete commands
-set showmatch
 set wmh=0                       " minimum unfocussed window height
-set viminfo+=!
-
-set guifont=Triskweline_10:h10
-set guioptions-=T
 set hlsearch                    " highlight matches
 set incsearch                   " incremental searching
-set lazyredraw
-
-set shiftwidth=2
-set expandtab
-set smarttab
-set colorcolumn=80,105,115      " mark the 80th character, and (old and new) github code window width
+set lazyredraw                  " prevent redraws while executing
+set shiftwidth=2                " indent using 2 spaces
+set expandtab                   " use spaces only
+set smarttab                    " deindent with <BS>, start at indent level
+set colorcolumn=80,115          " mark the 80th character, and (old and new) github code window width
 set smartcase                   " ... unless they contain at least one capital letter
 set scrolloff=5                 " don't show search results as the first line
 set laststatus=2                " Always show status line.
 set autoindent                  " always set autoindenting on
 set shiftround                  " When at 3 spaces and I hit >>, go to 4, not 5.
-
 set gdefault                    " assume the /g flag on :s
-
-" set iskeyword-=_               " Use _ as a word-separator
 set wildmenu                    " Better? completion on command line
-set wildmode=list:longest,full
-set tags=.git/tags-project,.git/tags-dependencies
-set wildignore+=tags-project,tags-dependencies
-set winaltkeys=no
-set statusline=%<%f\ %h%m%r%=%-14.(%l,%c%V%)\ %P
+set wildmode=list:longest,full  " Completion settings
+set tags+=.git/tags-project     " Search for project code ctag file in .git/
+set tags+=.git/tags-includes    " Search for ctag file in .git/
+set wildignore+=tags-project    " Don't complete from project code ctag file
+set wildignore+=tags-includes   " Don't complete from includes code ctag file
+set winaltkeys=no               " Let vim handle alt keys
+set iskeyword+=-                " Let dash be a word character (css <3 dashes)
+set list                        " Create a list & make invisible chars visible
+set listchars=tab:⇁•,trail:•,extends:#,nbsp:•
+set pastetoggle=<F2>            " Toggle paste/regular insert mode
 
 " Ruby autocmds {{{
 augroup myfiletypes
@@ -259,9 +224,7 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 autocmd BufNewFile,BufRead *.txt setlocal wrap
 autocmd BufNewFile,BufRead *.txt setlocal lbr
 autocmd BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
-
-" Fix some performance issues
-autocmd BufWinLeave * call clearmatches()
+autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 
 " quick open some default locations
 nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:PluginInstall<CR>
@@ -288,7 +251,13 @@ nnoremap <LEADER>q :q<CR>
 nnoremap <LEADER>Q :qal<CR>
 nnoremap <LEADER>bn :bn<CR>
 nnoremap <LEADER>n :bn<CR>
+
+" New tab/vsplit buffer {{{
 nnoremap <LEADER>tn <ESC>:tabnew<CR>
+" Edit another file in the same directory as the current file
+" uses expression to extract path from current file's path
+nmap <LEADER>te :vnew <C-R>=expand("%:p:h") . '/'<CR>
+" }}}
 
 nnoremap <LEADER>o :set paste!<CR>
 nnoremap <LEADER>w :setlocal wrap!<CR>:setlocal wrap?<CR>
@@ -298,8 +267,6 @@ inoremap <C-L> :<SPACE>
 noremap <C-S> <ESC>:w<CR>
 inoremap <C-S> <ESC>:w<CR>
 noremap <LEADER><LEADER> :w<CR>
-" noremap <C-N> :cn<CR>
-" noremap <C-P> :cp<CR>
 noremap <F9> :set spell! spell?<CR>
 
 " Emacs-like beginning and end of line.
@@ -311,7 +278,7 @@ noremap L $
 " Disable Ex mode
 noremap Q <NOP>
 " Disable K looking stuff up
-" noremap K <NOP>
+noremap K <NOP><CR>
 nnoremap <LEADER>f :grep!<SPACE>""<LEFT>
 nnoremap <LEADER>F :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
@@ -325,27 +292,73 @@ command! Qall qall
 runtime macros/matchit.vim
 runtime! config/**/*.vim
 
-"-- Files & Directories {{{
-" Remember things when we exit
-"           +-> marks for up to # previously edited files
-"           |   +-> Global marks
-"           |   |  +-> Save up to # lines for each register
-"           |   |  |    +-> # lines of command-line history
-"           |   |  |    |   +-> # lines to save from the input line history
-"           |   |  |    |   |   +-> # lines to save from the search history
-"           |   |  |    |   |   |   +-> Disable 'hlsearch' highlights on start
-"           |   |  |    |   |   |   | +-> Where to save the viminfo files
-set viminfo='10,f1,<100,:20,@20,/20,h,n~/.vim/.viminfo
+" w!! - write a file using sudo _after_ starting vim {{{
+cmap w!! w !sudo tee % >/dev/null
+" }}}
 
-function! RestoreCursorPosition()
+function! s:Cursor_Moved() " {{{
+  let cur_pos = winline()
+  if g:last_pos == 0
+    set cul
+    let g:last_pos = cur_pos
+    return
+  endif
+  let diff = g:last_pos - cur_pos
+  if diff > 1 || diff < -1
+    set cul
+  else
+    set nocul
+  endif
+  let g:last_pos = cur_pos
+endfunction
+autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
+let g:last_pos = 0
+" }}}
+
+" Merge a tab into a vsplit in the previous window {{{
+function! MergeTabIntoVSplit()
+  if tabpagenr() == 1
+    return
+  endif
+  let bufferName = bufname("%")
+  if tabpagenr("$") == tabpagenr()
+    close!
+  else
+    close!
+    tabprev
+  endif
+  vsplit
+  execute "buffer " . bufferName
+endfunction
+nmap <C-W>u :call MergeTabIntoVSplit()<CR>
+" }}}
+
+function! RestoreCursorPosition() " {{{
   if line("'\"") <= line("$")
     normal! g`"
     return 1
   endif
 endfunction
-
 augroup restoreCursorPosition
   autocmd!
   autocmd BufWinEnter * call RestoreCursorPosition()
 augroup END
+" }}}
+
+function! <SID>StripTrailingWhitespace() " {{{
+  " Don't strip any spaces when the filetype is markdown
+  if &ft =~ 'markdown'
+    return
+  endif
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  %s/\s\+$//e
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
 " }}}

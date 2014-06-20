@@ -1,55 +1,25 @@
 #!/bin/bash
-
+cd lib
 function yesno() {
-  read -p "$1? (y/n)" -n 1 -r
+  read -p "Force symlink for .$1? (y/n)" -n 1 -r
   echo '' # make sure we're on a newline
   [ $REPLY == "y" ] && return 0 || return 1
 }
-
-function symlink_file() {
-  ln -s $PWD/$1 $HOME/.$1
-}
-
-cd lib
-
-# Symlink each entry in lib to $HOME
 for entry in *; do
-  if [ -a "$HOME/.$entry" ]; then
-    if (yesno "~/.$entry exists. overwrite"); then
-      rm -rf $HOME/.$entry
-      symlink_file $entry
-    else
-      echo "skipping: $entry"
-    fi
-  else
-    symlink_file $entry
-  fi
+  yesno $entry || continue
+  ln -Ffs $PWD/$entry $HOME/.$entry
 done
 
-# Install Vundle if its not present
 vundle="$PWD/vim/bundle/vundle"
-if [ -a $vundle ]; then
-  echo "vundle is already installed"
-else
-  echo $vundle
-  git clone git://github.com/gmarik/vundle.git $vundle && \
-  vim +BundleInstall +qall # Fetch and install all bundles included in vimrc
-fi
+[ -a $vundle ] || (git clone git://github.com/gmarik/vundle.git $vundle && \
+  vim +PluginInstall +qall) # Fetch and install all bundles included in vimrc
 
 cd ..
 
-# Install oh-my-zsh if its not present
-oh_my_zsh="$HOME/oh-my-zsh"
-if [ -a $oh_my_zsh ]; then
-  echo "oh-my-zsh is already installed"
-else
-  git clone git://github.com/bobbyrussel/oh-my-zsh $oh_my_zsh
-fi
+oh_my_zsh="$PWD/oh-my-zsh"
+[ -a $oh_my_zsh ] || git clone git@github.com:robbyrussell/oh-my-zsh.git $oh_my_zsh
 
-# # Handle ssh pubkey
-id_rsa=$HOME/.ssh/id_rsa.pub
-rm $id_rsa
-ln -s $HOME/.ssh/id_rsa.pub $id_rsa
+yesno 'id_rsa.pub' && ln -Ffs $PWD/id_rsa.pub $HOME/.ssh/.id_rsa.pub
 
 echo "You can make zsh your default shell by running:"
 echo "chsh -s /bin/zsh"

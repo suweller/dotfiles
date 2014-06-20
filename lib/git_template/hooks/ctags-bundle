@@ -5,5 +5,5 @@ ctags \
   -R \
   --tag-relative \
   --exclude=spec \
-  -f.git/tags-dependencies \
+  -f.git/tags-includes \
   $(bundle list --paths)

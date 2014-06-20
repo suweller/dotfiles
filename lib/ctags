@@ -21,5 +21,6 @@
 --exclude=.git
 --exclude=doc
 --exclude=log
+--exclude=tmp
 
 --languages=-sql

@@ -10,8 +10,8 @@ for entry in *; do
   ln -Ffs $PWD/$entry $HOME/.$entry
 done
 
-vundle="$PWD/vim/bundle/vundle"
-[ -a $vundle ] || (git clone git://github.com/gmarik/vundle.git $vundle && \
+vundle="$PWD/vim/bundle/vundle.vim"
+[ -a $vundle ] || (git clone git@github.com:gmarik/Vundle.vim.git $vundle && \
   vim +PluginInstall +qall) # Fetch and install all bundles included in vimrc
 
 cd ..

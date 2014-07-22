@@ -72,8 +72,12 @@ Plugin 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (
 autocmd FileType ruby let b:switch_custom_definitions = [
   \   {
   \     'have_no_\(\w\+\)': 'have_\1',
-  \     'have_\(\w\+\)': 'have_no_\1'
-  \   }
+  \     'have_\(\w\+\)': 'have_no_\1',
+  \   },
+  \   ['dark', 'light'],
+  \   ['high', 'low'],
+  \   ['foo', 'bar', 'baz'],
+  \   ['rock', 'paper', 'scissors', 'lizard', 'Spock'],
   \ ]
 nnoremap - :Switch<cr>
 " }}}

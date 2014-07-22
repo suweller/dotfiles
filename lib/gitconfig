@@ -1,6 +1,12 @@
+[core]
+  excludesfile = ~/.gitignore
+  editor = vim
+  pager = less -F -X
 [user]
   name = Steven Weller
   email = github@suweller.com
+[github]
+  user = suweller
 [alias]
   co = checkout
   c  = checkout
@@ -11,26 +17,22 @@
   lg = log --format='%Cred%h%Creset %s %Cgreen(%cr) %C(blue)<%an>%Creset%C(yellow)%d%Creset' --no-merges
   ctags = !.git/hooks/ctags
   ctags-bundle = !.git/hooks/ctags-bundle
-[merge]
-  tool = vimdiff
-[color]
-  ui = true
-[core]
-  excludesfile = ~/.gitignore
-  editor = vim
-  pager = less -F -X
+
 [push]
   default = current
-[github]
-  user = suweller
 [init]
   templatedir = ~/.git_template
+
 [help]
   autocorrect = 1
 
+[merge]
+  tool = vimdiff
 [diff]
   # For Github-style word diffs
   wordRegex = [^[:space:]]
+[color]
+  ui = true
 [color "diff"]
   # Color syntax: <foreground> <background>
   # So "normal red" is normal foreground, red background

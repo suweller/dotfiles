@@ -7,6 +7,11 @@ inoremap § <ESC>
 set rtp+=~/.vim/bundle/vundle.vim/
 call vundle#begin()
 Plugin 'gmarik/vundle.vim'
+Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/limelight.vim' " {{{ Hide other blocks of code
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 244
+" }}}
 Plugin 'pangloss/vim-javascript' " Highlighter
 Plugin 'kchmck/vim-coffee-script' " Highlighter
 Plugin 'leshill/vim-json' " Highlighter
@@ -22,8 +27,11 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 let g:indent_guides_indent_levels = 6
 " }}}
+" Color-Schemes {{{
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'altercation/solarized', {'rtp': 'vim-colors-solarized'}
+let g:solarized_termcolors=256
+" }}}
 Plugin 'tpope/vim-fugitive' " Git: command Integration {{{
 noremap <LEADER>gb :Gblame<CR>
 nnoremap <LEADER>gs :Gstatus<CR>
@@ -123,9 +131,12 @@ endif
 if &t_Co == 256 || has('gui_running')
   let g:jellybeans_use_lowcolor_black = 0
   let g:jellybeans_background_color_256=0 " truly black background
-  let g:solarized_termcolors=256
-  let g:solarized_termtrans=1
-  colorscheme jellybeans
+
+  " set background=dark
+  " colorscheme jellybeans
+
+  set background=light
+  colorscheme solarized
 endif
 
 func! SusColorTweaks()
@@ -137,17 +148,15 @@ func! SusColorTweaks()
   highlight StatusLine   ctermbg=234 ctermfg=64
   highlight StatusLineNC ctermbg=233 ctermfg=244
   highlight Folded       ctermbg=234 ctermfg=244
-
   highlight ColorColumn  ctermbg=233
-  highlight IndentGuidesOdd  ctermbg=233
-  highlight IndentGuidesEven ctermbg=16
+
   highlight clear SignColumn
 
   " highlights all not yet matched repeating blocks of whitespace
   " autocmd FileType * highlight ExcessiveWhitespace ctermbg=red guibg=red
   " autocmd FileType * 2match ExcessiveWhitespace /\>\s\s\+\</
 endfunc
-au VimEnter,ColorScheme * call SusColorTweaks()
+" au VimEnter,ColorScheme * call SusColorTweaks()
 " }}}
 
 " Cursor on a command word and let vim help you: `:help <C-R><C-W>`
@@ -194,6 +203,7 @@ set winaltkeys=no               " Let vim handle alt keys
 set iskeyword+=-                " Let dash be a word character (css <3 dashes)
 set list                        " Create a list & make invisible chars visible
 set listchars=tab:⇁•,trail:•,extends:#,nbsp:•
+set cursorline
 set pastetoggle=<F2>            " Toggle paste/regular insert mode
 
 " Ruby autocmds {{{
@@ -224,8 +234,13 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " When loading text files, wrap them and don't split up words.
 autocmd BufNewFile,BufRead *.txt setlocal wrap
 autocmd BufNewFile,BufRead *.txt setlocal lbr
-autocmd BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
+autocmd BufNewFile,BufRead *.handlebars,*.hbs set ft=html syntax=handlebars
+autocmd BufNewFile,BufRead * Limelight
 autocmd BufWinLeave * call clearmatches() " Fix some performance issues
+
+
+" Hide the noise
+nnoremap <Leader>V :Goyo<CR>
 
 " quick open some default locations
 nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:PluginInstall<CR>
@@ -247,6 +262,12 @@ nnoremap <LEADER>rw :%s/\s\+$//<CR>
 nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
 nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
 " }}}
+
+" Use Q as alias for @j (execute 'j' recording) {{{1
+" This is great because you can just do something like QnQnnQ to quickly
+" repeat your recording where needed. You never have to press `@` again.
+nnoremap Q @j
+xnoremap Q @j
 
 nnoremap <LEADER>q :q<CR>
 nnoremap <LEADER>Q :qal<CR>
@@ -276,8 +297,6 @@ inoremap <C-A> <C-O>^
 noremap H ^
 noremap L $
 
-" Disable Ex mode
-noremap Q <NOP>
 " Disable K looking stuff up
 noremap K <NOP><CR>
 nnoremap <LEADER>f :grep!<SPACE>""<LEFT>
@@ -295,25 +314,6 @@ runtime! config/**/*.vim
 
 " w!! - write a file using sudo _after_ starting vim {{{
 cmap w!! w !sudo tee % >/dev/null
-" }}}
-
-function! s:Cursor_Moved() " {{{
-  let cur_pos = winline()
-  if g:last_pos == 0
-    set cul
-    let g:last_pos = cur_pos
-    return
-  endif
-  let diff = g:last_pos - cur_pos
-  if diff > 1 || diff < -1
-    set cul
-  else
-    set nocul
-  endif
-  let g:last_pos = cur_pos
-endfunction
-autocmd CursorMoved,CursorMovedI * call s:Cursor_Moved()
-let g:last_pos = 0
 " }}}
 
 " Merge a tab into a vsplit in the previous window {{{

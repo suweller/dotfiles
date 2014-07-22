@@ -6,7 +6,7 @@ inoremap § <ESC>
 
 set rtp+=~/.vim/bundle/vundle.vim/
 call vundle#begin()
-Plugin 'gmarik/vundle'
+Plugin 'gmarik/vundle.vim'
 Plugin 'pangloss/vim-javascript' " Highlighter
 Plugin 'kchmck/vim-coffee-script' " Highlighter
 Plugin 'leshill/vim-json' " Highlighter

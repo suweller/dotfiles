@@ -5,7 +5,7 @@ let mapleader = " "
 inoremap § <ESC>
 
 set rtp+=~/.vim/bundle/vundle.vim/
-call vundle#begin()
+call vundle#begin() " {{{1
 Plugin 'gmarik/vundle.vim'
 Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim' " {{{ Hide other blocks of code
@@ -210,26 +210,28 @@ set listchars=tab:⇁•,trail:•,extends:#,nbsp:•
 set cursorline
 set pastetoggle=<F2>            " Toggle paste/regular insert mode
 
-" Ruby autocmds {{{
 augroup myfiletypes
   " Clear old autocmds in group
   autocmd!
-  " autoindent with two spaces, always expand tabs
+  " Ruby {{{
   autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
   autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
   autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
   autocmd FileType ruby,eruby,yaml set ai sw=2 sts=2 et
 
-  " Set up some useful Rails.vim bindings for working with Backbone.js
+  " Test using ... rspec ...
+  autocmd FileType ruby let g:rspec_command='Dispatch ./bin/rspec {spec}'
+  " }}}
+  " Rails.vim + Backbone.js {{{
   autocmd User Rails Rnavcommand template    app/assets/templates               -glob=**/*  -suffix=.jst.ejs
   autocmd User Rails Rnavcommand jmodel      app/assets/javascripts/models      -glob=**/*  -suffix=.coffee
   autocmd User Rails Rnavcommand jview       app/assets/javascripts/views       -glob=**/*  -suffix=.coffee
   autocmd User Rails Rnavcommand jcollection app/assets/javascripts/collections -glob=**/*  -suffix=.coffee
   autocmd User Rails Rnavcommand jrouter     app/assets/javascripts/routers     -glob=**/*  -suffix=.coffee
   autocmd User Rails Rnavcommand jspec       spec/javascripts                   -glob=**/*  -suffix=.coffee
+  " }}}
 augroup END
-" }}}
 
 " Format xml files
 autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
@@ -241,7 +243,6 @@ autocmd BufNewFile,BufRead *.txt setlocal lbr
 autocmd BufNewFile,BufRead *.handlebars,*.hbs set ft=html syntax=handlebars
 autocmd BufNewFile,BufRead * Limelight
 autocmd BufWinLeave * call clearmatches() " Fix some performance issues
-
 
 " Hide the noise
 nnoremap <Leader>V :Goyo<CR>
@@ -267,11 +268,12 @@ nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
 nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
 " }}}
 
-" Use Q as alias for @j (execute 'j' recording) {{{1
+" Use Q as alias for @j (execute 'j' recording) {{{
 " This is great because you can just do something like QnQnnQ to quickly
 " repeat your recording where needed. You never have to press `@` again.
 nnoremap Q @j
 xnoremap Q @j
+" }}}
 
 nnoremap <LEADER>q :q<CR>
 nnoremap <LEADER>Q :qal<CR>
@@ -295,26 +297,26 @@ inoremap <C-S> <ESC>:w<CR>
 noremap <LEADER><LEADER> :w<CR>
 noremap <F9> :set spell! spell?<CR>
 
-" Emacs-like beginning and end of line.
+" Emacs-like beginning and end of line. {{{
 inoremap <C-E> <C-O>$
 inoremap <C-A> <C-O>^
 noremap H ^
 noremap L $
+" }}}
 
-" Disable K looking stuff up
 noremap K <NOP><CR>
 nnoremap <LEADER>f :grep!<SPACE>""<LEFT>
 nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
 
-" Center search matches when jumping
+" Center search matches when jumping {{{
 noremap N Nzz
 noremap n nzz
+" }}}
 
+" Ignore 'sticky-shift' typing {{{
 command! Q q " Bind :Q to :q
 command! Qall qall
-
-runtime macros/matchit.vim
-runtime! config/**/*.vim
+" }}}
 
 " w!! - write a file using sudo _after_ starting vim {{{
 cmap w!! w !sudo tee % >/dev/null

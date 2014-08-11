@@ -304,7 +304,7 @@ noremap L $
 " Disable K looking stuff up
 noremap K <NOP><CR>
 nnoremap <LEADER>f :grep!<SPACE>""<LEFT>
-nnoremap <LEADER>F :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
 
 " Center search matches when jumping
 noremap N Nzz

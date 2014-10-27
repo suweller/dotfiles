@@ -11,6 +11,9 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim' " {{{ Hide other blocks of code
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 244
+let g:goyo_width = 80
+let g:goyo_margin_top = 2
+let g:goyo_margin_bottom = 2
 " }}}
 Plugin 'pangloss/vim-javascript' " Highlighter
 Plugin 'kchmck/vim-coffee-script' " Highlighter
@@ -31,10 +34,13 @@ let g:indent_guides_indent_levels = 6
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'altercation/solarized', {'rtp': 'vim-colors-solarized'}
 let g:solarized_termcolors=256
+Plugin 'junegunn/seoul256.vim'
+Plugin 'morhetz/gruvbox'
 " }}}
 Plugin 'tpope/vim-fugitive' " Git: command Integration {{{
-noremap <LEADER>gb :Gblame<CR>
+nnoremap <LEADER>gb :Gblame<CR>
 nnoremap <LEADER>gs :Gstatus<CR>
+nnoremap <LEADER>gd :Gdiff<CR>
 " }}}
 Plugin 'tpope/vim-rails' " Ruby Util Rails: Project Management {{{
 let g:rails_projections = {
@@ -69,16 +75,6 @@ map <Leader>sl :call RunLastSpec()<CR>
 map <Leader>sa :call RunAllSpecs()<CR>
 " }}}
 Plugin 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
-autocmd FileType ruby let b:switch_custom_definitions = [
-  \   {
-  \     'have_no_\(\w\+\)': 'have_\1',
-  \     'have_\(\w\+\)': 'have_no_\1',
-  \   },
-  \   ['dark', 'light'],
-  \   ['high', 'low'],
-  \   ['foo', 'bar', 'baz'],
-  \   ['rock', 'paper', 'scissors', 'lizard', 'Spock'],
-  \ ]
 nnoremap - :Switch<cr>
 " }}}
 Plugin 'christoomey/vim-tmux-navigator' " Util: Seamless movement between VIM and tmux splits
@@ -118,50 +114,41 @@ let g:vimwiki_list = [{'path': '~/vimwiki/work/'}, {'path': '~/vimwiki/play/'}]
 Plugin 'tpope/vim-rbenv' " Util: rbenv.vim
 Plugin 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
 Plugin 'tpope/vim-unimpaired' " Util: brakety Things
+Plugin 'tpope/vim-repeat' " Util: make things repeatable with '.'
+Plugin 'tpope/vim-speeddating' " Util: CTRL-A/CTRL-X to increment dates/times &  more
 Plugin 'godlygeek/tabular' " Util: vertically aligning things (not for code)
 Plugin 'kana/vim-textobj-user' " Motion: Custom text objects
 Plugin 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
 Plugin 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
+" Plugin 'vim-yamljump'
+Plugin 'kana/vim-vspec'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+" {{{ Clojure
+Plugin 'tpope/vim-fireplace'
+Plugin 'oblitum/rainbow'
+Plugin 'guns/vim-clojure-static' "
+Plugin 'guns/vim-clojure-highlight' " Syntax (dependent on vim-clojure-static & vim-fireplace)
+
+" }}}
+call vundle#end() " }}}
 filetype plugin indent on " Turn on _after_ loading all Plugins
+runtime macros/matchit.vim
 
 set t_Co=256
-
 if &t_Co > 2 || has('gui_running')
   syntax on
 endif
 if &t_Co == 256 || has('gui_running')
   let g:jellybeans_use_lowcolor_black = 0
-  let g:jellybeans_background_color_256=0 " truly black background
-
-  " set background=dark
-  " colorscheme jellybeans
-
-  set background=light
-  colorscheme solarized
+  let g:jellybeans_background_color_256=0
+  if $ITERM_PROFILE == 'solarized_light'
+    set background=light
+    colorscheme solarized
+  elseif $ITERM_PROFILE == 'solarized_dark'
+    set background=dark
+    colorscheme solarized
+  endif
 endif
-
-func! SusColorTweaks()
-  highlight VertSplit    ctermbg=16  ctermfg=236
-  highlight LineNr       ctermfg=237 ctermbg=0
-  highlight TabLineFill  ctermbg=16  ctermfg=236 cterm=underline
-  highlight TabLine      ctermbg=16  ctermfg=236 cterm=underline
-  highlight TabLineSel   ctermbg=234 ctermfg=255
-  highlight StatusLine   ctermbg=234 ctermfg=64
-  highlight StatusLineNC ctermbg=233 ctermfg=244
-  highlight Folded       ctermbg=234 ctermfg=244
-  highlight ColorColumn  ctermbg=233
-
-  highlight clear SignColumn
-
-  " highlights all not yet matched repeating blocks of whitespace
-  " autocmd FileType * highlight ExcessiveWhitespace ctermbg=red guibg=red
-  " autocmd FileType * 2match ExcessiveWhitespace /\>\s\s\+\</
-endfunc
-" au VimEnter,ColorScheme * call SusColorTweaks()
-" }}}
 
 " Cursor on a command word and let vim help you: `:help <C-R><C-W>`
 set viminfo='10,f1,<100,:20,@20,/20,h,n~/.vim/.viminfo "-- Files & Directories {{{
@@ -206,7 +193,7 @@ set wildignore+=tags-includes   " Don't complete from includes code ctag file
 set winaltkeys=no               " Let vim handle alt keys
 set iskeyword+=-                " Let dash be a word character (css <3 dashes)
 set list                        " Create a list & make invisible chars visible
-set listchars=tab:⇁•,trail:•,extends:#,nbsp:•
+set listchars=nbsp:␣,tab:▸\ ,extends:»,precedes:«,trail:•
 set cursorline
 set pastetoggle=<F2>            " Toggle paste/regular insert mode
 
@@ -219,9 +206,21 @@ augroup myfiletypes
   autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
   autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
   autocmd FileType ruby,eruby,yaml set ai sw=2 sts=2 et
-
+  autocmd FileType ruby,sass,css let b:switch_custom_definitions = [
+        \   {
+        \     'have_no_\(\w\+\)': 'have_\1',
+        \     'have_\(\w\+\)': 'have_no_\1',
+        \   },
+        \   ['dark', 'light'],
+        \   ['high', 'low'],
+        \   ['foo', 'bar', 'baz'],
+        \   ['left', 'right'],
+        \   ['rock', 'paper', 'scissors', 'lizard', 'Spock'],
+        \ ]
+  autocmd FileType gitrebase let b:switch_custom_definitions = [
+        \   ['pick', 'reword', 'edit', 'squash', 'fixup'],
+        \ ]
   " Test using ... rspec ...
-  autocmd FileType ruby let g:rspec_command='Dispatch ./bin/rspec {spec}'
   " }}}
   " Rails.vim + Backbone.js {{{
   autocmd User Rails Rnavcommand template    app/assets/templates               -glob=**/*  -suffix=.jst.ejs
@@ -231,21 +230,21 @@ augroup myfiletypes
   autocmd User Rails Rnavcommand jrouter     app/assets/javascripts/routers     -glob=**/*  -suffix=.coffee
   autocmd User Rails Rnavcommand jspec       spec/javascripts                   -glob=**/*  -suffix=.coffee
   " }}}
+  autocmd FileType clojure,c,cpp,objc,objcpp call rainbow#load()
 augroup END
 
 " Format xml files
-autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
+" autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 " When loading text files, wrap them and don't split up words.
 autocmd BufNewFile,BufRead *.txt setlocal wrap
 autocmd BufNewFile,BufRead *.txt setlocal lbr
 autocmd BufNewFile,BufRead *.handlebars,*.hbs set ft=html syntax=handlebars
-autocmd BufNewFile,BufRead * Limelight
 autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 
 " Hide the noise
-nnoremap <Leader>V :Goyo<CR>
+nnoremap <LEADER>V :Goyo<CR>
 
 " quick open some default locations
 nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:PluginInstall<CR>
@@ -255,7 +254,7 @@ nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
 nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>
 
 nnoremap <LEADER>ds :tabe db/schema.rb<CR>
-nnoremap <LEADER>dm :e db/migrate/<CR>GG
+nnoremap <LEADER>dm :Sex db/migrate/<CR>GG
 
 " quick insert/rewrite stuff {{{
 nnoremap <LEADER>pa osave_and_open_page # DEBUG<ESC>

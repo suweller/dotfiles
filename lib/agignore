@@ -2,6 +2,10 @@ log
 tags
 tmp
 *.log
-fitnesse/*
 *.min.*
 *.bak/*
+fonts
+images
+*.svg
+*.jpg
+*.png

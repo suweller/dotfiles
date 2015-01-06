@@ -11,7 +11,7 @@
   c  = commit -v
   co = checkout
   s  = status -sb
-  d  = diff --stat
+  d  = diff
   a  = add -p
   br = branch
   today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative

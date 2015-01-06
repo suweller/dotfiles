@@ -6,24 +6,17 @@ elif [[ $platform == 'Darwin' ]]; then
   alias a='ls -lrthG'
 fi
 
-alias -g G='| grep'
-
 # Editor
-alias vi='vim'
+alias vi='$EDITOR'
 
 # Quick file access
-alias aliases='vim ~/.dotfiles/zsh/aliases && so'
-alias so='source ~/.dotfiles/zsh/aliases'
-alias zshconf='vim ~/.dotfiles/lib/zshrc'
-alias vimrc='vim ~/.dotfiles/lib/vim/vimrc'
-alias vimcf='vim ~/.dotfiles/lib/vim/config'
+alias aliases='$EDITOR ~/.dotfiles/zsh/aliases && source ~/.dotfiles/zsh/aliases'
+alias zshrc='$EDITOR ~/.zshrc && source ~/.zshrc'
+alias vimrc='$EDITOR ~/.dotfiles/lib/vim/vimrc'
+alias gitrc='$EDITOR ~/.gitconfig'
 
 # Quick dir access
-alias c='cd ~/Documents/Zilverline/'
-alias o='cd ~/Documents/open-source/'
 alias d='cd ~/.dotfiles'
-alias dr='cd ~/Dropbox'
-alias u='cd ..'
 
 # Git aliases
 alias igt='git'
@@ -32,31 +25,10 @@ alias g='git'
 alias amend="git commit --amend -v"
 alias gs='git status'
 alias gg='git grep -n'
-alias gpr='git pull --rebase'
-alias grc='git rebase --continue'
 alias fix='$EDITOR -p `git diff --name-only | uniq`'
-
-alias gpush='git push'
-alias gpsuh='git push'
-
-# Bundle
-alias be='bundle exec'
-alias bi='bundle install'
-alias bu='bundle update'
-alias bunbang='bundle install && !!'
-
-alias bake='bundle exec rake'
-alias ber='bundle exec rspec --format progress --color'
-alias bes='bundle exec rails s'
-alias bec='bundle exec rails c'
 
 alias killrb='killall -9 ruby'
 
-alias postgres='pg_ctl -D /usr/local/var/postgres -l /usr/local/var/postgres/server.log start'
 alias remigrate='bundle exec rake db:drop db:create db:migrate db:test:clone parallel:prepare'
 alias migrate='bundle exec rake db:migrate db:test:clone parallel:prepare'
 alias rollback='bundle exec rake db:rollback'
-
-# EngineYard
-# alias ey='NOEXEC_DISABLE=1 ey'
-# alias eybackup='NOEXEC_DISABLE=1 eybackup'

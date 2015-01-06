@@ -145,14 +145,25 @@ if &t_Co > 2 || has('gui_running')
   syntax on
 endif
 if &t_Co == 256 || has('gui_running')
-  let g:jellybeans_use_lowcolor_black = 0
-  let g:jellybeans_background_color_256=0
   if $ITERM_PROFILE == 'solarized_light'
     set background=light
     colorscheme solarized
   elseif $ITERM_PROFILE == 'solarized_dark'
+    let g:jellybeans_use_lowcolor_black = 0
+    " let g:jellybeans_background_color_256=0 " truly black background
+    let g:indent_guides_auto_colors = 0     " custom indent guide colors
     set background=dark
-    colorscheme solarized
+    colorscheme jellybeans
+    hi VertSplit    ctermbg=16  ctermfg=233
+    hi LineNr       ctermfg=237 ctermbg=0
+    hi TabLineFill  ctermbg=16  ctermfg=236 cterm=underline
+    hi TabLine      ctermbg=16  ctermfg=236 cterm=underline
+    hi TabLineSel   ctermbg=234 ctermfg=255
+    hi StatusLine   ctermbg=234 ctermfg=255
+    hi StatusLineNC ctermbg=233 ctermfg=244
+    hi ColorColumn  ctermbg=233
+    hi IndentGuidesOdd  ctermbg=16
+    hi IndentGuidesEven ctermbg=234
   endif
 endif
 
@@ -197,36 +208,67 @@ set tags+=.git/tags-includes    " Search for ctag file in .git/
 set wildignore+=tags            " Don't complete from project code ctag file
 set wildignore+=tags-includes   " Don't complete from includes code ctag file
 set winaltkeys=no               " Let vim handle alt keys
-set iskeyword+=-                " Let dash be a word character (css <3 dashes)
 set list                        " Create a list & make invisible chars visible
-set listchars=nbsp:␣,tab:▸\ ,extends:»,precedes:«,trail:•
+set statusline=%<%.99f\ %h%w%m%r%y%{SL('fugitive#statusline')}%#ErrorMsg#%{SL('SyntasticStatuslineFlag')}%*%=%-14.(%l,%c%V%)\ %P
+if has("eval")
+  function! SL(function)
+    if exists('*'.a:function)
+      return call(a:function,[])
+    else
+      return ''
+    endif
+  endfunction
+endif
+
+if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
+  let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
+  let &fillchars = "vert:\u259a,fold:\u00b7"
+else
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<
+endif
 set cursorline
-set pastetoggle=<F2>            " Toggle paste/regular insert mode
 
 augroup myfiletypes
   " Clear old autocmds in group
   autocmd!
   " Ruby {{{
-  autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
-  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-  autocmd FileType ruby,eruby,yaml set ai sw=2 sts=2 et
-  autocmd FileType ruby,sass,css let b:switch_custom_definitions = [
+  autocmd FileType ruby,eruby,yaml,css,sass
+        \ set ai sw=2 sts=2 et
+  autocmd FileType css,sass
+        \ set iskeyword+=-
+  autocmd FileType ruby
+        \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
+        \ if expand('%') =~# '_test\.rb$' |
+        \   let g:rspec_command = 'Dispatch testrb {spec}' |
+        \   let b:dispatch = 'testrb %' |
+        \ elseif expand('%') =~# '_spec\.rb$' |
+        \   let b:dispatch = 'rspec %' |
+        \ elseif !exists('b:dispatch') |
+        \   let b:dispatch = 'ruby -wc %' |
+        \ endif
+  autocmd FileType ruby,eruby
+        \ setlocal omnifunc=rubycomplete#Complete |
+        \ let g:rubycomplete_buffer_loading = 1 |
+        \ let g:rubycomplete_rails = 1 |
+        \ let g:rubycomplete_classes_in_global = 1
+  autocmd FileType ruby,sass,css
+        \ let b:switch_custom_definitions = [
         \   {
         \     'have_no_\(\w\+\)': 'have_\1',
         \     'have_\(\w\+\)': 'have_no_\1',
         \   },
+        \   ['integration', 'DEBUG_integration'],
         \   ['dark', 'light'],
         \   ['high', 'low'],
         \   ['foo', 'bar', 'baz'],
         \   ['left', 'right'],
         \   ['rock', 'paper', 'scissors', 'lizard', 'Spock'],
         \ ]
+  autocmd FileType git,gitcommit setlocal foldmethod=syntax foldlevel=1
+  autocmd FileType gitcommit setlocal spell
   autocmd FileType gitrebase let b:switch_custom_definitions = [
         \   ['pick', 'reword', 'edit', 'squash', 'fixup'],
         \ ]
-  " Test using ... rspec ...
   " }}}
   " Rails.vim + Backbone.js {{{
   autocmd User Rails Rnavcommand template    app/assets/templates               -glob=**/*  -suffix=.jst.ejs
@@ -243,25 +285,20 @@ augroup END
 " autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-" When loading text files, wrap them and don't split up words.
-autocmd BufNewFile,BufRead *.txt setlocal wrap
-autocmd BufNewFile,BufRead *.txt setlocal lbr
+autocmd BufNewFile,BufRead *.txt setlocal wrap lbr
 autocmd BufNewFile,BufRead *.handlebars,*.hbs set ft=html syntax=handlebars
 autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 
 " Hide the noise
 nnoremap <LEADER>V :Goyo<CR>
-
-" quick open some default locations
+" {{{ quick open some default locations
 nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:PluginInstall<CR>
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
-" nnoremap <LEADER>sn :tabe ~/.vim/snippets/ruby.snippets<CR>
 nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
 nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>
-
+" }}}
 nnoremap <LEADER>ds :tabe db/schema.rb<CR>
 nnoremap <LEADER>dm :Sex db/migrate/<CR>GG
-
 " quick insert/rewrite stuff {{{
 nnoremap <LEADER>pa osave_and_open_page # DEBUG<ESC>
 nnoremap <LEADER>de orequire 'pry'; binding.pry # DEBUG<ESC>
@@ -272,47 +309,37 @@ nnoremap <LEADER>rw :%s/\s\+$//<CR>
 nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
 nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
 " }}}
-
 " Use Q as alias for @j (execute 'j' recording) {{{
 " This is great because you can just do something like QnQnnQ to quickly
 " repeat your recording where needed. You never have to press `@` again.
 nnoremap Q @j
 xnoremap Q @j
 " }}}
-
 nnoremap <LEADER>q :q<CR>
 nnoremap <LEADER>Q :qal<CR>
 nnoremap <LEADER>bn :bn<CR>
 nnoremap <LEADER>n :bn<CR>
-
 " New tab/vsplit buffer {{{
 nnoremap <LEADER>tn <ESC>:tabnew<CR>
 " Edit another file in the same directory as the current file
 " uses expression to extract path from current file's path
 nmap <LEADER>te :vnew <C-R>=expand("%:p:h") . '/'<CR>
 " }}}
-
 nnoremap <LEADER>o :set paste!<CR>
 nnoremap <LEADER>w :setlocal wrap!<CR>:setlocal wrap?<CR>
-
-noremap <C-H> :noh<CR>
 inoremap <C-L> :<SPACE>
 noremap <C-S> <ESC>:w<CR>
 inoremap <C-S> <ESC>:w<CR>
 noremap <LEADER><LEADER> :w<CR>
-noremap <F9> :set spell! spell?<CR>
-
 " Emacs-like beginning and end of line. {{{
 inoremap <C-E> <C-O>$
 inoremap <C-A> <C-O>^
 noremap H ^
 noremap L $
 " }}}
-
-noremap K <NOP><CR>
+noremap K <NOP>
 nnoremap <LEADER>f :grep!<SPACE>""<LEFT>
 nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
-
 " Center search matches when jumping {{{
 noremap N Nzz
 noremap n nzz
@@ -355,6 +382,18 @@ augroup restoreCursorPosition
   autocmd!
   autocmd BufWinEnter * call RestoreCursorPosition()
 augroup END
+" }}}
+
+" {{{ open URL under cursor in browser
+command! -nargs=1 OpenURL :call OpenURL(<q-args>)
+nnoremap gb :OpenURL <cfile><CR>
+nnoremap gA :OpenURL http://www.answers.com/<cword><CR>
+nnoremap gG :OpenURL http://www.google.com/search?q=<cword><CR>
+nnoremap gW :OpenURL http://en.wikipedia.org/wiki/Special:Search?search=<cword><CR>
+function! OpenURL(url)
+  exec "!open \"".a:url."\""
+  redraw!
+endfunction
 " }}}
 
 function! <SID>StripTrailingWhitespace() " {{{

@@ -48,6 +48,7 @@ stty stop undef
 plugins=(git rails ruby history-substring-search cap compleat)
 
 source $ZSH/oh-my-zsh.sh
+unset GREP_OPTIONS
 setopt interactivecomments
 
 # Source my custom files after oh-my-zsh so I can override things.

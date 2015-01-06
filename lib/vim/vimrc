@@ -3,6 +3,8 @@ set nocompatible      " We're running VIM, not vi
 filetype off          " Turn off _before_ loading all Plugins
 let mapleader = " "
 inoremap § <ESC>
+nnoremap <F1> <NOP>
+inoremap <F1> <ESC>
 
 set rtp+=~/.vim/bundle/vundle.vim/
 call vundle#begin() " {{{1

@@ -26,6 +26,7 @@ Plugin 'nono/vim-handlebars' " Highlighter
 Plugin 'slim-template/vim-slim' " Highlighter
 Plugin 'tpope/vim-haml' " Highlighter
 Plugin 'tpope/vim-markdown' " Highlighter
+Plugin 'mxw/vim-jsx' " Highlighter
 Plugin 'vim-ruby/vim-ruby' " Ruby: Motions, Text Objects, Access Modifier Indentation {{{
 let g:ruby_indent_access_modifier_style = 'outdent'
 " }}}
@@ -126,8 +127,10 @@ Plugin 'godlygeek/tabular' " Util: vertically aligning things (not for code)
 Plugin 'kana/vim-textobj-user' " Motion: Custom text objects
 Plugin 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
 Plugin 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
+Plugin 'chase/vim-ansible-yaml' " Util: Ansible flavored YAML
 " Plugin 'vim-yamljump'
 Plugin 'kana/vim-vspec'
+Plugin 'ConradIrwin/vim-bracketed-paste'
 
 " {{{ Clojure
 Plugin 'tpope/vim-fireplace'

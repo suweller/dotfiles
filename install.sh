@@ -62,6 +62,7 @@ function brew-all {
 
   local brews=(
     1password
+    appcleaner
     disk-inventory-x
     dropbox
     font-inconsolata

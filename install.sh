@@ -51,6 +51,7 @@ function brew-all {
     curl
     git
     grep
+    imagesnap
     rbenv
     rbenv-communal-gems
     rbenv-default-gems

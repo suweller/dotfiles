@@ -67,6 +67,7 @@ function brew-all {
     iterm2
     skype
     slack
+    spectacle
   )
   many-brew 'cask list' 'cask install'
 

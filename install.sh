@@ -74,6 +74,7 @@ function brew-all {
     skype
     slack
     spectacle
+    vlc
   )
   many-brew 'cask list' 'cask install'
 

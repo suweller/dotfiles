@@ -65,6 +65,7 @@ function brew-all {
     disk-inventory-x
     dropbox
     font-inconsolata
+    google-chrome
     iterm2
     java
     skype

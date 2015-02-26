@@ -65,6 +65,8 @@ function brew-all {
     dropbox
     font-inconsolata
     iterm2
+    skype
+    slack
   )
   many-brew 'cask list' 'cask install'
 

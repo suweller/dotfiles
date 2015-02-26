@@ -40,6 +40,7 @@ function brew-all {
 
   local brews=(
     autojump
+    cloc
     ctags
     git
     grep

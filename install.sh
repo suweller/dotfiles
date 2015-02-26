@@ -66,6 +66,7 @@ function brew-all {
     dropbox
     font-inconsolata
     iterm2
+    java
     skype
     slack
     spectacle

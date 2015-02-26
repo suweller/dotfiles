@@ -49,6 +49,7 @@ function brew-all {
     tmux
     vim
     wget
+    zsh
   )
   many-brew 'list' 'install'
 

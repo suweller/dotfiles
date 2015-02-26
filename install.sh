@@ -61,6 +61,7 @@ function brew-all {
   many-brew 'list' 'install'
 
   local brews=(
+    1password
     font-inconsolata
   )
   many-brew 'cask list' 'cask install'

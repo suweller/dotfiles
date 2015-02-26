@@ -51,6 +51,7 @@ function brew-all {
     git
     grep
     rbenv
+    rbenv-communal-gems
     readline
     reattach-to-user-namespace
     ruby-build

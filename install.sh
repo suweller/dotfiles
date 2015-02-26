@@ -38,6 +38,11 @@ function brew-all {
     done
   }
 
+  local brews=(
+    vim
+  )
+  many-brew 'list' 'install'
+
 } && brew-all
 
 cd lib

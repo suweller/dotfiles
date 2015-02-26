@@ -50,8 +50,10 @@ function brew-all {
     ctags
     git
     grep
+    rbenv
     readline
     reattach-to-user-namespace
+    ruby-build
     the_silver_searcher
     tmux
     vim

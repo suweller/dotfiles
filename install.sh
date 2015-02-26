@@ -64,6 +64,7 @@ function brew-all {
     1password
     dropbox
     font-inconsolata
+    iterm2
   )
   many-brew 'cask list' 'cask install'
 

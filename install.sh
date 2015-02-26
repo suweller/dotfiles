@@ -62,6 +62,7 @@ function brew-all {
 
   local brews=(
     1password
+    dropbox
     font-inconsolata
   )
   many-brew 'cask list' 'cask install'

@@ -40,9 +40,13 @@ function brew-all {
 
   local brews=(
     ctags
+    git
+    grep
+    readline
     the_silver_searcher
     tmux
     vim
+    wget
   )
   many-brew 'list' 'install'
 

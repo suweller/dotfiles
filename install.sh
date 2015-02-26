@@ -62,6 +62,7 @@ function brew-all {
 
   local brews=(
     1password
+    disk-inventory-x
     dropbox
     font-inconsolata
     iterm2

@@ -48,6 +48,7 @@ function brew-all {
     caskroom/cask/brew-cask
     cloc
     ctags
+    curl
     git
     grep
     rbenv

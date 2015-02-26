@@ -54,7 +54,7 @@ setopt interactivecomments
 # Source my custom files after oh-my-zsh so I can override things.
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions
-source $HOME/.zshrc_private
+[[ -f $HOME/.zshrc_private ]] && source $HOME/.zshrc_private
 
 # Customize to your needs...
 export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin"

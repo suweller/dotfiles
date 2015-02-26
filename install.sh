@@ -70,10 +70,12 @@ function brew-all {
     iterm2
     java
     licecap
+    minecraft
     mumble
     skype
     slack
     spectacle
+    steam
     vlc
   )
   many-brew 'cask list' 'cask install'

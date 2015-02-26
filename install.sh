@@ -39,6 +39,8 @@ function brew-all {
   }
 
   local brews=(
+    ctags
+    the_silver_searcher
     vim
   )
   many-brew 'list' 'install'

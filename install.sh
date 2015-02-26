@@ -68,6 +68,7 @@ function brew-all {
     google-chrome
     iterm2
     java
+    mumble
     skype
     slack
     spectacle

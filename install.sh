@@ -45,6 +45,7 @@ function brew-all {
     git
     grep
     readline
+    reattach-to-user-namespace
     the_silver_searcher
     tmux
     vim

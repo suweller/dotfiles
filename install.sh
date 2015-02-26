@@ -39,7 +39,13 @@ function brew-all {
   }
 
   local brews=(
+    caskroom/fonts
+  )
+  many-brew 'tap' 'tap'
+
+  local brews=(
     autojump
+    caskroom/cask/brew-cask
     cloc
     ctags
     git
@@ -53,6 +59,11 @@ function brew-all {
     zsh
   )
   many-brew 'list' 'install'
+
+  local brews=(
+    font-inconsolata
+  )
+  many-brew 'cask list' 'cask install'
 
 } && brew-all
 

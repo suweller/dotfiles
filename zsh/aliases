@@ -14,6 +14,7 @@ alias aliases='$EDITOR ~/.dotfiles/zsh/aliases && source ~/.dotfiles/zsh/aliases
 alias zshrc='$EDITOR ~/.zshrc && source ~/.zshrc'
 alias vimrc='$EDITOR ~/.dotfiles/lib/vim/vimrc'
 alias gitrc='$EDITOR ~/.gitconfig'
+alias gems='$EDITOR ~/.rbenv/default-gems'
 
 # Quick dir access
 alias d='cd ~/.dotfiles'

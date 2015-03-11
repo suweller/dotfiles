@@ -1,4 +1,5 @@
 bundler
+foreman
 gem-ctags
 pry
 rake

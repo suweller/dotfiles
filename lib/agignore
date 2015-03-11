@@ -4,6 +4,7 @@ images/
 log/
 tags/
 tmp/
+vendor/
 
 *.jpg
 *.log

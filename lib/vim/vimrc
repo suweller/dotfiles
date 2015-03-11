@@ -340,7 +340,7 @@ noremap H ^
 noremap L $
 " }}}
 noremap K <NOP>
-nnoremap <LEADER>f :grep!<SPACE>""<LEFT>
+nnoremap <LEADER>f :grep!<SPACE>"\b\b"<LEFT><LEFT><LEFT>
 nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
 " Center search matches when jumping {{{
 noremap N Nzz

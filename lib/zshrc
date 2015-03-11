@@ -57,8 +57,7 @@ source $HOME/.dotfiles/zsh/functions
 [[ -f $HOME/.zshrc_private ]] && source $HOME/.zshrc_private
 
 # Customize to your needs...
-export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin"
-export PATH="$PATH:$HOME/.dotfiles/bin"
+export PATH="./bin:$HOME/.dotfiles/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin"
 [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
 export EDITOR='vim'

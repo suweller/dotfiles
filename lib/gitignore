@@ -1,8 +1,10 @@
-.DS_Store
-Thumbs.db
-.svn
-*~
-tags
+.svn/
 log/
-db/*.sqlite3
+
+*~
+.DS_Store
+.agignore
 .netrwhist
+Thumbs.db
+db/*.sqlite3
+tags

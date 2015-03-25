@@ -8,6 +8,7 @@ inoremap <F1> <ESC>
 noremap <F10> :set spell! spell?<CR>
 nnoremap <F9> :Dispatch<CR>
 
+set synmaxcol=200
 set vb
 
 set rtp+=~/.vim/bundle/vundle.vim/

@@ -8,6 +8,8 @@ inoremap <F1> <ESC>
 noremap <F10> :set spell! spell?<CR>
 nnoremap <F9> :Dispatch<CR>
 
+set vb
+
 set rtp+=~/.vim/bundle/vundle.vim/
 call vundle#begin() " {{{1
 Plugin 'gmarik/vundle.vim'

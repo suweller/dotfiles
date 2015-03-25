@@ -24,6 +24,7 @@ let g:goyo_margin_bottom = 2
 " }}}
 Plugin 'pangloss/vim-javascript' " Highlighter
 Plugin 'kchmck/vim-coffee-script' " Highlighter
+Plugin 'mtscout6/vim-cjsx' " Highlighter
 Plugin 'leshill/vim-json' " Highlighter
 Plugin 'nono/vim-handlebars' " Highlighter
 Plugin 'slim-template/vim-slim' " Highlighter
@@ -131,6 +132,7 @@ Plugin 'kana/vim-textobj-user' " Motion: Custom text objects
 Plugin 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
 Plugin 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
 Plugin 'chase/vim-ansible-yaml' " Util: Ansible flavored YAML
+Plugin 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
 " Plugin 'vim-yamljump'
 Plugin 'kana/vim-vspec'
 Plugin 'ConradIrwin/vim-bracketed-paste'
@@ -154,17 +156,17 @@ if &t_Co == 256 || has('gui_running')
     set background=light
     colorscheme solarized
   else
-    let g:jellybeans_use_lowcolor_black = 0
+    " let g:jellybeans_use_lowcolor_black = 0
     " let g:jellybeans_background_color_256=0 " truly black background
     let g:indent_guides_auto_colors = 0     " custom indent guide colors
     set background=dark
     colorscheme jellybeans
-    hi VertSplit    ctermbg=16  ctermfg=233
+    hi VertSplit    ctermbg=238 ctermfg=233
     hi LineNr       ctermfg=237 ctermbg=0
     hi TabLineFill  ctermbg=16  ctermfg=236 cterm=underline
     hi TabLine      ctermbg=16  ctermfg=236 cterm=underline
     hi TabLineSel   ctermbg=234 ctermfg=255
-    hi StatusLine   ctermbg=234 ctermfg=255
+    hi StatusLine   ctermbg=238 ctermfg=255
     hi StatusLineNC ctermbg=233 ctermfg=244
     hi ColorColumn  ctermbg=233
     hi IndentGuidesOdd  ctermbg=16

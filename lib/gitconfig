@@ -46,3 +46,5 @@
   old = red
   new = green
   commit = yellow
+[pull]
+	rebase = true

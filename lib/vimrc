@@ -18,7 +18,7 @@ Plugin 'junegunn/goyo.vim'
 Plugin 'junegunn/limelight.vim' " {{{ Hide other blocks of code
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 244
-let g:goyo_width = 80
+let g:goyo_width = 140
 let g:goyo_margin_top = 2
 let g:goyo_margin_bottom = 2
 " }}}
@@ -72,7 +72,7 @@ let g:rails_projections = {
 \   "keywords":  "factory sequence"
 \ }}
 " }}}
-" Plugin 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
+Plugin 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
 Plugin 'tpope/vim-rake' " Ruby Util Non-Rails: Plain ruby project management
 Plugin 'danchoi/ri.vim' " Ruby: Quick access to Ruby documentation
 Plugin 'GutenYe/gem.vim' " Ruby: Gem Project Management
@@ -112,6 +112,8 @@ let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='☠'
 let g:syntastic_warning_symbol='☹'
 let g:syntastic_style_error_symbol='⚠'
+
+let g:syntastic_javascript_checkers = ['eslint']
 " }}}
 Plugin 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
 Plugin 'tpope/vim-commentary' " Util: (Un)Comment made easy
@@ -163,8 +165,8 @@ if &t_Co == 256 || has('gui_running')
     colorscheme jellybeans
     hi VertSplit    ctermbg=238 ctermfg=233
     hi LineNr       ctermfg=237 ctermbg=0
-    hi TabLineFill  ctermbg=16  ctermfg=236 cterm=underline
-    hi TabLine      ctermbg=16  ctermfg=236 cterm=underline
+    hi TabLineFill  ctermbg=16  ctermfg=240 cterm=underline
+    hi TabLine      ctermbg=16  ctermfg=240 cterm=underline
     hi TabLineSel   ctermbg=234 ctermfg=255
     hi StatusLine   ctermbg=238 ctermfg=255
     hi StatusLineNC ctermbg=233 ctermfg=244
@@ -258,7 +260,9 @@ augroup myfiletypes
         \ let g:rubycomplete_buffer_loading = 1 |
         \ let g:rubycomplete_rails = 1 |
         \ let g:rubycomplete_classes_in_global = 1
-  autocmd FileType ruby,sass,css
+  autocmd FileType ruby,eruby syn match error contained "\<binding.pry\>"
+  autocmd FileType ruby,eruby syn match error contained "\<debugger\>"
+  autocmd FileType ruby,sass,css,coffee
         \ let b:switch_custom_definitions = [
         \   {
         \     'have_no_\(\w\+\)': 'have_\1',
@@ -286,6 +290,9 @@ augroup myfiletypes
   autocmd User Rails Rnavcommand jspec       spec/javascripts                   -glob=**/*  -suffix=.coffee
   " }}}
   autocmd FileType clojure,c,cpp,objc,objcpp call rainbow#load()
+  " highlights all not yet matched repeating blocks of whitespace
+  " autocmd FileType * highlight ExcessiveWhitespace ctermbg=red guibg=red
+  " autocmd FileType * 2match ExcessiveWhitespace /\S\s\s\+\S/
 augroup END
 
 " Format xml files
@@ -299,9 +306,9 @@ autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 " Hide the noise
 nnoremap <LEADER>V :Goyo<CR>
 " {{{ quick open some default locations
-nnoremap <LEADER>bi :source ~/.dotfiles/lib/vim/vimrc<CR>:PluginInstall<CR>
+nnoremap <LEADER>bi :source ~/.dotfiles/lib/vimrc<CR>:PluginInstall<CR>
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
-nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vim/vimrc<CR>
+nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vimrc<CR>
 nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>
 " }}}
 nnoremap <LEADER>ds :tabe db/schema.rb<CR>

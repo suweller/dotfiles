@@ -12,7 +12,7 @@ alias vi='$EDITOR'
 # Quick file access
 alias aliases='$EDITOR ~/.dotfiles/zsh/aliases && source ~/.dotfiles/zsh/aliases'
 alias zshrc='$EDITOR ~/.zshrc && source ~/.zshrc'
-alias vimrc='$EDITOR ~/.dotfiles/lib/vim/vimrc'
+alias vimrc='$EDITOR ~/.dotfiles/lib/vimrc'
 alias gitrc='$EDITOR ~/.gitconfig'
 alias gems='$EDITOR ~/.rbenv/default-gems'
 

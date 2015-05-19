@@ -316,9 +316,8 @@ nnoremap <LEADER>dm :Sex db/migrate/<CR>GG
 " quick insert/rewrite stuff {{{
 nnoremap <LEADER>pa osave_and_open_page # DEBUG<ESC>
 nnoremap <LEADER>de orequire 'pry'; binding.pry # DEBUG<ESC>
-nnoremap <LEADER>db obefore { require 'pry'; binding.pry } # DEBUG<ESC>
+nnoremap <LEADER>df ofail 'fast' # DEBUG<ESC>
 nnoremap <LEADER>pu j^y$Oputs '<C-R>"' # DEBUG<ESC>
-nnoremap <LEADER>rh oraise 'hell' # DEBUG<ESC>
 nnoremap <LEADER>rw :%s/\s\+$//<CR>
 nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
 nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd

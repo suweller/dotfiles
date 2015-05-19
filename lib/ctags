@@ -11,6 +11,8 @@
 --regex-ruby=/(^|;)[ \t]*(has_many|belongs_to|has_one|has_and_belongs_to_many)\(? *:([[:alnum:]_]+)/\3/f,function,association/
 --regex-ruby=/(^|;)[ \t]*(named_)?scope\(? *:([[:alnum:]_]+)/\3/f,function,scope/
 
+--regex-ruby=/(^|;)[ \t]*factory\(? *:([[:alnum:]_]+)/\2/f,function,factorygirl/
+
 --langdef=js
 --langmap=js:.js
 --regex-js=/([A-Za-z0-9._$()]+)[ \t]*[:=][ \t]*function[ \t]*\(/\1/,function/

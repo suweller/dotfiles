@@ -49,7 +49,7 @@ Plugin 'morhetz/gruvbox'
 Plugin 'tpope/vim-fugitive' " Git: command Integration {{{
 nnoremap <LEADER>gb :Gblame<CR>
 nnoremap <LEADER>gs :Gstatus<CR>
-nnoremap <LEADER>gd :Gdiff<CR>
+nnoremap <LEADER>gd :Gdiff master<CR>
 " }}}
 Plugin 'tpope/vim-rails' " Ruby Util Rails: Project Management {{{
 let g:rails_projections = {

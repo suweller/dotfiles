@@ -132,6 +132,9 @@ Plugin 'tpope/vim-speeddating' " Util: CTRL-A/CTRL-X to increment dates/times & 
 Plugin 'godlygeek/tabular' " Util: vertically aligning things (not for code)
 Plugin 'kana/vim-textobj-user' " Motion: Custom text objects
 Plugin 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
+Plugin 'jgdavey/vim-blockle' " Ruby: toggle {} <-> do ; end {{{
+  let g:blockle_mapping = '<Leader>bl'
+" }}}
 Plugin 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
 Plugin 'chase/vim-ansible-yaml' " Util: Ansible flavored YAML
 Plugin 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
@@ -268,6 +271,8 @@ augroup myfiletypes
         \     'have_no_\(\w\+\)': 'have_\1',
         \     'have_\(\w\+\)': 'have_no_\1',
         \   },
+        \   ['includes', 'eager_load', 'preload'],
+        \   ['allow', 'expect'],
         \   ['integration', 'DEBUG_integration'],
         \   ['dark', 'light'],
         \   ['high', 'low'],

@@ -8,12 +8,12 @@
 [github]
   user = suweller
 [alias]
-  c  = commit -v
+  c = commit -v
   co = checkout
-  s  = status -sb
-  d  = diff
-  a  = add -p
-  br = branch
+  s = status -sb
+  d = diff
+  a = add -p
+  b = branch
   today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
   l = log --pretty=format:'%Cred%h %Cgreen%<(6,trunc)%cr %Cblue%<(20)%an %Creset%<(51,trunc)%s %Cred%<(20)%d'
   ctags = !.git/hooks/ctags
@@ -23,9 +23,6 @@
   default = current
 [init]
   templatedir = ~/.git_template
-
-[help]
-  autocorrect = 1
 
 [merge]
   tool = vimdiff
@@ -47,4 +44,4 @@
   new = green
   commit = yellow
 [pull]
-	rebase = true
+  rebase = true

@@ -26,7 +26,7 @@ alias g='git'
 alias amend="git commit --amend -v"
 alias gs='git status'
 alias gg='git grep -n'
-alias fix='$EDITOR -p `git diff --name-only | uniq`'
+alias fix='$EDITOR `git diff --name-only | uniq`'
 
 alias killrb='killall -9 ruby'
 

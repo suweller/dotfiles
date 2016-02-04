@@ -1,13 +1,15 @@
 [core]
   excludesfile = ~/.gitignore
+  attributesfile = ~/.gitattributes
   editor = vim
-  pager = less -F -X
+  pager = less -r -F -X
 [user]
   name = Steven Weller
   email = github@suweller.com
 [github]
   user = suweller
 [alias]
+  aliases = !git config --global --get-regexp ^alias | sed -e 's/^alias./  /'
   c = commit -v
   co = checkout
   s = status -sb
@@ -15,9 +17,10 @@
   a = add -p
   b = branch
   today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
-  l = log --pretty=format:'%Cred%h %Cgreen%<(6,trunc)%cr %Cblue%<(20)%an %Creset%<(51,trunc)%s %Cred%<(20)%d'
+  l = log --pretty=format:'%Cred%h %Cgreen%<(6,trunc)%cr %Cblue%<(8,trunc)%an %Creset%<(51,trunc)%s %Cred%<(20)%d'
   ctags = !.git/hooks/ctags
   ctags-bundle = !.git/hooks/ctags-bundle
+  ed = !$EDITOR `git diff --name-only $@| uniq`
 
 [push]
   default = current
@@ -45,3 +48,18 @@
   commit = yellow
 [pull]
   rebase = true
+[filter "lfs"]
+  clean = git lfs clean %f
+  smudge = git lfs smudge %f
+  required = true
+
+[merge "railsschema"]
+  name = newer Rails schema version
+  driver = "ruby -e '\n\
+    system %(git), %(merge-file), %(--marker-size=%L), %(%A), %(%O), %(%B)\n\
+    b = File.read(%(%A))\n\
+    b.sub!(/^<+ .*\\nActiveRecord::Schema\\.define.:version => (\\d+). do\\n=+\\nActiveRecord::Schema\\.define.:version => (\\d+). do\\n>+ .*/) do\n\
+      %(ActiveRecord::Schema.define(:version => #{[$1, $2].max}) do)\n\
+    end\n\
+    File.open(%(%A), %(w)) {|f| f.write(b)}\n\
+    exit 1 if b.include?(%(<)*%L)'"

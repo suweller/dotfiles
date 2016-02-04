@@ -11,15 +11,16 @@ if [ "$current_branch" != "master" ]; then
 fi
 echo "Fetching merged branches..."
 git remote prune origin
-remote_branches=$(git branch -r --merged | grep -v '/master$' | grep -v '/production$' | grep -v "/$current_branch$")
-local_branches=$(git branch --merged | grep -v 'master$' | grep -v 'production$' | grep -v "$current_branch$")
+remote_branches=$(git branch --remotes --merged | grep -v "\(master\|production\|integration\d*\|$current_branch\)$")
+local_branches=$(git branch --merged | grep -v "\(master\|production\|integration\d*\|$current_branch\)$")
 
 if [ -z "$remote_branches" ] && [ -z "$local_branches" ]; then
   echo "${red}No existing branches have been merged into${reset} ${black}${inv}$current_branch${reset}."
 
 else
-  echo "${red}This will remove the following branches:${reset}"
+  echo "${red}This will remove the following *remote* branches:${reset}"
   echo "$remote_branches"
+  echo "${red}This will remove the following *local* branches:${reset}"
   echo "$local_branches"
 
   read -p "Continue? Yes/No: " -n 1 choice

@@ -16,3 +16,5 @@ end
 def show_session(session)
   Marshal.load(Base64.decode64(session))
 end
+
+pry if defined?(Pry)

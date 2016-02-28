@@ -395,10 +395,11 @@ noremap L $
 noremap K <NOP>
 " nnoremap <LEADER>f :grep!<SPACE>"\b\b"<LEFT><LEFT><LEFT>
 nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
-nnoremap <LEADER>f :set operatorfunc=GrepOperator<CR>g@
-vnoremap <LEADER>f :<C-U>call GrepOperator(visualmode())<CR>
+nnoremap <LEADER>f :set operatorfunc=<SID>GrepOperator<CR>g@
+vnoremap <LEADER>f :<C-U>call <SID>GrepOperator(visualmode())<CR>
 
-function! GrepOperator(type)
+function! s:GrepOperator(type)
+    let saved_unnamed_register = @@
     if a:type ==# 'v'
         normal! `<v`>y
     elseif a:type ==# 'char'
@@ -409,6 +410,7 @@ function! GrepOperator(type)
     silent execute "grep! -R " . shellescape(@@) . " ."
     redraw!
     copen
+    let @@ = saved_unnamed_register
 endfunction
 
 " Center search matches when jumping {{{

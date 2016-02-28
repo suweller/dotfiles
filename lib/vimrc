@@ -1,5 +1,6 @@
 " vim:fdm=marker
 set nocompatible      " We're running VIM, not vi
+scriptencoding utf-8
 filetype off          " Turn off _before_ loading all Plugins
 let mapleader = " "
 inoremap § <ESC>
@@ -42,8 +43,9 @@ let g:indent_guides_indent_levels = 6
 " }}}
 " Color-Schemes {{{
 Plugin 'nanotech/jellybeans.vim'
-Plugin 'altercation/solarized', {'rtp': 'vim-colors-solarized'}
-let g:solarized_termcolors=256
+Plugin 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
+  let g:solarized_termcolors=256
+" }}}
 Plugin 'junegunn/seoul256.vim'
 Plugin 'morhetz/gruvbox'
 " }}}
@@ -51,6 +53,9 @@ Plugin 'tpope/vim-fugitive' " Git: command Integration {{{
 nnoremap <LEADER>gb :Gblame<CR>
 nnoremap <LEADER>gs :Gstatus<CR>
 nnoremap <LEADER>gd :Gdiff master<CR>
+
+Plugin 'int3/vim-extradite'
+nnoremap <LEADER>ge :Extradite<CR>
 " }}}
 Plugin 'tpope/vim-rails' " Ruby Util Rails: Project Management {{{
 let g:rails_projections = {
@@ -74,8 +79,13 @@ let g:rails_projections = {
 \ }}
 " }}}
 Plugin 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
+Plugin 'taglist.vim' "
 Plugin 'tpope/vim-rake' " Ruby Util Non-Rails: Plain ruby project management
-Plugin 'danchoi/ri.vim' " Ruby: Quick access to Ruby documentation
+Plugin 'danchoi/ri.vim' " Ruby: Quick access to Ruby documentation {{{1
+  let g:ri_no_mappings=1
+  nnoremap  <Leader>rd :call ri#OpenSearchPrompt(1)<cr> " vertical split
+  nnoremap  <Leader>rc :call ri#LookupNameUnderCursor()<cr> " keyword lookup
+" }}}
 Plugin 'GutenYe/gem.vim' " Ruby: Gem Project Management
 Plugin 'thoughtbot/vim-rspec' " Ruby: +Rspec runner Integration {{{
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
@@ -115,6 +125,7 @@ let g:syntastic_warning_symbol='!'
 let g:syntastic_style_error_symbol='⚠'
 
 let g:syntastic_javascript_checkers = ['eslint']
+" let g:syntastic_ruby_checkers = ['rubocop-git']
 " }}}
 Plugin 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
 Plugin 'tpope/vim-commentary' " Util: (Un)Comment made easy
@@ -123,7 +134,24 @@ Plugin 'tpope/vim-endwise' " Util: 'wisely' add `end` after `if` `do` etc.
 Plugin 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
 Plugin 'tpope/vim-afterimage' " Util: Edit (small) images
 Plugin 'vimwiki' " Util: Nice way to take and organise notes {{{
-let g:vimwiki_list = [{'path': '~/vimwiki/work/'}, {'path': '~/vimwiki/play/'}]
+let g:vimwiki_global_ext = 0
+let g:vimwiki_list = [
+  \ {
+  \   'syntax': 'markdown',
+  \   'ext': '.md',
+  \   'path': '~/vimwiki/work/'
+  \ },
+  \ {
+  \   'syntax': 'markdown',
+  \   'ext': '.md',
+  \   'path': '~/vimwiki/play/'
+  \ },
+  \ {
+  \   'syntax': 'markdown',
+  \   'ext': '.md',
+  \   'path': '~/vimwiki/dnd5/'
+  \ }
+\ ]
 " }}}
 Plugin 'tpope/vim-rbenv' " Util: rbenv.vim
 Plugin 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
@@ -142,6 +170,7 @@ Plugin 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
 " Plugin 'vim-yamljump'
 Plugin 'kana/vim-vspec'
 Plugin 'ConradIrwin/vim-bracketed-paste'
+Plugin 'derekwyatt/vim-scala'
 
 " {{{ Clojure
 Plugin 'tpope/vim-fireplace'
@@ -150,6 +179,7 @@ Plugin 'guns/vim-clojure-static' "
 Plugin 'guns/vim-clojure-highlight' " Syntax (dependent on vim-clojure-static & vim-fireplace)
 
 " }}}
+
 call vundle#end() " }}}
 filetype plugin indent on " Turn on _after_ loading all Plugins
 runtime macros/matchit.vim
@@ -174,9 +204,10 @@ if &t_Co == 256 || has('gui_running')
     hi TabLineSel   ctermbg=234 ctermfg=255
     hi StatusLine   ctermbg=238 ctermfg=255
     hi StatusLineNC ctermbg=233 ctermfg=244
-    hi ColorColumn  ctermbg=233
+    hi ColorColumn  ctermbg=234
     hi IndentGuidesOdd  ctermbg=16
     hi IndentGuidesEven ctermbg=234
+    hi SpecialKey ctermbg=16 ctermfg=8
   endif
 endif
 
@@ -205,6 +236,7 @@ set wmh=0                       " minimum unfocussed window height
 set hlsearch                    " highlight matches
 set incsearch                   " incremental searching
 set lazyredraw                  " prevent redraws while executing
+set tabstop=4
 set shiftwidth=2                " indent using 2 spaces
 set expandtab                   " use spaces only
 set smarttab                    " deindent with <BS>, start at indent level
@@ -212,17 +244,25 @@ set colorcolumn=80,115          " mark the 80th character, and (old and new) git
 set smartcase                   " ... unless they contain at least one capital letter
 set scrolloff=5                 " don't show search results as the first line
 set laststatus=2                " Always show status line.
+set smartindent
 set autoindent                  " always set autoindenting on
 set shiftround                  " When at 3 spaces and I hit >>, go to 4, not 5.
 set gdefault                    " assume the /g flag on :s
 set wildmenu                    " Better? completion on command line
 set wildmode=list:longest,full  " Completion settings
-set tags+=.git/tags-includes    " Search for ctag file in .git/
+" set tags+=.git/tags-includes    " Search for ctag file in .git/
 set wildignore+=tags            " Don't complete from project code ctag file
 set wildignore+=tags-includes   " Don't complete from includes code ctag file
 set winaltkeys=no               " Let vim handle alt keys
 set list                        " Create a list & make invisible chars visible
-set statusline=%<%.99f\ %h%w%m%r%y%{SL('fugitive#statusline')}%#ErrorMsg#%{SL('SyntasticStatuslineFlag')}%*%=%-14.(%l,%c%V%)\ %P
+set statusline=
+set statusline+=%<%.99f\ %h%m%r%y " absolute filename (max 99) & used syntax properties
+set statusline+=%#ErrorMsg#%{SL('SyntasticStatuslineFlag')}%* " Linter message
+set statusline+=%=\ %{SL('fugitive#statusline')} " Git branchname
+set statusline+=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} " encoding
+set statusline+=%k\ %-12.(%l,%c%V%) " cursor position & line count
+set statusline+=\ %P
+
 if has("eval")
   function! SL(function)
     if exists('*'.a:function)
@@ -252,8 +292,8 @@ augroup myfiletypes
   autocmd FileType ruby
         \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
         \ if expand('%') =~# '_test\.rb$' |
-        \   let g:rspec_command = 'Dispatch testrb {spec}' |
-        \   let b:dispatch = 'testrb %' |
+        \   let g:rspec_command = 'Dispatch ruby {spec}' |
+        \   let b:dispatch = 'ruby %' |
         \ elseif expand('%') =~# '_spec\.rb$' |
         \   let b:dispatch = 'rspec %' |
         \ elseif !exists('b:dispatch') |
@@ -287,24 +327,18 @@ augroup myfiletypes
         \   ['pick', 'reword', 'edit', 'squash', 'fixup'],
         \ ]
   " }}}
-  " Rails.vim + Backbone.js {{{
-  autocmd User Rails Rnavcommand template    app/assets/templates               -glob=**/*  -suffix=.jst.ejs
-  autocmd User Rails Rnavcommand jmodel      app/assets/javascripts/models      -glob=**/*  -suffix=.coffee
-  autocmd User Rails Rnavcommand jview       app/assets/javascripts/views       -glob=**/*  -suffix=.coffee
-  autocmd User Rails Rnavcommand jcollection app/assets/javascripts/collections -glob=**/*  -suffix=.coffee
-  autocmd User Rails Rnavcommand jrouter     app/assets/javascripts/routers     -glob=**/*  -suffix=.coffee
-  autocmd User Rails Rnavcommand jspec       spec/javascripts                   -glob=**/*  -suffix=.coffee
-  " }}}
-  autocmd FileType clojure,c,cpp,objc,objcpp call rainbow#load()
+  " autocmd FileType clojure,c,cpp,objc,objcpp call rainbow#load()
   " highlights all not yet matched repeating blocks of whitespace
   " autocmd FileType * highlight ExcessiveWhitespace ctermbg=red guibg=red
   " autocmd FileType * 2match ExcessiveWhitespace /\S\s\s\+\S/
+  " Some file types use real tabs
+  autocmd FileType make set noexpandtab sw=4
 augroup END
 
 " Format xml files
 " autocmd FileType xml exe ":silent 1,$!xmllint --format --recover - 2>/dev/null"
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+" autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 autocmd BufNewFile,BufRead *.txt setlocal wrap lbr
 autocmd BufNewFile,BufRead *.handlebars,*.hbs set ft=html syntax=handlebars
 autocmd BufWinLeave * call clearmatches() " Fix some performance issues
@@ -316,15 +350,17 @@ nnoremap <LEADER>bi :source ~/.dotfiles/lib/vimrc<CR>:PluginInstall<CR>
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vimrc<CR>
 nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>
+
+nnoremap <LEADER>lcd :lcd %:p:h<CR>
+nnoremap <LEADER>cd :cd %:p:h<CR>
 " }}}
 nnoremap <LEADER>ds :tabe db/schema.rb<CR>
 nnoremap <LEADER>dm :Sex db/migrate/<CR>GG
 " quick insert/rewrite stuff {{{
 nnoremap <LEADER>pa osave_and_open_page # DEBUG<ESC>
-nnoremap <LEADER>de orequire 'pry'; binding.pry # DEBUG<ESC>
+nnoremap <LEADER>de o(require('pry'); binding.pry) # DEBUG<ESC>
 nnoremap <LEADER>df ofail 'fast' # DEBUG<ESC>
 nnoremap <LEADER>pu j^y$Oputs '<C-R>"' # DEBUG<ESC>
-nnoremap <LEADER>rw :%s/\s\+$//<CR>
 nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
 nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
 " }}}
@@ -334,8 +370,8 @@ nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
 nnoremap Q @j
 xnoremap Q @j
 " }}}
-nnoremap <LEADER>q :q<CR>
-nnoremap <LEADER>Q :qal<CR>
+" nnoremap <LEADER>q :q<CR>
+" nnoremap <LEADER>Q :qal<CR>
 nnoremap <LEADER>bn :bn<CR>
 nnoremap <LEADER>n :bn<CR>
 " New tab/vsplit buffer {{{

@@ -14,13 +14,14 @@ set vb
 set rtp+=~/.vim/bundle/vundle.vim/
 call vundle#begin() " {{{1
 Plugin 'gmarik/vundle.vim'
-Plugin 'junegunn/goyo.vim'
+Plugin 'junegunn/goyo.vim' " {{{
+  let g:goyo_width = 100
+  let g:goyo_margin_top = 2
+  let g:goyo_margin_bottom = 2
+" }}}
 Plugin 'junegunn/limelight.vim' " {{{ Hide other blocks of code
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 244
-let g:goyo_width = 140
-let g:goyo_margin_top = 2
-let g:goyo_margin_bottom = 2
 " }}}
 Plugin 'pangloss/vim-javascript' " Highlighter
 Plugin 'kchmck/vim-coffee-script' " Highlighter

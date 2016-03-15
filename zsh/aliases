@@ -25,9 +25,6 @@ alias igt='git'
 alias gti='git'
 alias g='git'
 alias amend="git commit --amend -v"
-alias gs='git status'
-alias gg='git grep -n'
-alias fix='$EDITOR `git diff --name-only | uniq`'
 alias fail='$EDITOR `ag "rspec ./spec/.*_spec.rb" tmp/failing_specs.log | ag -o "spec/.*_spec.rb" | uniq`'
 
 alias killrb='killall -9 ruby'

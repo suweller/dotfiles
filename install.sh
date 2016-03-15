@@ -98,6 +98,8 @@ vundle="$PWD/lib/vim/bundle/vundle.vim"
 [ -a $vundle ] || (git clone git@github.com:gmarik/Vundle.vim.git $vundle && \
   vim +PluginInstall +qall) # Fetch and install all bundles included in vimrc
 
+git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
 oh_my_zsh="$PWD/oh-my-zsh"
 [ -a $oh_my_zsh ] || git clone git@github.com:robbyrussell/oh-my-zsh.git $oh_my_zsh
 

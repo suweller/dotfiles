@@ -64,9 +64,12 @@ export PATH="./bin:$HOME/.dotfiles/bin:$HOME/.rbenv/shims:/usr/local/bin:/usr/lo
 export EDITOR='vim'
 PROMPT='%{$fg_bold[blue]%}%D %* %{$reset_color%}${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$reset_color%} '
 
-export LANG="en_US.utf-8"
-export LC_ALL="en_US.utf-8"
-export LC_CTYPE="utf-8"
+
+export LC_ALL=en_US.utf-8
+export LANG=en_US.utf-8
+export LANGUAGE=en_US.utf-8:C
+export LC_TIME=en_DK.UTF-8
+export LC_CTYPE=utf-8
 
 # http://gcc.gnu.org/onlinedocs/gcc-4.7.2/gcc/Optimize-Options.html#Optimize-Options
 export CFLAGS="-march=core2 -O3"

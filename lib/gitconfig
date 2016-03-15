@@ -17,7 +17,7 @@
   a = add -p
   b = branch
   today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
-  l = log --pretty=format:'%Cred%h %Cgreen%<(6,trunc)%cr %Cblue%<(8,trunc)%an %Creset%<(51,trunc)%s %Cred%<(20)%d%Creset'
+  l = log --pretty=format:'  %Cred%h %Cgreen%<(6,trunc)%cr %Cblue%<(8,trunc)%an %Creset%<(51,trunc)%s %Cred%<(20)%d%Creset'
   ctags = !.git/hooks/ctags
   ctags-bundle = !.git/hooks/ctags-bundle
   ed = !$EDITOR `git diff --name-only $@| uniq`

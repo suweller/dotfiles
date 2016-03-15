@@ -62,6 +62,7 @@ eval "$(rbenv init - zsh)"
 export PATH="./bin:$HOME/.dotfiles/bin:$HOME/.rbenv/shims:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin"
 
 export EDITOR='vim'
+PROMPT='%{$fg_bold[blue]%}%D %* %{$reset_color%}${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$reset_color%} '
 
 export LANG="en_US.utf-8"
 export LC_ALL="en_US.utf-8"

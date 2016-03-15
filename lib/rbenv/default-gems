@@ -3,4 +3,5 @@ foreman
 gem-ctags
 pry
 rake
+rdoc
 rubocop-git

@@ -171,6 +171,7 @@ Plugin 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
 Plugin 'kana/vim-vspec'
 Plugin 'ConradIrwin/vim-bracketed-paste'
 Plugin 'derekwyatt/vim-scala'
+Plugin 'wavded/vim-stylus'
 
 " {{{ Clojure
 Plugin 'tpope/vim-fireplace'

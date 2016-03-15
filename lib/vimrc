@@ -205,6 +205,7 @@ if &t_Co == 256 || has('gui_running')
     hi TabLineSel   ctermbg=234 ctermfg=255
     hi StatusLine   ctermbg=238 ctermfg=255
     hi StatusLineNC ctermbg=233 ctermfg=244
+    hi CursorLine ctermbg=236
     hi ColorColumn  ctermbg=234
     hi IndentGuidesOdd  ctermbg=16
     hi IndentGuidesEven ctermbg=234

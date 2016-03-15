@@ -299,7 +299,7 @@ augroup myfiletypes
         \ elseif expand('%') =~# '_spec\.rb$' |
         \   let b:dispatch = 'rspec %' |
         \ elseif !exists('b:dispatch') |
-        \   let b:dispatch = 'ruby -wc %' |
+        \   let b:dispatch = 'ruby %' |
         \ endif
   autocmd FileType ruby,eruby
         \ setlocal omnifunc=rubycomplete#Complete |

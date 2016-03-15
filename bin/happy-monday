@@ -1,0 +1,34 @@
+#!/bin/bash
+set -x
+
+brew update
+
+brew upgrade \
+  autojump \
+  cloc \
+  ctags \
+  curl \
+  git \
+  libffi \
+  libyaml \
+  mercurial \
+  openssl \
+  rbenv \
+  rbenv-communal-gems \
+  rbenv-default-gems \
+  readline \
+  ruby-build \
+  the_silver_searcher \
+  tmux \
+  valgrind \
+  vim \
+  wget \
+  xz \
+  youtube-dl \
+  zsh \
+
+gem update \
+  bundler \
+
+echo "hope for luck"
+bundle-audit check --update

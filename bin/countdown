@@ -1,0 +1,43 @@
+#!/bin/bash
+usage="$(basename "$0") [-h] HH:MM:SS -- count down & keep ringing the bell
+
+where:
+  -h shows this help text
+  -t set the timer"
+
+TIME="00:05:00"
+while getopts ':ht:' option; do
+  case $option in
+    h) echo "$usage"
+      exit
+      ;;
+    t) TIME=$OPTARG
+      ;;
+    \?) printf "illegal option: -%s\n" "$OPTARG" >&2
+      echo "$usage" >&2
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+function countdown {
+  local OLD_IFS="${IFS}"
+  IFS=":"
+  local ARR=( $1 )
+  local SECONDS=$((  (ARR[0] * 60 * 60) + (ARR[1] * 60) + ARR[2]  ))
+  local START=$(date +%s)
+  local END=$((START + SECONDS))
+  local CUR=$START
+  while [[ $CUR -lt $END ]]
+  do
+    CUR=$(date +%s)
+    LEFT=$((END-CUR))
+    sleep 1
+    printf "\r%02d:%02d:%02d" $((LEFT/3600)) $(( (LEFT/60)%60)) $((LEFT%60))
+  done
+  IFS="${OLD_IFS}"
+  echo "        "
+}
+
+countdown $TIME && while [[ 1 ]]; do tput bel; sleep 1; done

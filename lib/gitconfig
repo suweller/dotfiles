@@ -1,7 +1,6 @@
 [core]
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
-  editor = vim
   pager = less -r -F -X
 [user]
   name = Steven Weller

@@ -1,12 +1,13 @@
 *.bak/
 fonts/
-images/
 log/
 tags/
 tmp/
 vendor/
 
+*.gif
 *.gz
+*.ico
 *.jpg
 *.log
 *.min.*

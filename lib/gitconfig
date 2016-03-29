@@ -1,7 +1,7 @@
 [core]
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
-  pager = less -r -F -X
+  pager = less --raw-control-chars --quit-if-one-screen --no-init
 
 [user]
   name = Steven Weller
@@ -12,11 +12,11 @@
 
 [alias]
   aliases = !git config --global --get-regexp ^alias | sed -e 's/^alias./  /'
-  c = commit -v
+  c = commit --verbose
   co = checkout
-  s = status -sb
+  s = status --short --branch
   d = diff
-  a = add -p
+  a = add --patch
   b = branch
   today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
   l = log --pretty=format:'  %Cred%h %Cgreen%<(6,trunc)%cr %Cblue%<(8,trunc)%an %Creset%<(51,trunc)%s %Cred%<(20)%d%Creset'

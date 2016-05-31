@@ -14,6 +14,7 @@ brew upgrade \
   mercurial \
   openssl \
   rbenv \
+  rbenv-bundler \
   rbenv-communal-gems \
   rbenv-default-gems \
   readline \

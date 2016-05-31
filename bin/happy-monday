@@ -31,5 +31,4 @@ brew upgrade \
 gem update \
   bundler \
 
-echo "hope for luck"
-bundle-audit check --update
+bundle-audit check --update # Hope for luck

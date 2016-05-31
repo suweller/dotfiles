@@ -15,23 +15,33 @@
   c = commit --verbose
   co = checkout
   s = status --short --branch
+  prompt = "!sh -c \"[ -d .git/ ] && git status --short --branch | grep -E '^\\#\\#[^\\[]+\\[' | sed -E 's/\\#\\#[^\\[]+//'\""
   d = diff
   a = add --patch
   b = branch
   today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
-  l = log --decorate=full --format='\
+  lf = log --decorate=full --format='\
 %C(red)%h %C(reset)\
 %C(green)%<(6,trunc)%cr %C(reset)\
 %C(blue)%<(8,trunc)%an %C(reset)\
 %<(72,trunc)%s \
 %C(auto)%D%C(reset)'
+  l = "!git lf $@ |" \
+    "sed -E 's#refs/(remotes/origin|heads)/##g' |" \
+    "sed 's#\\.\\. # #' |" \
+    "sed -E 's#(\\.\\.|  ) # #' |" \
+    "$(git config --get core.pager)"
+  revolt = "!sh -c open https://github.com/publitas/revolution/compare/master...$(git symbolic-ref HEAD)"
+  ll = "!git l --numstat $@"
+  ; graphviz = "!f() { echo 'digraph git {'; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f]+/\"&\"/g'; echo '}';}; f"
   ctags = !.git/hooks/ctags
   ctags-bundle = !.git/hooks/ctags-bundle
   ed = !$EDITOR `git diff --name-only $@ | uniq`
   who = shortlog --numbered --summary --
   find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
   show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
-  wazzup = "!sh -c 'for branch in $(git branch --no-merged); do echo $branch && git l $branch ^$(git symbolic-ref HEAD) --no-merges; done'"
+  sup = "!sh -c 'for branch in $(git branch --no-merged); do git lf $branch ^$(git symbolic-ref HEAD); echo ''; done ' | $(git config --get core.pager)"
+  this = !git lf $@ HEAD ^master
 
 [push]
   default = current
@@ -47,7 +57,8 @@
   wordRegex = [^[:space:]]
 
 [color]
-  ui = true
+  ui = auto
+  interactive = auto
 
 [color "diff"]
   # Color syntax: <foreground> <background>

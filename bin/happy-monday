@@ -23,7 +23,6 @@ brew upgrade \
   tmux \
   valgrind \
   vim \
-  wget \
   xz \
   youtube-dl \
   zsh \

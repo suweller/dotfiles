@@ -40,4 +40,14 @@ function countdown {
   echo "        "
 }
 
-countdown $TIME && while [[ 1 ]]; do tput bel; sleep 1; done
+function alert {
+  if [ "$(uname)" == "Darwin" ]; then
+    afplay /System/Library/Sounds/Funk.aiff &
+    osascript -e 'display dialog "Time is up!" buttons {"OK"} with icon stop'
+  elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+    tput bel
+  fi
+}
+
+countdown $TIME
+alert 30

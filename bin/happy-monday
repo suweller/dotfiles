@@ -1,13 +1,12 @@
 #!/bin/bash
 set -x
 
-brew update
-
-brew upgrade \
+brew update && brew upgrade \
   autojump \
   cloc \
   ctags \
   curl \
+  fzf \
   git \
   libffi \
   libyaml \

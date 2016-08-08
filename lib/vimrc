@@ -9,55 +9,56 @@ inoremap <F1> <ESC>
 noremap <F10> :set spell! spell?<CR>
 nnoremap <F9> :Dispatch<CR>
 
-set synmaxcol=200
+" set synmaxcol=256
 set vb
 
-set rtp+=~/.vim/bundle/vundle.vim/
-call vundle#begin() " {{{1
-Plugin 'gmarik/vundle.vim'
-Plugin 'junegunn/goyo.vim' " {{{
+" set rtp+=~/.vim/bundle/vundle.vim/
+" call vundle#begin() " {{{1
+call plug#begin('~/.vim/plugged')
+Plug 'gmarik/vundle.vim'
+Plug 'Align'
+Plug 'junegunn/goyo.vim' " {{{
   let g:goyo_width = 100
   let g:goyo_margin_top = 2
   let g:goyo_margin_bottom = 2
 " }}}
-Plugin 'junegunn/limelight.vim' " {{{ Hide other blocks of code
+Plug 'junegunn/limelight.vim' " {{{ Hide other blocks of code
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 244
 " }}}
-Plugin 'pangloss/vim-javascript' " Highlighter
-Plugin 'kchmck/vim-coffee-script' " Highlighter
-Plugin 'mtscout6/vim-cjsx' " Highlighter
-Plugin 'leshill/vim-json' " Highlighter
-Plugin 'nono/vim-handlebars' " Highlighter
-Plugin 'slim-template/vim-slim' " Highlighter
-Plugin 'tpope/vim-haml' " Highlighter
-Plugin 'tpope/vim-markdown' " Highlighter
-Plugin 'mxw/vim-jsx' " Highlighter
-Plugin 'vim-ruby/vim-ruby' " Ruby: Motions, Text Objects, Access Modifier Indentation {{{
+Plug 'pangloss/vim-javascript' " Highlighter
+Plug 'maksimr/vim-jsbeautify' " Formatter
+Plug 'kchmck/vim-coffee-script' " Highlighter
+Plug 'mtscout6/vim-cjsx' " Highlighter
+Plug 'leshill/vim-json' " Highlighter
+Plug 'slim-template/vim-slim' " Highlighter
+Plug 'tpope/vim-haml' " Highlighter
+Plug 'tpope/vim-markdown' " Highlighter
+Plug 'mxw/vim-jsx' " Highlighter
+Plug 'vim-ruby/vim-ruby' " Ruby: Motions, Text Objects, Access Modifier Indentation {{{
 let g:ruby_indent_access_modifier_style = 'outdent'
 " }}}
-Plugin 'nathanaelkane/vim-indent-guides' " Highlighter, Indentation {{{
+Plug 'nathanaelkane/vim-indent-guides' " Highlighter, Indentation {{{
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 let g:indent_guides_indent_levels = 6
 " }}}
 " Color-Schemes {{{
-Plugin 'nanotech/jellybeans.vim'
-Plugin 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
-  let g:solarized_termcolors=256
+Plug 'nanotech/jellybeans.vim'
+" Plug 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
+"   let g:solarized_termcolors=256
 " }}}
-Plugin 'junegunn/seoul256.vim'
-Plugin 'morhetz/gruvbox'
+" Plug 'junegunn/seoul256.vim'
+" Plug 'morhetz/gruvbox'
 " }}}
-Plugin 'tpope/vim-fugitive' " Git: command Integration {{{
+Plug 'tpope/vim-fugitive' " Git: command Integration {{{
 nnoremap <LEADER>gb :Gblame<CR>
-nnoremap <LEADER>gs :Gstatus<CR>
 nnoremap <LEADER>gd :Gdiff master<CR>
 
-Plugin 'int3/vim-extradite'
+Plug 'int3/vim-extradite'
 nnoremap <LEADER>ge :Extradite<CR>
 " }}}
-Plugin 'tpope/vim-rails' " Ruby Util Rails: Project Management {{{
+Plug 'tpope/vim-rails' " Ruby Util Rails: Project Management {{{
 let g:rails_projections = {
 \ "app/presenters/*_presenter.rb": {
 \   "command": "presenter",
@@ -78,47 +79,52 @@ let g:rails_projections = {
 \   "keywords":  "factory sequence"
 \ }}
 " }}}
-Plugin 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
-Plugin 'taglist.vim' "
-Plugin 'tpope/vim-rake' " Ruby Util Non-Rails: Plain ruby project management
-Plugin 'danchoi/ri.vim' " Ruby: Quick access to Ruby documentation {{{1
+Plug 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
+Plug 'taglist.vim' " Util: taglist
+Plug 'tpope/vim-rake' " Ruby Util Non-Rails: Plain ruby project management
+Plug 'danchoi/ri.vim' " Ruby: Quick access to Ruby documentation {{{1
   let g:ri_no_mappings=1
-  nnoremap  <Leader>rd :call ri#OpenSearchPrompt(1)<cr> " vertical split
-  nnoremap  <Leader>rc :call ri#LookupNameUnderCursor()<cr> " keyword lookup
+  nnoremap  <LEADER>rd :call ri#OpenSearchPrompt(1)<cr> " vertical split
+  nnoremap  <LEADER>rc :call ri#LookupNameUnderCursor()<cr> " keyword lookup
 " }}}
-Plugin 'GutenYe/gem.vim' " Ruby: Gem Project Management
-Plugin 'thoughtbot/vim-rspec' " Ruby: +Rspec runner Integration {{{
+Plug 'GutenYe/gem.vim' " Ruby: Gem Project Management
+Plug 'thoughtbot/vim-rspec' " Ruby: +Rspec runner Integration {{{
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
-map <Leader>sf :call RunCurrentSpecFile()<CR>
-map <Leader>sn :call RunNearestSpec()<CR>
-map <Leader>sl :call RunLastSpec()<CR>
-map <Leader>sa :call RunAllSpecs()<CR>
+map <LEADER>sf :call RunCurrentSpecFile()<CR>
+map <LEADER>sn :call RunNearestSpec()<CR>
+map <LEADER>sl :call RunLastSpec()<CR>
+map <LEADER>sa :call RunAllSpecs()<CR>
 " }}}
-Plugin 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
+Plug 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
 nnoremap - :Switch<cr>
 " }}}
-Plugin 'christoomey/vim-tmux-navigator' " Util: Seamless movement between VIM and tmux splits
-Plugin 'kien/ctrlp.vim' " Util: File Finder {{{
-let g:ctrlp_switch_buffer = 2
-let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\.git$\|\.hg$\|\.svn$|^vendor$|^coverage$|^tmp$|^rdoc$|',
-  \ 'file': '\.png$\|\.jpg$\|\.gif$|\.DS_Store',
-  \ }
+Plug 'christoomey/vim-tmux-navigator' " Util: Seamless movement between VIM and tmux splits
+Plug 'ctrlpvim/ctrlp.vim' " Util: File Finder {{{
+let g:ctrlp_switch_buffer = 1
 let g:ctrlp_max_depth = 10      " Directory depth to recurse into when scanning
 let g:ctrlp_open_new_file = 't' " open files in new tab
 " Use ag in CtrlP for listing files. fast enough not to use caching
 " brew install the_silver_searcher
 if executable('ag')
-  set grepprg=ag\ --nocolor\ --nogroup\ --hidden\ --ignore\ .git/
-  let g:ctrlp_user_command = 'ag %s -l --nocolor --nogroup --hidden --ignore .git/ -g ""'
+  set grepprg=ag\ --vimgrep\ --hidden\ --ignore\ .git/
+  set grepformat=%f:%l:%c:%m
+  let g:ctrlp_user_command = 'ag %s -l --vimgrep --hidden --ignore .git/ -g ""'
   let g:ctrlp_use_caching = 0
 endif
 " }}}
-Plugin 'tpope/vim-vinegar' " Util: netrw {{{
+Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim' " Util: File Finder {{{
+map <C-F> :FZF! -m<CR>
+imap <C-x><C-l> <plug>(fzf-complete-line)
+" }}}
+Plug 'shougo/neomru.vim' | Plug 'shougo/unite.vim' " Util: File Finder {{{
+" nnoremap <C-f> :<C-u>Unite -no-split -buffer-name=mru -start-insert file_mru<CR>
+" nnoremap <LEADER>t :<C-u>Unite -no-split -buffer-name=files -start-insert file_rec/async:!<CR>
+" }}}
+Plug 'tpope/vim-vinegar' " Util: netrw {{{
 nmap _ <Plug>VinegarUp
 " }}}
-Plugin 'nvie/vim-togglemouse' " Util: Toggle mouse for vim or terminal
-Plugin 'scrooloose/syntastic' " Util: Code lint {{{
+Plug 'nvie/vim-togglemouse' " Util: Toggle mouse for vim or terminal
+Plug 'scrooloose/syntastic' " Util: Code lint {{{
 let g:syntastic_enable_signs=1
 let g:syntastic_error_symbol='‼'
 let g:syntastic_warning_symbol='!'
@@ -127,13 +133,13 @@ let g:syntastic_style_error_symbol='⚠'
 let g:syntastic_javascript_checkers = ['eslint']
 " let g:syntastic_ruby_checkers = ['rubocop-git']
 " }}}
-Plugin 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
-Plugin 'tpope/vim-commentary' " Util: (Un)Comment made easy
-Plugin 'tpope/vim-dispatch' " Util: Allow asynchronous tasks to be dispatched
-Plugin 'tpope/vim-endwise' " Util: 'wisely' add `end` after `if` `do` etc.
-Plugin 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
-Plugin 'tpope/vim-afterimage' " Util: Edit (small) images
-Plugin 'vimwiki' " Util: Nice way to take and organise notes {{{
+Plug 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
+Plug 'tpope/vim-commentary' " Util: (Un)Comment made easy
+Plug 'tpope/vim-dispatch' " Util: Allow asynchronous tasks to be dispatched
+Plug 'tpope/vim-endwise' " Util: 'wisely' add `end` after `if` `do` etc.
+Plug 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
+Plug 'tpope/vim-afterimage' " Util: Edit (small) images
+Plug 'vimwiki' " Util: Nice way to take and organise notes {{{
 let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [
   \ {
@@ -153,37 +159,40 @@ let g:vimwiki_list = [
   \ }
 \ ]
 " }}}
-Plugin 'tpope/vim-rbenv' " Util: rbenv.vim
-Plugin 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
-Plugin 'tpope/vim-unimpaired' " Util: brakety Things
-Plugin 'tpope/vim-repeat' " Util: make things repeatable with '.'
-Plugin 'tpope/vim-speeddating' " Util: CTRL-A/CTRL-X to increment dates/times &  more
-Plugin 'godlygeek/tabular' " Util: vertically aligning things (not for code)
-Plugin 'kana/vim-textobj-user' " Motion: Custom text objects
-Plugin 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
-Plugin 'jgdavey/vim-blockle' " Ruby: toggle {} <-> do ; end {{{
-  let g:blockle_mapping = '<Leader>bl'
+Plug 'tpope/vim-rbenv' " Util: rbenv.vim
+Plug 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
+" Plug 'tpope/vim-ragtag' " Util: ghetto HTML/XML mappings
+Plug 'tpope/vim-unimpaired' " Util: brakety Things
+Plug 'tpope/vim-repeat' " Util: make things repeatable with '.'
+Plug 'tpope/vim-speeddating' " Util: CTRL-A/CTRL-X to increment dates/times &  more
+Plug 'godlygeek/tabular' " Util: vertically aligning things (not for code)
+Plug 'kana/vim-textobj-user' | Plug 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
+Plug 'AndrewRadev/splitjoin.vim' " Util: Toggle inline/multiline {{{
+  let g:splitjoin_split_mapping = '<LEADER>ss'
+  let g:splitjoin_join_mapping = '<LEADER>sj'
 " }}}
-Plugin 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
-Plugin 'chase/vim-ansible-yaml' " Util: Ansible flavored YAML
-Plugin 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
-" Plugin 'vim-yamljump'
-Plugin 'kana/vim-vspec'
-Plugin 'ConradIrwin/vim-bracketed-paste'
-Plugin 'derekwyatt/vim-scala'
-Plugin 'wavded/vim-stylus'
-
-" {{{ Clojure
-Plugin 'tpope/vim-fireplace'
-Plugin 'oblitum/rainbow'
-Plugin 'guns/vim-clojure-static' "
-Plugin 'guns/vim-clojure-highlight' " Syntax (dependent on vim-clojure-static & vim-fireplace)
-
+Plug 'jgdavey/vim-blockle' " Ruby: toggle {} <-> do ; end {{{
+  let g:blockle_mapping = '<LEADER>bl'
 " }}}
+Plug 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
+Plug 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
+" Plug 'vim-yamljump'
+Plug 'kana/vim-vspec'
+Plug 'ConradIrwin/vim-bracketed-paste'
+Plug 'derekwyatt/vim-scala'
+Plug 'wavded/vim-stylus'
+Plug 'guns/xterm-color-table.vim'
+Plug 'vim-scripts/Improved-AnsiEsc'
+" Plug 'SQLUtilities'
+Plug 'mhinz/vim-startify'
 
-call vundle#end() " }}}
+" call vundle#end() " }}}
+call plug#end()
+
 filetype plugin indent on " Turn on _after_ loading all Plugins
 runtime macros/matchit.vim
+runtime! ftplugin/man.vim
+
 
 if &t_Co > 2 || has('gui_running')
   syntax on
@@ -252,7 +261,7 @@ set shiftround                  " When at 3 spaces and I hit >>, go to 4, not 5.
 set gdefault                    " assume the /g flag on :s
 set wildmenu                    " Better? completion on command line
 set wildmode=list:longest,full  " Completion settings
-" set tags+=.git/tags-includes    " Search for ctag file in .git/
+set tags+=.git/tags-includes    " Search for ctag file in .git/
 set wildignore+=tags            " Don't complete from project code ctag file
 set wildignore+=tags-includes   " Don't complete from includes code ctag file
 set winaltkeys=no               " Let vim handle alt keys
@@ -275,13 +284,14 @@ if has("eval")
   endfunction
 endif
 
+let &fillchars = "vert: "
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
   let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
-  let &fillchars = "vert:\u259a,fold:\u00b7"
+  " let &fillchars = "vert:\u259a,fold:\u00b7"
 else
   set listchars=tab:>\ ,trail:-,extends:>,precedes:<
 endif
-set cursorline
+" set cursorline
 
 augroup myfiletypes
   " Clear old autocmds in group
@@ -295,7 +305,7 @@ augroup myfiletypes
         \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
         \ if expand('%') =~# '_test\.rb$' |
         \   let g:rspec_command = 'Dispatch ruby {spec}' |
-        \   let b:dispatch = 'ruby %' |
+        \   let b:dispatch = 'ruby -W2 %' |
         \ elseif expand('%') =~# '_spec\.rb$' |
         \   let b:dispatch = 'rspec %' |
         \ elseif !exists('b:dispatch') |
@@ -447,16 +457,16 @@ endfunction
 nmap <C-W>u :call MergeTabIntoVSplit()<CR>
 " }}}
 
-function! RestoreCursorPosition() " {{{
-  if line("'\"") <= line("$")
-    normal! g`"
-    return 1
-  endif
-endfunction
-augroup restoreCursorPosition
-  autocmd!
-  autocmd BufWinEnter * call RestoreCursorPosition()
-augroup END
+" function! RestoreCursorPosition() " {{{
+"   if line("'\"") <= line("$")
+"     normal! g`"
+"     return 1
+"   endif
+" endfunction
+" augroup restoreCursorPosition
+"   autocmd!
+"   autocmd BufWinEnter * call RestoreCursorPosition()
+" augroup END
 " }}}
 
 " {{{ open URL under cursor in browser

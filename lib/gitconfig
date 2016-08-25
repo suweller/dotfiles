@@ -45,6 +45,9 @@
   this = !git lf $@ master...HEAD
   nuke=!git branch -D $1 && git push origin :$1
 
+[commit]
+  gpgsign = true
+
 [push]
   default = current
 

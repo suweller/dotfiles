@@ -12,10 +12,7 @@ nnoremap <F9> :Dispatch<CR>
 " set synmaxcol=256
 set vb
 
-" set rtp+=~/.vim/bundle/vundle.vim/
-" call vundle#begin() " {{{1
 call plug#begin('~/.vim/plugged')
-Plug 'gmarik/vundle.vim'
 Plug 'Align'
 Plug 'junegunn/goyo.vim' " {{{
   let g:goyo_width = 100
@@ -186,7 +183,6 @@ Plug 'vim-scripts/Improved-AnsiEsc'
 " Plug 'SQLUtilities'
 Plug 'mhinz/vim-startify'
 
-" call vundle#end() " }}}
 call plug#end()
 
 filetype plugin indent on " Turn on _after_ loading all Plugins
@@ -358,7 +354,6 @@ autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 " Hide the noise
 nnoremap <LEADER>V :Goyo<CR>
 " {{{ quick open some default locations
-nnoremap <LEADER>bi :source ~/.dotfiles/lib/vimrc<CR>:PluginInstall<CR>
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vimrc<CR>
 nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>

@@ -1,70 +1,30 @@
-# Path to your oh-my-zsh configuration.
-ZSH=$HOME/.dotfiles/oh-my-zsh
+# vim:foldmethod=marker
 
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-ZSH_THEME="robbyrussell"
-
-# Never know when you're gonna need to popd!
-# setopt AUTO_PUSHD
-
-# Allow completing of the remainder of a command
-bindkey "^N" insert-last-word
-
-# Show contents of directory after cd-ing into it
-chpwd() {
-  ls -lrthG
+# Make the $path array have unique values.
+typeset -U PATH
+function add_to_path_once() {
+  path=("$1" $path)
 }
+if [[ ! -d "$HOME/.zplug" ]]; then # {{{
+  git clone https://github.com/zplug/zplug "$HOME/.zplug/repos/zplug/zplug"
+  ln -s "$HOME/.zplug/repos/zplug/zplug/init.zsh" "$HOME/.zplug/init.zsh"
+fi # }}}
 
-# Save a ton of history
-HISTSIZE=20000
-HISTFILE=~/.zsh_history
-SAVEHIST=20000
+# Load zplug
+source $HOME/.zplug/init.zsh
 
-# Set to this to use case-sensitive completion
-# CASE_SENSITIVE="true"
+export HISTFILE=~/.zsh_history
+export HISTSIZE=20000
+export SAVEHIST=20000
 
-# Comment this out to disable weekly auto-update checks
-DISABLE_AUTO_UPDATE="true"
+export CLICOLOR=1
+export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
 
-# Uncomment following line if you want to disable colors in ls
-# DISABLE_LS_COLORS="true"
-
-# Uncomment following line if you want to disable autosetting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment following line if you want red dots to be displayed while waiting for completion
-COMPLETION_WAITING_DOTS="true"
-
-# Disable flow control commands (keeps C-s from freezing everything)
-stty start undef
-stty stop undef
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(rails ruby history-substring-search cap compleat)
-
-source $ZSH/oh-my-zsh.sh
-unset GREP_OPTIONS
-setopt interactivecomments
-
-# Source my custom files after oh-my-zsh so I can override things.
-source $HOME/.dotfiles/zsh/aliases
-source $HOME/.dotfiles/zsh/functions
-[[ -f $HOME/.zshrc_private ]] && source $HOME/.zshrc_private
-
-# Customize to your needs...
-[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
-eval "$(rbenv init - zsh)"
-export PATH="./bin:$HOME/.dotfiles/bin:$HOME/.rbenv/shims:/usr/local/bin:/usr/local/sbin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/X11/bin"
+add_to_path_once "$HOME/.dotfiles/bin"
 
 export EDITOR='vim'
-PROMPT='%{$fg_bold[blue]%}%D %* %{$reset_color%}${ret_status}%{$fg_bold[green]%}%p %{$fg[cyan]%}%c %{$fg_bold[blue]%}$(git_prompt_info)%{$reset_color%} '
-
-
+# export PAGER="col -b | vim -MR - "
+# export MANPAGER='col -b | vim -MR -c ":set syntax=man" - '
 export LC_ALL=en_US.utf-8
 export LANG=en_US.utf-8
 export LANGUAGE=en_US.utf-8:C
@@ -81,11 +41,116 @@ export RUBY_GC_MALLOC_LIMIT=100000000
 export RUBY_GC_HEAP_FREE_SLOTS=500000
 export RUBY_GC_HEAP_INIT_SLOTS=1000000
 
-bindkey '^p' history-substring-search-up
-bindkey '^n' history-substring-search-down
+setopt append_history
+setopt auto_cd
+setopt auto_pushd
+setopt hist_expire_dups_first
+setopt hist_fcntl_lock
+setopt hist_ignore_all_dups
+setopt hist_lex_words
+setopt hist_reduce_blanks
+setopt hist_save_no_dups
+setopt interactivecomments
+setopt no_case_glob
+setopt prompt_subst # Make sure prompt is able to be generated properly.
+setopt pushd_ignore_dups
+setopt pushd_silent
+setopt rm_star_wait
+setopt share_history
 
-# https://www.docker.io
-# brew install boot2docker
-# boot2docker init
-# boot2docker up # please add the following:
-export DOCKER_HOST=tcp://localhost:4243
+unset GREP_OPTIONS
+
+# Make sure to use double quotes
+zplug "peco/peco", as:command, from:gh-r
+zplug "yous/lime"
+zplug "yous/vanilli.sh"
+zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-history-substring-search", nice:10
+zplug "zsh-users/zsh-syntax-highlighting", nice:9
+zplug check --verbose || zplug install
+zplug load --verbose
+
+if zplug check zsh-users/zsh-history-substring-search; then # {{{
+  zmodload zsh/terminfo
+  [ -n "${terminfo[kcuu1]}" ] && bindkey "${terminfo[kcuu1]}" history-substring-search-up
+  [ -n "${terminfo[kcud1]}" ] && bindkey "${terminfo[kcud1]}" history-substring-search-down
+  bindkey -M emacs '^P' history-substring-search-up
+  bindkey -M emacs '^N' history-substring-search-down
+  bindkey -M vicmd 'k' history-substring-search-up
+  bindkey -M vicmd 'j' history-substring-search-down
+fi # }}}
+
+[[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
+
+if [ -f ~/.fzf.zsh ]; then
+  export FZF_DEFAULT_COMMAND='ag -g ""'
+  source ~/.fzf.zsh
+  # {{{ Use ag instead of the default find command for listing candidates.
+  # - The first argument to the function is the base path to start traversal
+  # - Note that ag only lists files not directories
+  # - See the source code (completion.{bash,zsh}) for the details.
+  _fzf_compgen_path() {
+    ag -g "" "$1"
+  } # }}}
+  git-commit-browser() { # {{{
+    if [[ -d '.git/' ]]; then
+      git l --color=always "$@" |
+      fzf --ansi \
+        --no-sort \
+        --reverse \
+        --tiebreak=index \
+        --bind=ctrl-s:toggle-sort \
+        --bind "ctrl-m:execute:(
+          grep --only-matching '[a-f0-9]\{7\}' |
+          head -1 |
+          xargs -I % sh -c 'git show --color=always % | less -R'
+          ) << 'FZF-EOF'
+            {}
+          FZF-EOF"
+    else
+      echo 'Not a git repository'
+    fi
+  } # }}}
+  chrome-history() { # {{{
+    local cols sep
+    cols=$(( COLUMNS / 3 ))
+    sep='{{::}}'
+
+    # Copy History DB to circumvent the lock
+    # - See http://stackoverflow.com/questions/8936878 for the file path
+    cp -f ~/Library/Application\ Support/Google/Chrome/Default/History /tmp/h
+
+    sqlite3 -separator $sep /tmp/h \
+      "select substr(title, 1, $cols), url
+      from urls order by last_visit_time desc" |
+    awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\n", $1, $2}' |
+    fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs open
+  } # }}}
+  ptags() { # {{{ search project ctags
+    local f=.git/tags
+    local line
+    [ -e $f ] && line=$(
+      awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' $f |
+      cut -c1-80 | fzf --nth=1,2
+    ) && ${EDITOR:-vim} $(cut -f3 <<< "$line") \
+      -c "set nocst" \
+      -c "silent tag $(cut -f2 <<< "$line")"
+  } # }}}
+fi
+if [ -e "$HOME/.rbenv" ]; then # {{{
+  add_to_path_once "$HOME/.rbenv/bin"
+  add_to_path_once "$HOME/.rbenv/shims"
+  eval "$(rbenv init - zsh)"
+fi # }}}
+
+# Enable completions
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+
+
+# Source my custom files after oh-my-zsh so I can override things.
+source $HOME/.dotfiles/zsh/aliases
+source $HOME/.dotfiles/zsh/functions
+[[ -f $HOME/.zshrc_private ]] && source $HOME/.zshrc_private
+
+# Unset local functions
+unset -f add_to_path_once

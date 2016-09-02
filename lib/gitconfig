@@ -1,7 +1,11 @@
 [core]
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
-  pager = less --raw-control-chars --quit-if-one-screen --no-init
+  pager = diff-so-fancy | less \
+    --tabs=4 \
+    --raw-control-chars \
+    --quit-if-one-screen \
+    --no-init
 
 [user]
   name = Steven Weller
@@ -20,19 +24,14 @@
   d = diff
   a = add --patch
   b = branch
-  today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
-  lf = log --decorate=full --format='\
+  today = log --stat --since='1 Day Ago' --pretty=oneline --abbrev-commit --date=relative
+  l = log --decorate=short --format='\
 %C(red)%h %C(reset)\
 %C(green)%<(6,trunc)%cr %C(reset)\
 %C(blue)%<(8,trunc)%an %C(reset)\
 %<(72,trunc)%s \
 %C(auto)%D%C(reset)'
-  l = "!git lf $@ | " \
-    "sed -E 's#refs/(remotes/origin|heads)/##g' |" \
-    "sed 's#\\.\\. # #' |" \
-    "sed -E 's#(\\.\\.|  ) # #' |" \
-    "$(git config --get core.pager)"
-  revolt = !sh -c 'open github.com/publitas/revolution/compare/master...$(git symbolic-ref --short HEAD)'
+  revolt = !sh -c 'open https://github.com/publitas/revolution/compare/master...$(git symbolic-ref --short HEAD)'
   ll = "!git l --numstat $@"
   ; graphviz = "!f() { echo 'digraph git {'; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f]+/\"&\"/g'; echo '}';}; f"
   ctags = !.git/hooks/ctags
@@ -77,6 +76,12 @@
   old = red
   new = green
   commit = yellow
+
+[color "diff-highlight"]
+  oldNormal = red bold
+  oldHighlight = red bold 52
+  newNormal = green bold
+  newHighlight = green bold 22
 
 [pull]
   rebase = true

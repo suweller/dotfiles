@@ -6,6 +6,7 @@ brew update && brew upgrade \
   cloc \
   ctags \
   curl \
+  diff-so-fancy \
   fzf \
   git \
   libffi \

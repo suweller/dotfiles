@@ -162,16 +162,13 @@ Plug 'jgdavey/vim-blockle' " Ruby: toggle {} <-> do ; end {{{
 " }}}
 Plug 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
 Plug 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
-" Plug 'vim-yamljump'
 Plug 'kana/vim-vspec'
 Plug 'ConradIrwin/vim-bracketed-paste'
 Plug 'derekwyatt/vim-scala'
 Plug 'wavded/vim-stylus'
 Plug 'guns/xterm-color-table.vim'
 Plug 'vim-scripts/Improved-AnsiEsc'
-" Plug 'SQLUtilities'
-Plug 'mhinz/vim-startify'
-
+" }}}
 call plug#end()
 
 filetype plugin indent on " Turn on _after_ loading all Plugins

@@ -49,15 +49,6 @@ nnoremap <LEADER>ge :Extradite<CR>
 " }}}
 Plug 'tpope/vim-rails' " Ruby Util Rails: Project Management {{{
 let g:rails_projections = {
-\ "app/presenters/*_presenter.rb": {
-\   "command": "presenter",
-\   "affinity": "model",
-\   "alternate": ["unit/presenters/%s_presenter_spec.rb", "spec/presenters/%s_presenter_spec.rb"],
-\   "related": "app/models/%s.rb",
-\   "template": "class %SPresenter\nend"
-\ },
-\ "app/assets/javascripts/*.js.coffee": { "alternate": "spec/javascripts/%s_spec.js.coffee" },
-\ "spec/javascripts/*_spec.js.coffee": { "alternate": "app/assets/javascripts/%s.js.coffee" },
 \ "spec/factories/*.rb": {
 \   "command":   "factory",
 \   "affinity":  "collection",

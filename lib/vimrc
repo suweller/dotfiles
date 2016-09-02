@@ -23,18 +23,10 @@ Plug 'junegunn/limelight.vim' " {{{ Hide other blocks of code
 let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 244
 " }}}
-Plug 'pangloss/vim-javascript' " Highlighter
-Plug 'maksimr/vim-jsbeautify' " Formatter
-Plug 'kchmck/vim-coffee-script' " Highlighter
-Plug 'mtscout6/vim-cjsx' " Highlighter
-Plug 'leshill/vim-json' " Highlighter
-Plug 'slim-template/vim-slim' " Highlighter
-Plug 'tpope/vim-haml' " Highlighter
-Plug 'tpope/vim-markdown' " Highlighter
-Plug 'mxw/vim-jsx' " Highlighter
-Plug 'vim-ruby/vim-ruby' " Ruby: Motions, Text Objects, Access Modifier Indentation {{{
+Plug 'sheerun/vim-polyglot' " Highlighter
 let g:ruby_indent_access_modifier_style = 'outdent'
-" }}}
+Plug 'maksimr/vim-jsbeautify' " Formatter
+
 Plug 'nathanaelkane/vim-indent-guides' " Highlighter, Indentation {{{
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0

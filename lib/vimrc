@@ -298,11 +298,6 @@ augroup myfiletypes
         \ elseif !exists('b:dispatch') |
         \   let b:dispatch = 'ruby %' |
         \ endif
-  autocmd FileType ruby,eruby
-        \ setlocal omnifunc=rubycomplete#Complete |
-        \ let g:rubycomplete_buffer_loading = 1 |
-        \ let g:rubycomplete_rails = 1 |
-        \ let g:rubycomplete_classes_in_global = 1
   autocmd FileType ruby,eruby syn match error contained "\<binding.pry\>"
   autocmd FileType ruby,eruby syn match error contained "\<debugger\>"
   autocmd FileType ruby,sass,css,coffee
@@ -391,7 +386,6 @@ noremap H ^
 noremap L $
 " }}}
 noremap K <NOP>
-" nnoremap <LEADER>f :grep!<SPACE>"\b\b"<LEFT><LEFT><LEFT>
 nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
 nnoremap <LEADER>f :set operatorfunc=<SID>GrepOperator<CR>g@
 vnoremap <LEADER>f :<C-U>call <SID>GrepOperator(visualmode())<CR>

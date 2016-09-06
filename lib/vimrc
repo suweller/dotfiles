@@ -30,14 +30,28 @@ Plug 'maksimr/vim-jsbeautify' " Formatter
 Plug 'nathanaelkane/vim-indent-guides' " Highlighter, Indentation {{{
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
-let g:indent_guides_indent_levels = 6
+let g:indent_guides_indent_levels = 8
 " }}}
 " Color-Schemes {{{
-Plug 'nanotech/jellybeans.vim'
+Plug 'nanotech/jellybeans.vim' " {{{
+let g:jellybeans_overrides = {
+  \ 'background': {'guibg': '000000'},
+  \ 'TabLine': {'guibg': '000000', 'guifg': '585858', 'attr': 'underline'},
+  \ 'TabLineSel': {'guibg': '343434', 'guifg': 'FFFFFF'},
+  \ 'TabLineFill': {'guibg': '000000', 'guifg': '343434', 'attr': 'underline'},
+  \ 'StatusLine': {'guibg': '444444', 'guifg': 'FFFFFF'},
+  \ 'StatusLineNC': {'guibg': '121212', 'guifg': '808080'},
+  \ 'CursorLine': {'guibg': '343434'},
+  \ 'ColorColumn': {'guibg': '1C1C1C'},
+  \ 'IndentGuidesOdd': {'guibg': '000000'},
+  \ 'IndentGuidesEven': {'guibg': '1C1C1C'},
+  \ 'SpecialKey': {'guibg': '000000'},
+  \ }
+" }}}
 " Plug 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
 "   let g:solarized_termcolors=256
 " }}}
-" Plug 'junegunn/seoul256.vim'
+Plug 'junegunn/seoul256.vim'
 " Plug 'morhetz/gruvbox'
 " }}}
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
@@ -107,7 +121,7 @@ imap <c-x><c-b> <plug>(fzf-complete-buffer-line)
 
 " }}}
 Plug 'tpope/vim-vinegar' " Util: netrw {{{
-nmap _ <Plug>VinegarUp
+nmap _ <plug>VinegarUp
 " }}}
 Plug 'nvie/vim-togglemouse' " Util: Toggle mouse for vim or terminal
 Plug 'scrooloose/syntastic' " Util: Code lint {{{
@@ -180,28 +194,8 @@ if &t_Co > 2 || has('gui_running')
   syntax on
 endif
 if &t_Co == 256 || has('gui_running')
-  if $ITERM_PROFILE == 'light'
-    set background=light
-    colorscheme solarized
-  else
-    " let g:jellybeans_use_lowcolor_black = 0
-    " let g:jellybeans_background_color_256=0 " truly black background
-    let g:indent_guides_auto_colors = 0     " custom indent guide colors
-    set background=dark
-    colorscheme jellybeans
-    hi VertSplit    ctermbg=238 ctermfg=233
-    hi LineNr       ctermfg=237 ctermbg=0
-    hi TabLineFill  ctermbg=16  ctermfg=240 cterm=underline
-    hi TabLine      ctermbg=16  ctermfg=240 cterm=underline
-    hi TabLineSel   ctermbg=234 ctermfg=255
-    hi StatusLine   ctermbg=238 ctermfg=255
-    hi StatusLineNC ctermbg=233 ctermfg=244
-    hi CursorLine ctermbg=236
-    hi ColorColumn  ctermbg=234
-    hi IndentGuidesOdd  ctermbg=16
-    hi IndentGuidesEven ctermbg=234
-    hi SpecialKey ctermbg=16 ctermfg=8
-  endif
+  set background=dark
+  colorscheme jellybeans
 endif
 
 " Cursor on a command word and let vim help you: `:help <C-R><C-W>`

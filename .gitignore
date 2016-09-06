@@ -1,3 +1,5 @@
-./lib/rbenv/
+lib/rbenv/
+lib/rbenv/**
 lib/vim/
+lib/vim/**
 !lib/rbenv/default-gems

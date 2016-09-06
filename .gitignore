@@ -1,5 +1,3 @@
-lib/rbenv/*
+./lib/rbenv/
+lib/vim/
 !lib/rbenv/default-gems
-lib/vim/*
-lib/vim/**/*
-oh-my-zsh

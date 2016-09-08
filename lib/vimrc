@@ -35,9 +35,9 @@ let g:indent_guides_indent_levels = 8
 " Color-Schemes {{{
 Plug 'nanotech/jellybeans.vim' " {{{
 let g:jellybeans_overrides = {
-  \ 'background': {'guibg': '000000'},
-  \ 'TabLine': {'guibg': '000000', 'guifg': '585858', 'attr': 'underline'},
-  \ 'TabLineSel': {'guibg': '343434', 'guifg': 'FFFFFF'},
+  \ 'background': {'ctermbg': 'none', '256ctermbg': 'none'},
+  \ 'TabLine': {'guibg': '000000', 'guifg': '585858', '256ctermbg': '16', 'attr': 'underline'},
+  \ 'TabLineSel': {'guibg': '343434', 'guifg': 'FFFFFF', '256ctermbg': 'none' },
   \ 'TabLineFill': {'guibg': '000000', 'guifg': '343434', 'attr': 'underline'},
   \ 'StatusLine': {'guibg': '444444', 'guifg': 'FFFFFF'},
   \ 'StatusLineNC': {'guibg': '121212', 'guifg': '808080'},

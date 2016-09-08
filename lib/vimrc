@@ -230,7 +230,7 @@ set tabstop=4
 set shiftwidth=2                " indent using 2 spaces
 set expandtab                   " use spaces only
 set smarttab                    " deindent with <BS>, start at indent level
-set colorcolumn=80,115          " mark the 80th character, and (old and new) github code window width
+set colorcolumn=80,115,256      " mark the 80th character, and (old and new) github code window width
 set smartcase                   " ... unless they contain at least one capital letter
 set scrolloff=5                 " don't show search results as the first line
 set laststatus=2                " Always show status line.

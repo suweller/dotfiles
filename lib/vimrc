@@ -63,7 +63,7 @@ nnoremap <LEADER>gd :Gdiff master<CR>
 Plug 'int3/vim-extradite'
 nnoremap <LEADER>ge :Extradite<CR>
 " }}}
-Plug 'tpope/vim-rails' " Ruby Util Rails: Project Management {{{
+Plug 'tpope/vim-rails', {'for': 'ruby'} " {{{
 let g:rails_projections = {
 \ "spec/factories/*.rb": {
 \   "command":   "factory",
@@ -75,16 +75,16 @@ let g:rails_projections = {
 \   "keywords":  "factory sequence"
 \ }}
 " }}}
-Plug 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
+Plug 'tpope/vim-bundler', {'for': 'ruby'} " Ruby Util Plugin: Gem Ctags
 Plug 'taglist.vim' " Util: taglist
-Plug 'tpope/vim-rake' " Ruby Util Non-Rails: Plain ruby project management
-Plug 'danchoi/ri.vim' " Ruby: Quick access to Ruby documentation {{{1
+Plug 'tpope/vim-rake', {'for': 'ruby'}
+Plug 'danchoi/ri.vim', {'for': 'ruby'}  " documentation access {{{
   let g:ri_no_mappings=1
   nnoremap  <LEADER>rd :call ri#OpenSearchPrompt(1)<cr> " vertical split
   nnoremap  <LEADER>rc :call ri#LookupNameUnderCursor()<cr> " keyword lookup
 " }}}
-Plug 'GutenYe/gem.vim' " Ruby: Gem Project Management
-Plug 'thoughtbot/vim-rspec' " Ruby: +Rspec runner Integration {{{
+Plug 'GutenYe/gem.vim', {'for': 'ruby'}
+Plug 'thoughtbot/vim-rspec', {'for': 'ruby'} " {{{
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
 map <LEADER>sf :call RunCurrentSpecFile()<CR>
 map <LEADER>sn :call RunNearestSpec()<CR>
@@ -162,7 +162,7 @@ let g:vimwiki_list = [
   \ }
 \ ]
 " }}}
-Plug 'tpope/vim-rbenv' " Util: rbenv.vim
+Plug 'tpope/vim-rbenv', {'for': 'ruby'} " Util: rbenv.vim
 Plug 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
 " Plug 'tpope/vim-ragtag' " Util: ghetto HTML/XML mappings
 Plug 'tpope/vim-unimpaired' " Util: brakety Things
@@ -170,6 +170,7 @@ Plug 'tpope/vim-repeat' " Util: make things repeatable with '.'
 Plug 'tpope/vim-speeddating' " Util: CTRL-A/CTRL-X to increment dates/times &  more
 Plug 'godlygeek/tabular' " Util: vertically aligning things (not for code)
 Plug 'kana/vim-textobj-user' | Plug 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
+Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby'}
 Plug 'AndrewRadev/splitjoin.vim' " Util: Toggle inline/multiline {{{
   let g:splitjoin_split_mapping = '<LEADER>ss'
   let g:splitjoin_join_mapping = '<LEADER>sj'
@@ -177,11 +178,10 @@ Plug 'AndrewRadev/splitjoin.vim' " Util: Toggle inline/multiline {{{
 Plug 'jgdavey/vim-blockle' " Ruby: toggle {} <-> do ; end {{{
   let g:blockle_mapping = '<LEADER>bl'
 " }}}
-Plug 'lmeijvogel/vim-yaml-helper' " Util: YAML Navigation
+Plug 'lmeijvogel/vim-yaml-helper', {'for': 'yaml'}
 Plug 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
 Plug 'kana/vim-vspec'
 Plug 'ConradIrwin/vim-bracketed-paste'
-Plug 'derekwyatt/vim-scala'
 Plug 'wavded/vim-stylus'
 Plug 'guns/xterm-color-table.vim'
 Plug 'vim-scripts/Improved-AnsiEsc'

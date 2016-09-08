@@ -52,7 +52,9 @@ let g:jellybeans_overrides = {
 "   let g:solarized_termcolors=256
 " }}}
 Plug 'junegunn/seoul256.vim'
-" Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
+Plug 'chriskempson/base16-vim'
+let base16colorspace=256
 " }}}
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
 nnoremap <LEADER>gb :Gblame<CR>

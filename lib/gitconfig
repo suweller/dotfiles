@@ -1,11 +1,12 @@
 [core]
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
-  pager = diff-so-fancy | less \
-    --tabs=4 \
-    --raw-control-chars \
-    --quit-if-one-screen \
-    --no-init
+  pager = diff-so-fancy \
+    | less \
+      --no-init \
+      --quit-if-one-screen \
+      --raw-control-chars \
+      --tabs=4
 
 [user]
   name = Steven Weller
@@ -20,12 +21,18 @@
   c = commit --verbose
   co = checkout
   s = status --short --branch
-  prompt = "!sh -c \"[ -d .git/ ] && git status --short --branch | grep -E '^\\#\\#[^\\[]+\\[' | sed -E 's/\\#\\#[^\\[]+//'\""
   d = diff
   a = add --patch
   b = branch
-  today = log --stat --since='1 Day Ago' --pretty=oneline --abbrev-commit --date=relative
-  l = log --decorate=short --format='\
+  today = log \
+    --stat \
+    --since='1 Day Ago' \
+    --pretty=oneline \
+    --abbrev-commit \
+    --date=relative
+  l = log \
+    --decorate=short \
+    --format='\
 %C(red)%h %C(reset)\
 %C(green)%<(6,trunc)%cr %C(reset)\
 %C(blue)%<(8,trunc)%an %C(reset)\
@@ -38,10 +45,31 @@
   ctags-bundle = !.git/hooks/ctags-bundle
   ed = !$EDITOR -p `git diff --name-only $@ | uniq`
   who = shortlog --numbered --summary --
-  find-merge = "!sh -c 'commit=$0 && branch=${1:-HEAD} && (git rev-list $commit..$branch --ancestry-path | cat -n; git rev-list $commit..$branch --first-parent | cat -n) | sort -k2 | uniq -f1 -d | sort -n | tail -1 | cut -f2'"
-  show-merge = "!sh -c 'merge=$(git find-merge $0 $1) && [ -n \"$merge\" ] && git show $merge'"
-  sup = "!sh -c 'for branch in $(git branch --no-merged); do git lf $branch ^$(git symbolic-ref HEAD); echo ''; done ' | $(git config --get core.pager)"
-  this = !git lf $@ master...HEAD
+  find-merge = "!sh -c ' \
+    commit=$0 \
+    && branch=${1:-HEAD} \
+    && ( \
+      git rev-list $commit..$branch --ancestry-path \
+      | cat -n; git rev-list $commit..$branch --first-parent \
+      | cat -n \
+    ) \
+    | sort -k2 \
+    | uniq -f1 -d \
+    | sort -n \
+    | tail -1 \
+    | cut -f2 \
+    '"
+  show-merge = "!sh -c ' \
+    merge=$(git find-merge $0 $1) \
+    && [ -n \"$merge\" ] \
+    && git show $merge \
+    '"
+  sup = "!sh -c 'for branch in $(git branch --no-merged); do \
+    git l $branch ^$(git symbolic-ref HEAD); \
+    echo ''; \
+    done ' \
+    | $(git config --get core.pager)"
+  this = !git l $@ HEAD ^master
   nuke=!git branch -D $1 && git push origin :$1
 
 [commit]

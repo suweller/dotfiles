@@ -70,6 +70,7 @@
     done '"
   changes = !sh -c 'git $0 $@ HEAD ^$(git merge-base --fork-point master)'
   nuke = !git branch -D $1 && git push origin :$1
+  rubocop = !sh -c 'bin/rubocop-git $(git merge-base --fork-point master) HEAD'
 
 [commit]
   gpgsign = true

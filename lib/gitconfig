@@ -69,7 +69,7 @@
     echo ''; \
     done '"
   changes = !sh -c 'git $0 $@ HEAD ^$(git merge-base --fork-point master)'
-  nuke=!git branch -D $1 && git push origin :$1
+  nuke = !git branch -D $1 && git push origin :$1
 
 [commit]
   gpgsign = true

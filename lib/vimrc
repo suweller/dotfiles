@@ -95,7 +95,7 @@ Plug 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (tr
 nnoremap - :Switch<cr>
 " }}}
 Plug 'christoomey/vim-tmux-navigator' " Util: Seamless movement between VIM and tmux splits
-Plug '/usr/local/opt/the_silver_searcher' | Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
+Plug '/usr/local/opt/the_silver_searcher/' | Plug '/usr/local/opt/fzf/' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
 set grepprg=ag\ --vimgrep\ --hidden\ --ignore\ .git/
 
 let g:fzf_buffers_jump = 1

@@ -21,6 +21,11 @@ export CLICOLOR=1
 export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
 
 add_to_path_once "$HOME/.dotfiles/bin"
+add_to_path_once "/usr/bin"
+add_to_path_once "/usr/local/bin"
+add_to_path_once "/usr/sbin"
+add_to_path_once "/sbin"
+add_to_path_once "/usr/local/sbin"
 
 export EDITOR='vim'
 # export PAGER="col -b | vim -MR - "

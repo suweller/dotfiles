@@ -67,8 +67,7 @@
   sup = "!sh -c 'for branch in $(git branch --no-merged); do \
     git l $branch ^$(git symbolic-ref HEAD); \
     echo ''; \
-    done ' \
-    | $(git config --get core.pager)"
+    done '"
   changes = !sh -c 'git $0 $@ HEAD ^$(git merge-base --fork-point master)'
   nuke=!git branch -D $1 && git push origin :$1
 

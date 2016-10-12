@@ -4,6 +4,7 @@
 --exclude=doc
 --exclude=log
 --exclude=tmp
+--exclude=rbenv
 
 --languages=-sql
 

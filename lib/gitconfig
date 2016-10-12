@@ -69,7 +69,7 @@
     echo ''; \
     done ' \
     | $(git config --get core.pager)"
-  this = !git l $@ HEAD ^master
+  changes = !sh -c 'git $0 $@ HEAD ^$(git merge-base --fork-point master)'
   nuke=!git branch -D $1 && git push origin :$1
 
 [commit]

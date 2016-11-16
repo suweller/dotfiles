@@ -75,7 +75,7 @@
     git l $branch ^$(git symbolic-ref HEAD); \
     echo ''; \
     done '"
-  changes = !sh -c 'git $0 $@ HEAD ^$(git merge-base --fork-point master)'
+  x = !sh -c 'git $@ HEAD ^$(git merge-base --fork-point $0)'
   nuke = !git branch -D $1 && git push origin :$1
   rubocop = !sh -c 'bin/rubocop-git $(git merge-base --fork-point master) HEAD'
 

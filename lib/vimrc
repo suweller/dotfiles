@@ -95,7 +95,6 @@ map <LEADER>sa :call RunAllSpecs()<CR>
 Plug 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
 nnoremap - :Switch<cr>
 " }}}
-Plug 'christoomey/vim-tmux-navigator' " Util: Seamless movement between VIM and tmux splits
 Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
 Plug '/usr/local/opt/the_silver_searcher/' | Plug '/usr/local/opt/fzf/' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
 set grepprg=ag\ --vimgrep\ --hidden\ --ignore\ .git/

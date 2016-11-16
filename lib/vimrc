@@ -24,6 +24,7 @@ let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 244
 " }}}
 Plug 'sheerun/vim-polyglot' " Highlighter
+Plug 'AndrewRadev/vim-eco' " Highlighter
 let g:ruby_indent_access_modifier_style = 'outdent'
 Plug 'maksimr/vim-jsbeautify' " Formatter
 

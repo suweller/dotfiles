@@ -90,6 +90,7 @@ fi # }}}
 if [ -f ~/.fzf.zsh ]; then
   export FZF_DEFAULT_COMMAND='ag -g ""'
   source ~/.fzf.zsh
+
   # {{{ Use ag instead of the default find command for listing candidates.
   # - The first argument to the function is the base path to start traversal
   # - Note that ag only lists files not directories
@@ -97,6 +98,7 @@ if [ -f ~/.fzf.zsh ]; then
   _fzf_compgen_path() {
     ag -g "" "$1"
   } # }}}
+
   git-commit-browser() { # {{{
     if [[ -d '.git/' ]]; then
       git la --color=always "$@" |
@@ -119,21 +121,21 @@ if [ -f ~/.fzf.zsh ]; then
       echo 'Not a git repository'
     fi
   } # }}}
+
   chrome-history() { # {{{
     local cols sep
     cols=$(( COLUMNS / 3 ))
     sep='{{::}}'
-
     # Copy History DB to circumvent the lock
     # - See http://stackoverflow.com/questions/8936878 for the file path
     cp -f ~/Library/Application\ Support/Google/Chrome/Default/History /tmp/h
-
     sqlite3 -separator $sep /tmp/h \
       "select substr(title, 1, $cols), url
       from urls order by last_visit_time desc" |
     awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\n", $1, $2}' |
     fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs open
   } # }}}
+
   ptags() { # {{{ search project ctags
     local f=.git/tags
     local line

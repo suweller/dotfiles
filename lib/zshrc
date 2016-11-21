@@ -99,7 +99,7 @@ if [ -f ~/.fzf.zsh ]; then
   } # }}}
   git-commit-browser() { # {{{
     if [[ -d '.git/' ]]; then
-      git l --color=always "$@" |
+      git la --color=always "$@" |
       fzf --ansi \
         --no-sort \
         --reverse \
@@ -108,7 +108,7 @@ if [ -f ~/.fzf.zsh ]; then
         --preview "echo {} |
           grep --only-matching '[a-f0-9]\{7\}' |
           head -1 |
-          xargs -I % sh -c 'git show --oneline --color=always % |
+          xargs -I % sh -c 'git show --color=always --format="" % |
           diff-so-fancy |
           head -$LINES'" \
         --bind "enter:execute:echo {} |

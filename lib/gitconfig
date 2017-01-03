@@ -53,35 +53,36 @@
 %<(72,trunc)%s \
 %C(auto)%D%C(reset)'
   revolt = !sh -c 'open https://github.com/publitas/revolution/compare/master...$(git symbolic-ref --short HEAD)'
-  ll = "!git l --numstat $@"
+  ll = !git l --numstat $@
   ; graphviz = "!f() { echo 'digraph git {'; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f]+/\"&\"/g'; echo '}';}; f"
-  ctags = !.git/hooks/ctags
+  ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle
   ed = !$EDITOR -p `git diff --name-only $@ | uniq`
   who = shortlog --numbered --summary --
-  find-merge = "!sh -c ' \
+  find-merge = !sh -c ' \
     commit=$0 \
     && branch=${1:-HEAD} \
     && ( \
       git rev-list $commit..$branch --ancestry-path \
-      | cat -n; git rev-list $commit..$branch --first-parent \
+      | cat -n && git rev-list $commit..$branch --first-parent \
       | cat -n \
     ) \
-    | sort -k2 \
+    | sort --key=2 \
     | uniq -f1 -d \
     | sort -n \
     | tail -1 \
     | cut -f2 \
-    '"
-  show-merge = "!sh -c ' \
+    '
+  show-merge = !sh -c ' \
     merge=$(git find-merge $0 $1) \
     && [ -n \"$merge\" ] \
-    && git show $merge \
-    '"
+    && git la $merge^..$merge \
+    '
   sup = "!sh -c 'for branch in $(git branch --no-merged); do \
     git l $branch ^$(git symbolic-ref HEAD); \
     echo ''; \
-    done '"
+    done \
+    '"
   x = !sh -c 'git $@ HEAD ^$(git merge-base --fork-point $0)'
   nuke = !git branch -D $1 && git push origin :$1
   rubocop = !sh -c 'bin/rubocop-git $(git merge-base --fork-point master) HEAD'

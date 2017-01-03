@@ -24,6 +24,13 @@
   d = diff
   a = add --patch
   b = branch
+  ba = for-each-ref \
+    --sort=authordate refs/remotes \
+    --format='\
+%(color:red)%(objectname:short) \
+%(align:15,left)%(color:green)%(authordate:relative)%(end) \
+%(align:20,left)%(color:blue)%(authorname)%(end) \
+%(color:reset)%(refname:strip=3)'
   today = log \
     --stat \
     --since='1 Day Ago' \

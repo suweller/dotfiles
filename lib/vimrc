@@ -130,14 +130,10 @@ Plug 'tpope/vim-vinegar' " Util: netrw {{{
 nmap _ <plug>VinegarUp
 " }}}
 Plug 'nvie/vim-togglemouse' " Util: Toggle mouse for vim or terminal
-Plug 'scrooloose/syntastic' " Util: Code lint {{{
-let g:syntastic_enable_signs=1
-let g:syntastic_error_symbol='‼'
-let g:syntastic_warning_symbol='!'
-let g:syntastic_style_error_symbol='⚠'
-
-let g:syntastic_javascript_checkers = ['eslint']
-" let g:syntastic_ruby_checkers = ['rubocop-git']
+Plug 'w0rp/ale' " Util: Code lint {{{
+let g:ale_lint_on_enter = 0
+let g:ale_sign_column_always = 1
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 " }}}
 Plug 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
 Plug 'tpope/vim-commentary' " Util: (Un)Comment made easy
@@ -250,7 +246,7 @@ set winaltkeys=no               " Let vim handle alt keys
 set list                        " Create a list & make invisible chars visible
 set statusline=
 set statusline+=%<%.99f\ %h%m%r%y " absolute filename (max 99) & used syntax properties
-set statusline+=%#ErrorMsg#%{SL('SyntasticStatuslineFlag')}%* " Linter message
+set statusline+=\ %{ALEGetStatusLine()} " Linter message
 set statusline+=%=\ %{SL('fugitive#statusline')} " Git branchname
 set statusline+=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} " encoding
 set statusline+=%k\ %-12.(%l,%c%V%) " cursor position & line count

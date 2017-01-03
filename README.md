@@ -19,9 +19,7 @@ be sure to substitute `id_rsa.pub` with your own.
 
 ## VIM
 
-Vim plugins are handled by the `Vundle` vim plugin.
-This plugin is fetched and placed in the correct directory by cloning the
-git repository: https://github.com/gmarik/vundle
-
+Vim plugins are handled by (`vim-plug`)[https://github.com/junegunn/vim-plug].
+This plugin is fetched and placed in the correct directory by cloning the repo.
 After its fetched,
 it will launch vim to fetch and install all other plugins.

@@ -326,6 +326,7 @@ augroup END
 " autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
 autocmd BufNewFile,BufRead *.txt setlocal wrap lbr
 autocmd BufNewFile,BufRead *.handlebars,*.hbs set ft=html syntax=handlebars
+autocmd filetype crontab setlocal nobackup nowritebackup
 autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 
 " Hide the noise

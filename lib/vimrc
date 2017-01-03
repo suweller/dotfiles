@@ -59,6 +59,7 @@ let base16colorspace=256
 " }}}
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
 nnoremap <LEADER>gb :Gblame<CR>
+nnoremap <LEADER>gs :Gdiff<CR>
 nnoremap <LEADER>gd :Gdiff master<CR>
 
 Plug 'int3/vim-extradite'

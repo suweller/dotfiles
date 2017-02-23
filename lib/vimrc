@@ -64,6 +64,10 @@ nnoremap <LEADER>gd :Gdiff master<CR>
 
 Plug 'int3/vim-extradite'
 nnoremap <LEADER>ge :Extradite<CR>
+
+Plug 'airblade/vim-gitgutter'
+let g:gitgutter_sign_column_always = 1
+
 " }}}
 Plug 'tpope/vim-rails', {'for': 'ruby'} " {{{
 let g:rails_projections = {
@@ -96,7 +100,7 @@ map <LEADER>sa :call RunAllSpecs()<CR>
 Plug 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
 nnoremap - :Switch<cr>
 " }}}
-Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
+" Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
 Plug '/usr/local/opt/the_silver_searcher/' | Plug '/usr/local/opt/fzf/' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
 set grepprg=ag\ --vimgrep\ --hidden\ --ignore\ .git/
 

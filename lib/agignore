@@ -13,3 +13,4 @@ vendor/
 *.min.*
 *.png
 *.svg
+*jquery*

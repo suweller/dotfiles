@@ -138,6 +138,10 @@ Plug 'w0rp/ale' " Util: Code lint {{{
 let g:ale_lint_on_enter = 0
 let g:ale_sign_column_always = 1
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
+let g:ale_echo_msg_format = '%linter%: %s'
+let g:ale_linters = {
+\   'javascript': ['eslint', 'flow'],
+\}
 " }}}
 Plug 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
 Plug 'tpope/vim-commentary' " Util: (Un)Comment made easy
@@ -293,8 +297,6 @@ augroup myfiletypes
         \ elseif !exists('b:dispatch') |
         \   let b:dispatch = 'ruby %' |
         \ endif
-  autocmd FileType ruby,eruby syn match error contained "\<binding.pry\>"
-  autocmd FileType ruby,eruby syn match error contained "\<debugger\>"
   autocmd FileType ruby,sass,css,coffee
         \ let b:switch_custom_definitions = [
         \   {

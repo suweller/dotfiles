@@ -147,3 +147,8 @@
 
 [gpg]
   program = gpg2
+
+[diff-so-fancy]
+	stripLeadingSymbols = false
+	useUnicodeRuler = false
+	markEmptyLines = false

@@ -21,10 +21,12 @@ brew update && brew upgrade --cleanup \
   readline \
   ruby-build \
   the_silver_searcher \
+  tidy-html5 \
   tmux \
   valgrind \
   vim \
   xz \
+  yarn \
   youtube-dl \
   zsh \
 

@@ -52,7 +52,6 @@
 %C(blue)%<(8,trunc)%an %C(reset)\
 %<(72,trunc)%s \
 %C(auto)%D%C(reset)'
-  revolt = !sh -c 'open https://github.com/publitas/revolution/compare/master...$(git symbolic-ref --short HEAD)'
   ll = !git l --numstat $@
   ; graphviz = "!f() { echo 'digraph git {'; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f]+/\"&\"/g'; echo '}';}; f"
   ctags = !.git/hooks/ctags $@
@@ -78,6 +77,15 @@
     && [ -n \"$merge\" ] \
     && git la $merge^..$merge \
     '
+  pr = !sh -c ' \
+    open https://github.com/$( \
+      git remote --verbose \
+      | ag --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
+    )/compare/master...$( \
+      git symbolic-ref --short HEAD \
+    ) \
+    '
+
   sup = "!sh -c 'for branch in $(git branch --no-merged); do \
     git l $branch ^$(git symbolic-ref HEAD); \
     echo ''; \

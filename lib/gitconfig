@@ -24,6 +24,7 @@
   d = diff
   a = add --patch
   b = branch
+
   ba = for-each-ref \
     --sort=authordate refs/remotes \
     --format='\
@@ -31,12 +32,7 @@
 %(align:15,left)%(color:green)%(authordate:relative)%(end) \
 %(align:20,left)%(color:blue)%(authorname)%(end) \
 %(color:reset)%(refname:strip=3)'
-  today = log \
-    --stat \
-    --since='1 Day Ago' \
-    --pretty=oneline \
-    --abbrev-commit \
-    --date=relative
+
   l = log \
     --decorate=short \
     --format='\
@@ -53,11 +49,12 @@
 %<(72,trunc)%s \
 %C(auto)%D%C(reset)'
   ll = !git l --numstat $@
-  ; graphviz = "!f() { echo 'digraph git {'; git log --pretty='format:  %h -> { %p }' \"$@\" | sed 's/[0-9a-f]+/\"&\"/g'; echo '}';}; f"
+
   ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle
   ed = !$EDITOR -p `git diff --name-only $@ | uniq`
   who = shortlog --numbered --summary --
+
   find-merge = !sh -c ' \
     commit=$0 \
     && branch=${1:-HEAD} \

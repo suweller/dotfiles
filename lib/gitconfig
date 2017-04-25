@@ -38,13 +38,6 @@
     --format='\
 %C(red)%h %C(reset)\
 %C(green)%<(6,trunc)%cr %C(reset)\
-%<(72,trunc)%s \
-%C(auto)%D%C(reset)'
-  la = log \
-    --decorate=short \
-    --format='\
-%C(red)%h %C(reset)\
-%C(green)%<(6,trunc)%cr %C(reset)\
 %C(blue)%<(8,trunc)%an %C(reset)\
 %<(72,trunc)%s \
 %C(auto)%D%C(reset)'

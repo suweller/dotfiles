@@ -114,6 +114,12 @@ autocmd VimEnter * command! Colors
 nnoremap <C-G>c :Commits<CR>
 nnoremap <C-G>b :BCommits<CR>
 nnoremap <C-G>f :GFiles?<CR>
+nnoremap <C-G>t :call fzf#run({
+  \
+  \ 'source': "git ls-touched",
+  \ 'options': '--ansi',
+  \ 'sink': 'e'
+  \ })<CR>
 nnoremap <C-F>c :Colors<CR>
 " nnoremap <C-F>h :Helptags<CR> " TODO
 nnoremap <C-F>t :Tags<CR>

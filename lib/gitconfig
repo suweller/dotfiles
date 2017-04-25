@@ -43,6 +43,11 @@
 %C(auto)%D%C(reset)'
   ll = !git l --numstat $@
 
+  ls-touched = !git diff --name-status master...HEAD \
+    | sed -E 's/^([^[:space:]]+)[[:space:]]+//g' \
+    & git -c color.status=always status  --short --untracked-files=all \
+    | sed -E 's/^[^[:space:]]+[[:space:]]+(.* -> ){0,1}//g'
+
   ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle
   ed = !$EDITOR -p `git diff --name-only $@ | uniq`

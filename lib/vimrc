@@ -28,6 +28,7 @@ Plug 'AndrewRadev/vim-eco' " Highlighter
 let g:ruby_indent_access_modifier_style = 'outdent'
 Plug 'maksimr/vim-jsbeautify' " Formatter
 
+Plug 'christoomey/vim-tmux-navigator'
 Plug 'nathanaelkane/vim-indent-guides' " Highlighter, Indentation {{{
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0

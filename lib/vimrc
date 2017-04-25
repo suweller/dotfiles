@@ -79,30 +79,45 @@ let g:rails_projections = {
 \   "test":      ["unit/models/%i_test.rb", "spec/models/%i_spec.rb"],
 \   "template":  "FactoryGirl.define do\n  factory :%i do\n  end\nend",
 \   "keywords":  "factory sequence"
+\ },
+\ "app/mailers/*.rb": {
+\   "command":   "mailer",
+\   "affinity":  "collection",
+\   "alternate": "spec/mailers/previews/%i_preview.rb",
+\   "related":   "app/views/mailers/%i.html.erb",
+\   "test":      ["unit/mailers/%i_test.rb", "spec/mailers/%i_spec.rb"],
+\   "template":  "",
+\   "keywords":  "mailers"
 \ }}
 " }}}
-Plug 'tpope/vim-bundler', {'for': 'ruby'} " Ruby Util Plugin: Gem Ctags
+Plug 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
 Plug 'taglist.vim' " Util: taglist
-Plug 'tpope/vim-rake', {'for': 'ruby'}
+Plug 'tpope/vim-rake'
 Plug 'danchoi/ri.vim', {'for': 'ruby'}  " documentation access {{{
   let g:ri_no_mappings=1
   nnoremap  <LEADER>rd :call ri#OpenSearchPrompt(1)<cr> " vertical split
   nnoremap  <LEADER>rc :call ri#LookupNameUnderCursor()<cr> " keyword lookup
 " }}}
-Plug 'GutenYe/gem.vim', {'for': 'ruby'}
+Plug 'GutenYe/gem.vim'
 Plug 'thoughtbot/vim-rspec', {'for': 'ruby'} " {{{
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
 map <LEADER>sf :call RunCurrentSpecFile()<CR>
 map <LEADER>sn :call RunNearestSpec()<CR>
 map <LEADER>sl :call RunLastSpec()<CR>
-map <LEADER>sa :call RunAllSpecs()<CR>
+map <LEADER>sa :Dispatch bin/parallel_rspec spec/<CR>
 " }}}
 Plug 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
 nnoremap - :Switch<cr>
 " }}}
 " Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
-Plug '/usr/local/opt/the_silver_searcher/' | Plug '/usr/local/opt/fzf/' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
-set grepprg=ag\ --vimgrep\ --hidden\ --ignore\ .git/
+Plug '/usr/local/opt/fzf/' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
+if executable("rg")
+  set grepprg=rg\ --vimgrep
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
+elseif executable("ag")
+  set grepprg=ag\ --vimgrep\ --hidden
+  set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
 
 let g:fzf_buffers_jump = 1
 let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'

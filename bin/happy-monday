@@ -1,8 +1,12 @@
 #!/bin/bash
 set -x
 
+# brew tap burntsushi/ripgrep https://github.com/BurntSushi/ripgrep.git
+# brew install burntsushi/ripgrep/ripgrep-bin
+
 brew update && brew upgrade --cleanup \
   autojump \
+  burntsushi/ripgrep/ripgrep-bin \
   cloc \
   ctags \
   curl \

@@ -10,6 +10,7 @@ noremap <F10> :set spell! spell?<CR>
 nnoremap <F9> :Dispatch<CR>
 
 " set synmaxcol=256
+set updatetime=1000
 set vb
 
 call plug#begin('~/.vim/plugged')
@@ -70,7 +71,8 @@ Plug 'airblade/vim-gitgutter'
 let g:gitgutter_sign_column_always = 1
 
 " }}}
-Plug 'tpope/vim-rails', {'for': 'ruby'} " {{{
+Plug 'vim-ruby/vim-ruby'
+Plug 'tpope/vim-rails', " {{{
 let g:rails_projections = {
 \ "spec/factories/*.rb": {
 \   "command":   "factory",
@@ -191,7 +193,7 @@ let g:vimwiki_list = [
   \ }
 \ ]
 " }}}
-Plug 'tpope/vim-rbenv', {'for': 'ruby'} " Util: rbenv.vim
+Plug 'tpope/vim-rbenv' " Util: rbenv.vim
 Plug 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
 " Plug 'tpope/vim-ragtag' " Util: ghetto HTML/XML mappings
 Plug 'tpope/vim-unimpaired' " Util: brakety Things

@@ -72,6 +72,7 @@
     && [ -n \"$merge\" ] \
     && git la $merge^..$merge \
     '
+
   pr = !sh -c ' \
     open https://github.com/$( \
       git remote --verbose \
@@ -86,7 +87,7 @@
     echo ''; \
     done \
     '"
-  x = !sh -c 'git $@ HEAD ^$(git merge-base --fork-point $0)'
+  x = !sh -c 'git $1 HEAD ^$(git merge-base --fork-point $0) $2'
   nuke = !git branch -D $1 && git push origin :$1
   rubocop = !sh -c 'bin/rubocop-git $(git merge-base --fork-point master) HEAD'
 
@@ -98,9 +99,6 @@
 
 [init]
   templatedir = ~/.git_template
-
-[merge]
-  tool = vimdiff
 
 [diff]
   # For Github-style word diffs
@@ -137,6 +135,9 @@
   smudge = git lfs smudge %f
   required = true
 
+[merge]
+  tool = vimdiff
+
 [merge "railsschema"]
   name = newer Rails schema version
   driver = "ruby -e '\n\
@@ -150,8 +151,7 @@
 
 [gpg]
   program = gpg2
-
 [diff-so-fancy]
-	stripLeadingSymbols = false
-	useUnicodeRuler = false
-	markEmptyLines = false
+  stripLeadingSymbols = false
+  useUnicodeRuler = false
+  markEmptyLines = false

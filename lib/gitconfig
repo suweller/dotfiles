@@ -28,7 +28,7 @@
     --sort=authordate refs/remotes \
     --format='\
 %(color:red)%(objectname:short) \
-%(align:15,left)%(color:green)%(authordate:relative)%(end) \
+%(align:20,left)%(color:green)%(authordate:relative)%(end) \
 %(align:20,left)%(color:blue)%(authorname)%(end) \
 %(color:reset)%(refname:strip=3)'
 

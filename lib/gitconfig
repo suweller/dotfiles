@@ -42,10 +42,10 @@
 %C(auto)%D%C(reset)'
   ll = !git l --numstat $@
 
-  ls-touched = !git diff --name-status master...HEAD \
-    | sed -E 's/^([^[:space:]]+)[[:space:]]+//g' \
+  ; TODO: Allow an argument to be passed instead of forcing `master`
+  ls-touched = !git diff --name-only $(git merge-base --fork-point master) \
+    | sed -E 's/^/ C /' \
     & git -c color.status=always status  --short --untracked-files=all \
-    | sed -E 's/^[^[:space:]]+[[:space:]]+(.* -> ){0,1}//g'
 
   ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle
@@ -69,7 +69,7 @@
   show-merge = !sh -c ' \
     merge=$(git find-merge $0 $1) \
     && [ -n \"$merge\" ] \
-    && git la $merge^..$merge \
+    && git l $merge^..$merge \
     '
 
   pr = !sh -c ' \

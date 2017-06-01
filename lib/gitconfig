@@ -1,8 +1,7 @@
 [core]
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
-  pager = diff-so-fancy \
-    | less \
+  pager = less \
       --no-init \
       --quit-if-one-screen \
       --raw-control-chars \

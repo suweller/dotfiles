@@ -14,7 +14,8 @@ set updatetime=1000
 set vb
 
 call plug#begin('~/.vim/plugged')
-Plug 'Align'
+Plug 'vim-scripts/Align'
+" Plug 'chrisbra/csv.vim'
 Plug 'junegunn/goyo.vim' " {{{
   let g:goyo_width = 100
   let g:goyo_margin_top = 2
@@ -94,7 +95,6 @@ let g:rails_projections = {
 \ }}
 " }}}
 Plug 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
-Plug 'taglist.vim' " Util: taglist
 Plug 'tpope/vim-rake'
 Plug 'danchoi/ri.vim', {'for': 'ruby'}  " documentation access {{{
   let g:ri_no_mappings=1
@@ -173,7 +173,7 @@ Plug 'tpope/vim-dispatch' " Util: Allow asynchronous tasks to be dispatched
 Plug 'tpope/vim-endwise' " Util: 'wisely' add `end` after `if` `do` etc.
 Plug 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
 Plug 'tpope/vim-afterimage' " Util: Edit (small) images
-Plug 'vimwiki' " Util: Nice way to take and organise notes {{{
+Plug 'vim-scripts/vimwiki' " Util: Nice way to take and organise notes {{{
 let g:vimwiki_global_ext = 0
 let g:vimwiki_list = [
   \ {

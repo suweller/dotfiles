@@ -9,16 +9,13 @@ fi
 # Editor
 alias vi='$EDITOR'
 
-# Quick file access
-alias aliases='$EDITOR ~/.dotfiles/zsh/aliases && source ~/.dotfiles/zsh/aliases'
-alias zshrc='$EDITOR ~/.zshrc && source ~/.zshrc'
-alias vimrc='$EDITOR ~/.dotfiles/lib/vimrc'
-alias tmuxrc='$EDITOR ~/.tmuxrc'
-alias gitrc='$EDITOR ~/.gitconfig'
+# Quick access to configuration files
+alias aliases='cd ~/.dotfiles && $EDITOR zsh/aliases && source zsh/aliases && popd'
+alias zshrc='cd ~/.dotfiles && $EDITOR lib/zshrc && source lib/zshrc && popd'
+alias vimrc='cd ~/.dotfiles && $EDITOR lib/vimrc && popd'
+alias tmuxrc='cd ~/.dotfiles && $EDITOR lib/tmux.conf && tmux lib/tmux.conf && popd'
+alias gitrc='cd ~/.dotfiles && $EDITOR lib/gitconfig && popd'
 alias gems='$EDITOR ~/.rbenv/default-gems'
-
-# Quick dir access
-alias d='cd ~/.dotfiles'
 
 # Git aliases
 alias igt='git'
@@ -29,6 +26,5 @@ alias fail='$EDITOR `ag "rspec ./spec/.*_spec.rb" tmp/failing_specs.log | ag -o 
 
 alias killrb='killall -9 ruby'
 
-alias remigrate='bundle exec rake db:drop db:create db:migrate db:test:clone parallel:prepare'
 alias migrate='bundle exec rake db:migrate db:test:clone parallel:prepare'
 alias rollback='bundle exec rake db:rollback'

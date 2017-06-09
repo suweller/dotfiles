@@ -42,10 +42,19 @@
 %C(auto)%D%C(reset)'
   ll = !git l --numstat $@
 
-  ; TODO: Allow an argument to be passed instead of forcing `master`
-  ls-touched = !git diff --name-only $(git merge-base --fork-point master) \
+  main-branch = "!ag \
+    --nocolor \
+    --only-matching \
+    '(?<=^\\[branch \")[^\"]*(?=\"\\]$)' \
+    .git/config \
+    | head -1 \
+    | tr -d '\\012\\015' \
+    "
+  main-fork-point = !sh -c "git merge-base --fork-point $(git main-branch)"
+  ls-touched = !sh - c "git diff --name-only $(git main-fork-point) \
     | sed -E 's/^/ C /' \
     & git -c color.status=always status  --short --untracked-files=all \
+    "
 
   ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle
@@ -76,7 +85,7 @@
     open https://github.com/$( \
       git remote --verbose \
       | ag --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
-    )/compare/master...$( \
+    )/compare/$(git main-branch)...$( \
       git symbolic-ref --short HEAD \
     ) \
     '
@@ -88,7 +97,7 @@
     '"
   x = !sh -c 'git $1 HEAD ^$(git merge-base --fork-point $0) $2'
   nuke = !git branch -D $1 && git push origin :$1
-  rubocop = !sh -c 'bin/rubocop-git $(git merge-base --fork-point master) HEAD'
+  rubocop = !sh -c 'bin/rubocop-git $(git main-fork-point)) HEAD'
 
 [commit]
   gpgsign = true

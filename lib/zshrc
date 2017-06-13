@@ -89,7 +89,8 @@ fi # }}}
 [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
 if [ -f ~/.fzf.zsh ]; then
-  export FZF_DEFAULT_COMMAND='rg --files --follow'
+  export FZF_DEFAULT_COMMAND='ag -g ""'
+  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
   source ~/.fzf.zsh
 
   # {{{ Use ag instead of the default find command for listing candidates.

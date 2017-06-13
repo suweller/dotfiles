@@ -124,10 +124,7 @@ nnoremap - :Switch<cr>
 " }}}
 " Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
 Plug '/usr/local/opt/fzf/' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
-if executable("rg")
-  set grepprg=rg\ --vimgrep
-  set grepformat=%f:%l:%c:%m,%f:%l:%m
-elseif executable("ag")
+if executable("ag")
   set grepprg=ag\ --vimgrep\ --hidden
   set grepformat=%f:%l:%c:%m,%f:%l:%m
 endif

@@ -65,12 +65,17 @@ Plug 'chriskempson/base16-vim'
 let base16colorspace=256
 " }}}
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
-nnoremap <LEADER>gb :Gblame<CR>
-nnoremap <LEADER>gs :Gdiff<CR>
-nnoremap <LEADER>gd :Gdiff master<CR>
 
+" Util: Determine what happened and why
+nnoremap <LEADER>gb :Gblame<CR>
 Plug 'int3/vim-extradite'
 nnoremap <LEADER>ge :Extradite<CR>
+nnoremap <LEADER>gd :Gdiff<CR>
+nnoremap <LEADER>gm :Gdiff master<CR>
+
+" Util: Make things happen
+nnoremap <LEADER>gs :Gstatus<CR>
+nnoremap <LEADER>gc :Gcommit --verbose<CR>
 
 Plug 'airblade/vim-gitgutter'
 let g:gitgutter_sign_column_always = 1

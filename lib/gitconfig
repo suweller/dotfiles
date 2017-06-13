@@ -43,19 +43,25 @@
 %C(auto)%D%C(reset)'
   ll = !git l --numstat $@
 
-  main-branch = "!ag \
+  main-branch = !ag \
     --nocolor \
     --only-matching \
     '(?<=^\\[branch \")[^\"]*(?=\"\\]$)' \
     .git/config \
     | head -1 \
-    | tr -d '\\012\\015' \
-    "
-  main-fork-point = !sh -c "git merge-base --fork-point $(git main-branch)"
-  ls-touched = !sh - c "git diff --name-only $(git main-fork-point) \
-    | sed -E 's/^/ C /' \
-    & git -c color.status=always status  --short --untracked-files=all \
-    "
+    | tr -d '\\012\\015'
+  current-branch = symbolic-ref --short HEAD
+  fork-point = !sh -c 'git merge-base --fork-point $(git main-branch)'
+  fork-range = !sh -c 'echo $(git fork-point)..$(git main-branch)'
+  fork-lag = !sh -c 'git rev-list --count $(git fork-range)'
+  fork-l = !sh -c 'git l $(git fork-point)...HEAD'
+  fork-touched = !sh -c ' \
+    ( \
+    git -c color.status=always status --short --untracked-files=all \
+    && \
+    git diff --name-only $(git fork-point) | sed -E \"s/^/C  /\" \
+    ) | sort --key=2 --unique \
+    '
 
   ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle
@@ -86,19 +92,17 @@
     open https://github.com/$( \
       git remote --verbose \
       | ag --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
-    )/compare/$(git main-branch)...$( \
-      git symbolic-ref --short HEAD \
-    ) \
+    )/compare/$(git main-branch)...$(git current-branch) \
     '
 
   sup = "!sh -c 'for branch in $(git branch --no-merged); do \
-    git l $branch ^$(git symbolic-ref HEAD); \
+    git l $branch ^$(git main-branch); \
     echo ''; \
     done \
     '"
   x = !sh -c 'git $1 HEAD ^$(git merge-base --fork-point $0) $2'
   nuke = !git branch -D $1 && git push origin :$1
-  rubocop = !sh -c 'bin/rubocop-git $(git main-fork-point)) HEAD'
+  rubocop = !sh -c 'bin/rubocop-git $(git fork-point)) HEAD'
 
 [commit]
   gpgsign = true

@@ -87,13 +87,19 @@
     && [ -n \"$merge\" ] \
     && git l $merge^..$merge \
     '
+  hub-show-pr = "!sh -c 'open $(git hub-url)/pull/$( \
+    git show-merge 5165557c9 \
+    | ag --only-matching \"(?<=Merge pull request #)\\d+\" \
+    | head -1 \
+    ) \
+    '"
 
-  pr = !sh -c ' \
-    open https://github.com/$( \
+  hub-url = !sh -c 'echo https://github.com/$( \
       git remote --verbose \
       | ag --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
-    )/compare/$(git main-branch)...$(git current-branch) \
+    ) \
     '
+  hub-pr = !sh -c 'open $(git hub-url)/compare/$(git main-branch)...$(git current-branch)'
 
   sup = "!sh -c 'for branch in $(git branch --no-merged); do \
     git l $branch ^$(git main-branch); \

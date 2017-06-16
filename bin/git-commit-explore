@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 
 select_branch() {
-  echo $(git branch -v |
+  echo $(git branch --verbose |
     fzf --prompt="$1" --ansi --no-sort --reverse |
     tr -s ' ' |
     cut -d ' ' -f 2

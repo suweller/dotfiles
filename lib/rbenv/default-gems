@@ -1,5 +1,6 @@
 bundler
 foreman
+gem-browse
 gem-ctags
 pry
 rake

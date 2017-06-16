@@ -22,7 +22,7 @@
   s = status --short --branch
   d = diff
   a = add --patch
-  b = branch
+  b = branch --verbose
 
   ba = for-each-ref \
     --sort=authordate refs/remotes \

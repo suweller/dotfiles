@@ -103,29 +103,6 @@ if [ -f ~/.fzf.zsh ]; then
     ag -g "" "$1"
   } # }}}
 
-  git-commit-browser() { # {{{
-    if [[ -d '.git/' ]]; then
-      git la --color=always "$@" |
-      fzf --ansi \
-        --no-sort \
-        --reverse \
-        --tiebreak=index \
-        --bind=ctrl-s:toggle-sort \
-        --preview "echo {} |
-          grep --only-matching '[a-f0-9]\{7\}' |
-          head -1 |
-          xargs -I % sh -c 'git show --color=always --format="" % |
-          diff-so-fancy |
-          head -$LINES'" \
-        --bind "enter:execute:echo {} |
-          grep --only-matching '[a-f0-9]\{7\}' |
-          head -1 |
-          xargs -I % sh -c 'vim fugitive://\$(git rev-parse --show-toplevel)/.git//% < /dev/tty'"
-    else
-      echo 'Not a git repository'
-    fi
-  } # }}}
-
   chrome-history() { # {{{
     local cols sep
     cols=$(( COLUMNS / 3 ))

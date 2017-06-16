@@ -1,0 +1,18 @@
+#!/usr/bin/env zsh
+git l --color=always "$@" \
+  | fzf \
+    --ansi \
+    --no-sort \
+    --reverse \
+    --tiebreak=index \
+    --bind=ctrl-s:toggle-sort \
+    --preview "echo {} \
+    | grep --only-matching '[a-f0-9]\{7\}' \
+    | head -1 \
+    | xargs -I % sh -c 'git show --color=always --format="" % | head -$LINES' \
+    " \
+    --bind "enter:execute:echo {} \
+    | grep --only-matching '[a-f0-9]\{7\}' \
+    | head -1 \
+    | xargs -I % sh -c 'vim fugitive://\$(git rev-parse --show-toplevel)/.git//% < /dev/tty' \
+    "

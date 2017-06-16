@@ -54,6 +54,7 @@
   fork-point = !sh -c 'git merge-base --fork-point $(git main-branch)'
   fork-range = !sh -c 'echo $(git fork-point)..$(git main-branch)'
   fork-lag = !sh -c 'git rev-list --count $(git fork-range)'
+  fork-behind = !sh -c 'git l $(git fork-point)...$(git main-branch)'
   fork-l = !sh -c 'git l $(git fork-point)...HEAD'
   fork-touched = !sh -c ' \
     ( \

@@ -107,7 +107,7 @@
     done \
     '"
   x = !sh -c 'git $1 HEAD ^$(git merge-base --fork-point $0) $2'
-  nuke = !git branch -D $1 && git push origin :$1
+  nuke = "!git branch -D $1; git push origin :$1"
   rubocop = !sh -c 'bin/rubocop-git $(git fork-point)) HEAD'
 
 [commit]

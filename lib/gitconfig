@@ -2,10 +2,10 @@
   excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
   pager = less \
-      --no-init \
-      --quit-if-one-screen \
-      --raw-control-chars \
-      --tabs=4
+    --no-init \
+    --quit-if-one-screen \
+    --raw-control-chars \
+    --tabs=4
 
 [user]
   name = Steven Weller
@@ -16,7 +16,7 @@
 
 [alias]
   aliases = !git config --global --get-regexp ^alias | sed -e 's/^alias./  /'
-  cloc = !cloc $(git ls-files)
+  cloc = !cloc `git ls-files`
   c = commit --verbose
   co = checkout
   s = status --short --branch
@@ -31,7 +31,7 @@
 %(align:20,left)%(color:green)%(authordate:relative)%(end) \
 %(align:20,left)%(color:blue)%(authorname)%(end) \
 %(color:reset)%(refname:strip=3)'
-  stale = !git ba | ag --invert-match '(days|hours|minutes) ago'
+  stale = !git ba | ag --invert-match '(second|minute|hour|day)s ago'
 
   l = log \
     --decorate=short \
@@ -51,16 +51,16 @@
     | head -1 \
     | tr -d '\\012\\015'
   current-branch = symbolic-ref --short HEAD
-  fork-point = !sh -c 'git merge-base --fork-point $(git main-branch)'
-  fork-range = !sh -c 'echo $(git fork-point)..$(git main-branch)'
-  fork-lag = !sh -c 'git rev-list --count $(git fork-range)'
-  fork-behind = !sh -c 'git l $(git fork-point)...$(git main-branch)'
-  fork-l = !sh -c 'git l $(git fork-point)...HEAD'
+  fork-point = !git merge-base --fork-point `git main-branch`
+  fork-range = !echo `git fork-point`..`git main-branch`
+  fork-lag = !git rev-list --count `git fork-range`
+  fork-behind = !git l `git fork-point`...`git main-branch`
+  fork-l = !git l `git fork-point`...HEAD
   fork-touched = !sh -c ' \
     ( \
     git -c color.status=always status --short --untracked-files=all \
     && \
-    git diff --name-only $(git fork-point) | sed -E \"s/^/C  /\" \
+    git diff --name-only `git fork-point` | sed -E \"s/^/C  /\" \
     ) | sort --key=2 --unique \
     '
 
@@ -83,32 +83,32 @@
     | cut -f2 \
     '
   show-merge = !sh -c ' \
-    merge=$(git find-merge $0 $1) \
+    merge=`git find-merge $0 $1` \
     && [ -n \"$merge\" ] \
     && git l $merge^..$merge \
     '
-  hub-show-pr = "!sh -c 'open $(git hub-url)/pull/$( \
-    git show-merge 5165557c9 \
+  hub-show-pr = "!open `git hub-url`/pull/` \
+    git show-merge $@ \
     | ag --only-matching \"(?<=Merge pull request #)\\d+\" \
     | head -1 \
-    ) \
-    '"
+    ` \
+    "
 
-  hub-url = !sh -c 'echo https://github.com/$( \
-      git remote --verbose \
-      | ag --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
-    ) \
-    '
-  hub-pr = !sh -c 'open $(git hub-url)/compare/$(git main-branch)...$(git current-branch)'
+  ; hub-compare = !open https://github.com/$0/compare/$1...$2
+  hub-url = !echo https://github.com/` \
+    git remote --verbose \
+    | ag --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
+    `
+  hub-pr = !open `git hub-url`/compare/`git main-branch`...`git current-branch`
 
-  sup = "!sh -c 'for branch in $(git branch --no-merged); do \
-    git l $branch ^$(git main-branch); \
+  sup = "!sh -c 'for branch in `git branch --no-merged`; do \
+    git l $branch ^`git main-branch`; \
     echo ''; \
     done \
     '"
-  x = !sh -c 'git $1 HEAD ^$(git merge-base --fork-point $0) $2'
+  x = !sh -c 'git $1 HEAD ^`git merge-base --fork-point $0` $2'
   nuke = "!git branch -D $1; git push origin :$1"
-  rubocop = !sh -c 'bin/rubocop-git $(git fork-point)) HEAD'
+  rubocop = !bin/rubocop-git `git fork-point` HEAD
 
 [commit]
   gpgsign = true

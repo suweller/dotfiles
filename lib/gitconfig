@@ -16,7 +16,7 @@
 
 [branches]
   main = master
-  keep = "(integration\\d|production|master|HEAD)"
+  keep = "(integration\\d|production|master|HEAD)$"
 
 [alias]
   aliases = !git config --global --get-regexp ^alias | sed -e 's/^alias./  /'

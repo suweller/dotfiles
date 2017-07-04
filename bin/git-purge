@@ -5,17 +5,16 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 inv=`tput setab 1`
 
-current_branch=$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/\1/')
-if [ "$current_branch" != "master" ]; then
-  echo "${red}WARNING: You are on branch ${black}${inv}$current_branch${reset}${red}, NOT master.${reset}"
-fi
+keep=`git config branches.keep`
+main=`git config branches.main`
+
 echo "Fetching merged branches..."
 git remote prune origin
-remote_branches=$(git branch --remotes --merged | grep -v "\(master\|production\|integration\d*\|$current_branch\)$")
-local_branches=$(git branch --merged | grep -v "\(master\|production\|integration\d*\|$current_branch\)$")
+remote_branches=$(git branch --remotes --merged $main | ag --invert-match $keep)
+local_branches=$(git branch --merged $main | ag --invert-match $keep)
 
 if [ -z "$remote_branches" ] && [ -z "$local_branches" ]; then
-  echo "${red}No existing branches have been merged into${reset} ${black}${inv}$current_branch${reset}."
+  echo "${red}No existing branches have been merged into${reset} ${black}${inv}$main${reset}."
 
 else
   echo "${red}This will remove the following *remote* branches:${reset}"
@@ -30,7 +29,7 @@ else
     # Remove remote branches
     git push origin `echo $remote_branches | sed 's/origin\//:/g' | tr -d '\n'`
     # Remove local branches
-    git branch -d `git branch --merged | grep -v 'master$' | grep -v "$current_branch$" | sed 's/origin\///g' | tr -d '\n'`
+    git branch -d `git branch --merged $main | ag --invert-match $keep | sed 's/origin\///g' | tr -d '\n'`
     exit 0
   fi
   echo "${red}No branches removed.${reset}"

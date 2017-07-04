@@ -14,6 +14,10 @@
 [github]
   user = suweller
 
+[branches]
+  main = master
+  keep = "(integration\\d|production|master|HEAD)"
+
 [alias]
   aliases = !git config --global --get-regexp ^alias | sed -e 's/^alias./  /'
   cloc = !cloc `git ls-files`
@@ -24,13 +28,15 @@
   a = add --patch
   b = branch --verbose
 
-  ba = for-each-ref \
+  ba = !git for-each-ref \
     --sort=authordate refs/remotes \
     --format='\
 %(color:red)%(objectname:short) \
 %(align:20,left)%(color:green)%(authordate:relative)%(end) \
 %(align:20,left)%(color:blue)%(authorname)%(end) \
-%(color:reset)%(refname:strip=3)'
+%(color:reset)%(refname:strip=3)' \
+    | ag --invert-match `git config branches.keep` \
+
   stale = !git ba | ag --invert-match '(second|minute|hour|day)s ago'
 
   l = log \
@@ -43,26 +49,29 @@
 %C(auto)%D%C(reset)'
   ll = !git l --numstat $@
 
-  main-branch = !ag \
-    --nocolor \
-    --only-matching \
-    '(?<=^\\[branch \")[^\"]*(?=\"\\]$)' \
-    .git/config \
-    | head -1 \
-    | tr -d '\\012\\015'
-  current-branch = symbolic-ref --short HEAD
-  fork-point = !git merge-base --fork-point `git main-branch`
-  fork-range = !echo `git fork-point`..`git main-branch`
-  fork-lag = !git rev-list --count `git fork-range`
-  fork-behind = !git l `git fork-point`...`git main-branch`
-  fork-l = !git l `git fork-point`...HEAD
-  fork-touched = !sh -c ' \
-    ( \
+  branch-head = symbolic-ref --short HEAD
+  branch-summary = "! \
+    if [ `git fork-behind | wc -c` -eq 0 ]; then \
+      echo \"No new merges on `git config branches.main`:\"; \
+    else \
+      echo \"New merges on `git config branches.main`:\"; \
+      git fork-behind; \
+    fi; \
+    if [ `git fork-l | wc -c` -eq 0 ]; then \
+      echo \"No commits on `git branch-head`\"; \
+    else \
+      echo \"Commits on `git branch-head`:\"; \
+      git fork-l; \
+    fi \
+    "
+  branch-base = !git merge-base --fork-point `git config branches.main`
+  fork-behind = !git l --merges `git branch-base`...`git config branches.main`
+  fork-l = !git l `git branch-base`...HEAD
+  fork-touched = ! ( \
     git -c color.status=always status --short --untracked-files=all \
-    && \
-    git diff --name-only `git fork-point` | sed -E \"s/^/C  /\" \
-    ) | sort --key=2 --unique \
-    '
+    && git diff --name-only `git branch-base` | sed -E \"s/^/C  /\" \
+    ) \
+    | sort --key=2 --unique
 
   ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle
@@ -99,16 +108,16 @@
     git remote --verbose \
     | ag --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
     `
-  hub-pr = !open `git hub-url`/compare/`git main-branch`...`git current-branch`
+  hub-pr = !open `git hub-url`/compare/`git config branches.main`...`git branch-head`
 
-  sup = "!sh -c 'for branch in `git branch --no-merged`; do \
-    git l $branch ^`git main-branch`; \
+  sup = "!for branch in `git branch --no-merged`; do \
+    git l $branch ^`git config branches.main`; \
     echo ''; \
     done \
-    '"
+    "
   x = !sh -c 'git $1 HEAD ^`git merge-base --fork-point $0` $2'
   nuke = "!git branch -D $1; git push origin :$1"
-  rubocop = !bin/rubocop-git `git fork-point` HEAD
+  rubocop = !bin/rubocop-git `git branch-base` HEAD
 
 [commit]
   gpgsign = true

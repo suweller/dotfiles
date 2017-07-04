@@ -5,8 +5,41 @@ green=`tput setaf 2`
 reset=`tput sgr0`
 inv=`tput setab 1`
 
-keep=`git config branches.keep`
+
+usage() {
+  echo "usage: git purge"
+  echo "Removes all local branches fully merged in `git config branches.main`"
+  echo "NOTE: branches.main is custom git config you will need to add."
+  echo "This command does not work without it!"
+  exit 0;
+}
+case $1 in
+  -h) usage;;
+  h) usage;;
+  help) usage;;
+esac
+
 main=`git config branches.main`
+if [ -z $main ]; then
+  echo "Define 'branches.main':"
+  echo "* globally ~/.gitconfig: git config --global branches.main <branch>"
+  echo "* locally ./git/config: git config branches.main <branch>"
+  echo
+  echo "For example: git config branches.main master"
+  echo
+fi
+keep=`git config branches.keep`
+if [ -z $keep ]; then
+  echo "Define 'branches.keep':"
+  echo "* globally ~/.gitconfig: git config --global branches.keep <branch>"
+  echo "* locally ./git/config: git config branches.keep <branch>"
+  echo
+  echo "For example: git config branches.keep (integration\d|production|master)$"
+  echo
+fi
+
+[ -z $main ] && exit 1
+[ -z $keep ] && exit 1
 
 echo "Fetching merged branches..."
 git remote prune origin

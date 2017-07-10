@@ -25,7 +25,7 @@
   aliases = !git config --global --get-regexp ^alias | sed -e 's/^alias./  /'
   cloc = !cloc `git ls-files`
   c = commit --verbose
-  co = checkout
+  co = checkout --quiet
   s = status --short --branch
   d = diff
   a = add --patch

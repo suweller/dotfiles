@@ -99,7 +99,7 @@
     && [ -n \"$merge\" ] \
     && git l $merge^..$merge \
     '
-  hub-show-pr = "!open `git hub-url`/pull/` \
+  hub-show-pull-request = "!open `git hub-url`/pull/` \
     git show-merge $@ \
     | ag --only-matching \"(?<=Merge pull request #)\\d+\" \
     | head -1 \
@@ -111,7 +111,8 @@
     git remote --verbose \
     | ag --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
     `
-  hub-pr = !open `git hub-url`/compare/`git config branches.main`...`git branch-head`
+  hub-pull-request = !open \
+    `git hub-url`/compare/`git config branches.main`...`git branch-head`
 
   sup = "!for branch in `git branch --no-merged`; do \
     git l $branch ^`git config branches.main`; \

@@ -5,6 +5,7 @@ node_modules/
 *~
 .DS_Store
 .agignore
+.ignore
 .netrwhist
 Thumbs.db
 db/*.sqlite3

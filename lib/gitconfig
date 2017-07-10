@@ -55,7 +55,7 @@
   branch-head = symbolic-ref --short HEAD
   branch-summary = "! \
     if [ `git fork-behind | wc -c` -eq 0 ]; then \
-      echo \"No new merges on `git config branches.main`:\"; \
+      echo \"No new merges on `git config branches.main`\"; \
     else \
       echo \"New merges on `git config branches.main`:\"; \
       git fork-behind; \

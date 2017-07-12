@@ -1,11 +1,11 @@
 #!/bin/bash
-usage="$(basename "$0") [-h] HH:MM:SS -- count down & keep ringing the bell
+TIME="00:02:00"
+usage="$(basename "$0") [-h] [-t HH:MM:SS] -- count down timer with alert
 
 where:
   -h shows this help text
-  -t set the timer"
+  -t set the timer (default: $TIME)"
 
-TIME="00:05:00"
 while getopts ':ht:' option; do
   case $option in
     h) echo "$usage"
@@ -15,6 +15,11 @@ while getopts ':ht:' option; do
       ;;
     \?) printf "illegal option: -%s\n" "$OPTARG" >&2
       echo "$usage" >&2
+      exit 1
+      ;;
+    :)
+      echo "Option -$OPTARG requires an argument." >&2
+      echo "$usage"
       exit 1
       ;;
   esac

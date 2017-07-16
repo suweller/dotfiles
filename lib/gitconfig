@@ -82,7 +82,7 @@
   ed = !$EDITOR -p `git diff --name-only $@ | uniq`
   who = shortlog --numbered --summary --
 
-  find-merge = !sh -c ' \
+  merge-find = !sh -c ' \
     commit=$0 \
     && branch=${1:-HEAD} \
     && ( \
@@ -95,17 +95,16 @@
     | tail -1 \
     | cut -f2 \
     '
-  show-merge = !sh -c ' \
-    merge=`git find-merge $0 $1` \
+  merge-show = !sh -c ' \
+    merge=`git merge-find $0 $1` \
     && [ -n \"$merge\" ] \
-    && git l $merge^..$merge \
-    '
-  hub-show-pull-request = "!open `git hub-url`/pull/` \
-    git show-merge $@ \
-    | ag --only-matching \"(?<=Merge pull request #)\\d+\" \
+    && branches=$(git l $merge^..$merge | fzf-tmux -d 15 --ansi) \
+    && [ -n \"$branches\" ] \
+    && open `git hub-url`/pull/` \
+    echo $branches | ag --only-matching \"(?<=Merge pull request .)\\d+\" \
     | head -1 \
     ` \
-    "
+    '
 
   ; hub-compare = !open https://github.com/$0/compare/$1...$2
   hub-url = !echo https://github.com/` \

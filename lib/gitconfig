@@ -53,28 +53,29 @@
   ll = !git l --numstat $@
 
   branch-head = symbolic-ref --short HEAD
-  branch-summary = "! \
-    if [ `git fork-behind | wc -c` -eq 0 ]; then \
-      echo \"No new merges on `git config branches.main`\"; \
-    else \
-      echo \"New merges on `git config branches.main`:\"; \
-      git fork-behind; \
-    fi; \
-    if [ `git fork-l | wc -c` -eq 0 ]; then \
-      echo \"No commits on `git branch-head`\"; \
-    else \
-      echo \"Commits on `git branch-head`:\"; \
-      git fork-l; \
-    fi \
-    "
   branch-base = !git merge-base --fork-point `git config branches.main`
-  fork-behind = !git l --merges `git branch-base`...`git config branches.main`
-  fork-l = !git l `git branch-base`...HEAD
-  fork-touched = ! ( \
+  branch-rebase = !git rebase `git config branches.main`
+  branch-merges-behind = !git l --merges `git branch-base`...`git config branches.main`
+  branch-l = !git l `git branch-base`...HEAD
+  branch-touched = ! ( \
     git -c color.status=always status --short --untracked-files=all \
     && git diff --name-only `git branch-base` | sed -E \"s/^/C  /\" \
     ) \
     | sort --key=2 --unique
+  branch-summary = "! \
+    if [ `git branch-merges-behind | wc -c` -eq 0 ]; then \
+      echo \"No new merges on `git config branches.main`\"; \
+    else \
+      echo \"New merges on `git config branches.main`:\"; \
+      git branch-merges-behind; \
+    fi; \
+    if [ `git branch-l | wc -c` -eq 0 ]; then \
+      echo \"No commits on `git branch-head`\"; \
+    else \
+      echo \"Commits on `git branch-head`:\"; \
+      git branch-l; \
+    fi \
+    "
 
   ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle

@@ -10,6 +10,7 @@ brew update && brew upgrade --cleanup \
   flow \
   fzf \
   git \
+  gnu-sed \
   libffi \
   libyaml \
   mercurial \

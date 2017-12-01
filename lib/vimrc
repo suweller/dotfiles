@@ -78,8 +78,7 @@ nnoremap <LEADER>gs :Gstatus<CR>
 nnoremap <LEADER>gc :Gcommit --verbose<CR>
 
 Plug 'airblade/vim-gitgutter'
-let g:gitgutter_sign_column_always = 1
-let g:gitgutter_diff_args = '-w'
+set signcolumn=yes
 
 " }}}
 Plug 'vim-ruby/vim-ruby'
@@ -167,6 +166,7 @@ nmap _ <plug>VinegarUp
 Plug 'nvie/vim-togglemouse' " Util: Toggle mouse for vim or terminal
 Plug 'w0rp/ale' " Util: Code lint {{{
 let g:ale_lint_on_enter = 0
+let g:ale_set_highlights = 0
 let g:ale_sign_column_always = 1
 let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 let g:ale_echo_msg_format = '%linter%: %s'

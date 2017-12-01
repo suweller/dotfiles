@@ -47,6 +47,7 @@ export RUBY_GC_HEAP_FREE_SLOTS=500000
 export RUBY_GC_HEAP_INIT_SLOTS=1000000
 
 export JAVA_HOME=$(/usr/libexec/java_home)
+export DISABLE_AUTO_TITLE=true
 
 setopt append_history
 setopt auto_cd

@@ -15,7 +15,6 @@ brew update && brew upgrade --cleanup \
   libssh2 \
   libyaml \
   openssl \
-  peco \
   rbenv \
   rbenv-bundler \
   rbenv-communal-gems \

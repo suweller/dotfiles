@@ -70,7 +70,6 @@ unset GREP_OPTIONS
 
 # Make sure to use double quotes
 zplug "zplug/zplug", hook-build:"zplug --self-manage"
-zplug "peco/peco", as:command, from:gh-r
 zplug "yous/lime"
 zplug "yous/vanilli.sh"
 zplug "zsh-users/zsh-completions"

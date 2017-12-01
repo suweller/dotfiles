@@ -2,19 +2,20 @@
 set -x
 
 brew update && brew upgrade --cleanup \
+  ansiweather \
   autojump \
   cloc \
   ctags \
   curl \
-  diff-so-fancy \
-  flow \
   fzf \
   git \
   gnu-sed \
   libffi \
+  libssh \
+  libssh2 \
   libyaml \
-  mercurial \
   openssl \
+  peco \
   rbenv \
   rbenv-bundler \
   rbenv-communal-gems \
@@ -24,8 +25,11 @@ brew update && brew upgrade --cleanup \
   the_silver_searcher \
   tidy-html5 \
   tmux \
+  unrar \
   valgrind \
   vim \
+  weechat \
+  wireshark \
   xz \
   yarn \
   youtube-dl \

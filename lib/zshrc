@@ -146,3 +146,5 @@ source $HOME/.dotfiles/zsh/functions
 
 # Unset local functions
 unset -f add_to_path_once
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

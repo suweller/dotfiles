@@ -56,6 +56,7 @@
   branch-base = !git merge-base --fork-point `git config branches.main`
   branch-rebase = !git rebase `git config branches.main`
   branch-merges-behind = !git l --merges `git branch-base`...`git config branches.main`
+  branch-stat = !git diff --stat `git branch-base` HEAD^
   branch-l = !git l `git branch-base`...HEAD
   branch-touched = ! ( \
     git -c color.status=always status --short --untracked-files=all \
@@ -69,10 +70,12 @@
       echo \"New merges on `git config branches.main`:\"; \
       git branch-merges-behind; \
     fi; \
+    echo \"\"; \
     if [ `git branch-l | wc -c` -eq 0 ]; then \
       echo \"No commits on `git branch-head`\"; \
     else \
-      echo \"Commits on `git branch-head`:\"; \
+      git branch-stat; \
+      echo \"\"; \
       git branch-l; \
     fi \
     "
@@ -95,10 +98,12 @@
     | tail -1 \
     | cut -f2 \
     '
+
+  ; consider using /commit/ instead of /pull/
   merge-show = !sh -c ' \
     merge=`git merge-find $0 $1` \
     && [ -n \"$merge\" ] \
-    && branches=$(git l $merge^..$merge | fzf-tmux -d 15 --ansi) \
+    && branches=$(git l $merge^..$merge | fzf --ansi) \
     && [ -n \"$branches\" ] \
     && open `git hub-url`/pull/` \
     echo $branches | ag --only-matching \"(?<=Merge pull request .)\\d+\" \

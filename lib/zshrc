@@ -90,6 +90,11 @@ fi # }}}
 
 [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
+if zplug check zsh-users/zsh-syntax-highlighting; then # {{{
+  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
+  ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
+fi # }}}
+
 if [ -f ~/.fzf.zsh ]; then
   export FZF_DEFAULT_COMMAND='ag -g ""'
   export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

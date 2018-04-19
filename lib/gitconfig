@@ -60,8 +60,9 @@
   branch-l = !git l `git branch-base`...HEAD
   branch-touched = ! ( \
     git -c color.status=always status --short --untracked-files=all \
-    && git diff --name-only `git branch-base` | sed -E \"s/^/C  /\" \
+    && git diff --name-only `git branch-base` | sed -E \"s/^/C_ /\" \
     ) \
+    | uniq -f 1 \
     | sort --key=2 --unique
   branch-summary = "! \
     if [ `git branch-merges-behind | wc -c` -eq 0 ]; then \

@@ -213,7 +213,6 @@ Plug 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
 Plug 'tpope/vim-unimpaired' " Util: brakety Things
 Plug 'tpope/vim-repeat' " Util: make things repeatable with '.'
 Plug 'tpope/vim-speeddating' " Util: CTRL-A/CTRL-X to increment dates/times &  more
-Plug 'tpope/vim-rsi' " Util: Readline like CTRL-d, CTRL-e, and CTRL-f behavior
 Plug 'godlygeek/tabular' " Util: vertically aligning things (not for code)
 Plug 'kana/vim-textobj-user' | Plug 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
 Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby'}

@@ -52,12 +52,14 @@
 %C(auto)%D%C(reset)'
   ll = !git l --numstat $@
 
+  base = !git checkout `git config branches.main`
   branch-head = symbolic-ref --short HEAD
   branch-base = !git merge-base --fork-point `git config branches.main`
   branch-rebase = !git rebase `git config branches.main`
-  branch-merges-behind = !git l --merges `git branch-base`...`git config branches.main`
+  branch-merges-behind = !git l `git branch-base`...`git config branches.main`
   branch-stat = !git diff --stat `git branch-base` HEAD^
   branch-l = !git l `git branch-base`...HEAD
+  branch-lint = !rubocop-git --display-cop-names `git branch-base` HEAD
   branch-touched = ! ( \
     git -c color.status=always status --short --untracked-files=all \
     && git diff --name-only `git branch-base` | sed -E \"s/^/C_ /\" \
@@ -81,9 +83,26 @@
     fi \
     "
 
+  commit-words =  ! git log --format='%<(72,trunc)%s' \
+    | tr -s '[:space:]' '\n' \
+    | sort \
+    | uniq
   ctags = !.git/hooks/ctags $@
   ctags-bundle = !.git/hooks/ctags-bundle
+
+  doge = "!f() { \
+    git log --pretty=format:%s \
+      | awk '{ \
+        doge_words = \"wow,very,much,such,so,many\"; \
+        num_words = split(doge_words, doge_array, \",\"); \
+        n = int(rand() * 60); while (n--) printf(\" \"); \
+        n = split($0, a, \" \"); \
+        printf(\"%s %s\\n\", doge_array[int(rand() * num_words) + 1], a[int(rand() * n) + 1]); \
+      }'; \
+    }; f"
+
   ed = !$EDITOR -p `git diff --name-only $@ | uniq`
+
   who = shortlog --numbered --summary --
 
   merge-find = !sh -c ' \

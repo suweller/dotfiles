@@ -318,20 +318,8 @@ augroup myfiletypes
   " Clear old autocmds in group
   autocmd!
   " Ruby {{{
-  autocmd FileType ruby,eruby,yaml,css,sass
-        \ set ai sw=2 sts=2 et
   autocmd FileType css,sass
         \ set iskeyword+=-
-  autocmd FileType ruby
-        \ let b:start = executable('pry') ? 'pry -r "%:p"' : 'irb -r "%:p"' |
-        \ if expand('%') =~# '_test\.rb$' |
-        \   let g:rspec_command = 'Dispatch ruby {spec}' |
-        \   let b:dispatch = 'ruby -W2 %' |
-        \ elseif expand('%') =~# '_spec\.rb$' |
-        \   let b:dispatch = 'rspec %' |
-        \ elseif !exists('b:dispatch') |
-        \   let b:dispatch = 'ruby %' |
-        \ endif
   autocmd FileType ruby,sass,css,coffee
         \ let b:switch_custom_definitions = [
         \   {
@@ -346,11 +334,6 @@ augroup myfiletypes
         \   ['foo', 'bar', 'baz'],
         \   ['left', 'right'],
         \   ['rock', 'paper', 'scissors', 'lizard', 'Spock'],
-        \ ]
-  autocmd FileType git,gitcommit setlocal foldmethod=syntax foldlevel=1
-  autocmd FileType gitcommit setlocal spell
-  autocmd FileType gitrebase let b:switch_custom_definitions = [
-        \   ['pick', 'reword', 'edit', 'squash', 'fixup'],
         \ ]
   " }}}
   " autocmd FileType clojure,c,cpp,objc,objcpp call rainbow#load()

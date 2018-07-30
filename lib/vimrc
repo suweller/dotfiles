@@ -11,27 +11,39 @@ nnoremap <F9> :Dispatch<CR>
 
 " set synmaxcol=256
 set updatetime=1000
-set vb
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/Align'
 " Plug 'chrisbra/csv.vim'
+Plug 'junegunn/vim-slash'
 Plug 'junegunn/goyo.vim' " {{{
-  let g:goyo_width = 100
+  let g:goyo_width = 119
   let g:goyo_margin_top = 2
   let g:goyo_margin_bottom = 2
+  nnoremap <Leader>V :Goyo<CR>
+  autocmd! User GoyoEnter Limelight
+  autocmd! User GoyoLeave Limelight!
 " }}}
 Plug 'junegunn/limelight.vim' " {{{ Hide other blocks of code
-let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_conceal_ctermfg = 244
+  let g:limelight_conceal_ctermfg = 'gray'
+  let g:limelight_conceal_ctermfg = 244
+  let g:limelight_paragraph_span = 1
+  " nmap <Leader>l <Plug>(Limelight)
+  " xmap <Leader>l <Plug>(Limelight)
 " }}}
 Plug 'sheerun/vim-polyglot' " Highlighter
 Plug 'dearrrfish/vim-applescript' " Highlighter
 Plug 'lambdatoast/elm.vim' " elm -> javascript
 Plug 'moll/vim-node'
 Plug 'AndrewRadev/vim-eco' " Highlighter
-let g:ruby_indent_access_modifier_style = 'outdent'
 Plug 'maksimr/vim-jsbeautify' " Formatter
+Plug 'wsdjeg/vim-fetch' " Process line and column jump specifications
 
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux'
@@ -71,7 +83,8 @@ nnoremap <LEADER>gb :Gblame<CR>
 Plug 'int3/vim-extradite'
 nnoremap <LEADER>ge :Extradite<CR>
 nnoremap <LEADER>gd :Gdiff<CR>
-nnoremap <LEADER>gm :Gdiff master<CR>
+nnoremap <LEADER>gm :Gdiff develop<CR>
+nnoremap <LEADER>dd :windo diffthis<CR>
 
 " Util: Make things happen
 nnoremap <LEADER>gs :Gstatus<CR>
@@ -81,7 +94,11 @@ Plug 'airblade/vim-gitgutter'
 set signcolumn=yes
 
 " }}}
-Plug 'vim-ruby/vim-ruby'
+Plug 'vim-ruby/vim-ruby' " {{{
+let g:ruby_indent_access_modifier_style = 'outdent'
+let g:ruby_indent_block_style = 'do'
+let g:ruby_indent_assignment_style = 'variable'
+" }}}
 Plug 'tpope/vim-rails', " {{{
 let g:rails_projections = {
 \ "spec/factories/*.rb": {
@@ -112,6 +129,7 @@ Plug 'danchoi/ri.vim', {'for': 'ruby'}  " documentation access {{{
 " }}}
 Plug 'GutenYe/gem.vim'
 Plug 'thoughtbot/vim-rspec', {'for': 'ruby'} " {{{
+let $RUBYOPT="-W0"
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
 map <LEADER>sf :call RunCurrentSpecFile()<CR>
 map <LEADER>sn :call RunNearestSpec()<CR>
@@ -131,12 +149,22 @@ endif
 let g:fzf_buffers_jump = 1
 let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 let g:fzf_history_dir = '~/.vim/fzf/'
+" autocmd BufWinEnter
+"   \ if isdirectory('.git/')
+"   \   if !isdirectory('.git/fzf/')
+"   \     call mkdir('.git/fzf/')
+"   \   endif
+"   \   let g:fzf_history_dir = '.git/fzf/'
+"   \ else
+"   \   let g:fzf_history_dir = '~/.vim/fzf/'
+"   \ endif
 
 autocmd VimEnter * command! Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
 
 nnoremap <C-G>c :Commits<CR>
 nnoremap <C-G>b :BCommits<CR>
+inoremap <expr> <c-x><c-k> fzf#complete('git commit-words')
 function! s:branch_touched_sink(line)
   let [status, file] = split(a:line, '\s\+')
   execute 'e' file
@@ -167,7 +195,6 @@ imap <c-x><c-b> <plug>(fzf-complete-buffer-line)
 Plug 'tpope/vim-vinegar' " Util: netrw {{{
 nmap _ <plug>VinegarUp
 " }}}
-Plug 'nvie/vim-togglemouse' " Util: Toggle mouse for vim or terminal
 Plug 'w0rp/ale' " Util: Code lint {{{
 let g:ale_lint_on_enter = 0
 let g:ale_set_highlights = 0
@@ -220,7 +247,7 @@ Plug 'AndrewRadev/splitjoin.vim' " Util: Toggle inline/multiline {{{
 Plug 'jgdavey/vim-blockle' " Ruby: toggle {} <-> do ; end {{{
   let g:blockle_mapping = '<LEADER>bl'
 " }}}
-Plug 'lmeijvogel/vim-yaml-helper', {'for': 'yaml'}
+Plug 'lmeijvogel/vim-yaml-helper', {'for': 'yml'}
 Plug 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
 Plug 'kana/vim-vspec'
 Plug 'ConradIrwin/vim-bracketed-paste'
@@ -261,6 +288,8 @@ set history=500                 " keep 500 lines of command line history
 set autoread                    " reload files only changed outside vim from disk
 set autowrite                   " write before :next/:cnext
 set ttyfast                     " you got a fast terminal
+set ttymouse=xterm2             " Allows colleagues to use my mouse
+set mouse=a                     " Allows colleagues to use my mouse
 set ruler                       " show the cursor position all the time
 set backspace=indent,eol,start  " allow backspacing over everything in insert mode
 set showcmd                     " display incomplete commands
@@ -272,7 +301,7 @@ set tabstop=4
 set shiftwidth=2                " indent using 2 spaces
 set expandtab                   " use spaces only
 set smarttab                    " deindent with <BS>, start at indent level
-set colorcolumn=80,128
+set colorcolumn=80,119
 set smartcase                   " ... unless they contain at least one capital letter
 set scrolloff=5                 " don't show search results as the first line
 set laststatus=2                " Always show status line.
@@ -289,8 +318,7 @@ set winaltkeys=no               " Let vim handle alt keys
 set list                        " Create a list & make invisible chars visible
 set statusline=
 set statusline+=%<%.99f\ %h%m%r%y " absolute filename (max 99) & used syntax properties
-set statusline+=%=\ %{ALEGetStatusLine()} " Linter message
-" set statusline+=%=\ %{SL('fugitive#statusline')} " Git branchname
+set statusline+=%=\ %{SL('fugitive#statusline')} " Git branchname
 set statusline+=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} " encoding
 set statusline+=%k\ %-12.(%l,%c%V%) " cursor position & line count
 set statusline+=\ %P
@@ -353,8 +381,6 @@ autocmd BufNewFile,BufRead *.handlebars,*.hbs set ft=html syntax=handlebars
 autocmd filetype crontab setlocal nobackup nowritebackup
 autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 
-" Hide the noise
-nnoremap <LEADER>V :Goyo<CR>
 " {{{ quick open some default locations
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vimrc<CR>
@@ -362,16 +388,6 @@ nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>
 
 nnoremap <LEADER>lcd :lcd %:p:h<CR>
 nnoremap <LEADER>cd :cd %:p:h<CR>
-" }}}
-nnoremap <LEADER>ds :tabe db/schema.rb<CR>
-nnoremap <LEADER>dm :Sex db/migrate/<CR>GG
-" quick insert/rewrite stuff {{{
-nnoremap <LEADER>pa osave_and_open_page # DEBUG<ESC>
-nnoremap <LEADER>de o(require('pry'); binding.pry) # DEBUG<ESC>
-nnoremap <LEADER>df ofail 'fast' # DEBUG<ESC>
-nnoremap <LEADER>pu j^y$Oputs '<C-R>"' # DEBUG<ESC>
-nnoremap <LEADER>bo $F\|bdwi{ <ESC><S-J>A }<ESC>jdd
-nnoremap <LEADER>bl $bdwa{<ESC><S-J>A }<ESC>jdd
 " }}}
 " Use Q as alias for @j (execute 'j' recording) {{{
 " This is great because you can just do something like QnQnnQ to quickly

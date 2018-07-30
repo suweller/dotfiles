@@ -125,8 +125,8 @@
     && [ -n \"$merge\" ] \
     && branches=$(git l $merge^..$merge | fzf --ansi) \
     && [ -n \"$branches\" ] \
-    && open `git hub-url`/pull/` \
-    echo $branches | ag --only-matching \"(?<=Merge pull request .)\\d+\" \
+    && open `git hub-url`/commit/` \
+    echo $branches | ag --only-matching \"[0-9a-f]*\" \
     | head -1 \
     ` \
     '

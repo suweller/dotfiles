@@ -24,7 +24,6 @@ brew update && brew upgrade --cleanup \
   the_silver_searcher \
   tidy-html5 \
   tmux \
-  unrar \
   valgrind \
   vim \
   weechat \
@@ -37,4 +36,3 @@ brew update && brew upgrade --cleanup \
 gem update \
   bundler \
 
-bundle-audit check --update # Hope for luck

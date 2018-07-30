@@ -17,6 +17,9 @@
 [github]
   user = suweller
 
+; [branches]
+;   main = master
+;   keep = "(integration\\d|production|master|HEAD)$"
 [branches]
   main = master
   keep = "(master|develop|HEAD)$"
@@ -119,7 +122,6 @@
     | cut -f2 \
     '
 
-  ; consider using /commit/ instead of /pull/
   merge-show = !sh -c ' \
     merge=`git merge-find $0 $1` \
     && [ -n \"$merge\" ] \
@@ -147,9 +149,6 @@
   x = !sh -c 'git $1 HEAD ^`git merge-base --fork-point $0` $2'
   nuke = "!git branch -D $1; git push origin :$1"
   rubocop = !bin/rubocop-git `git branch-base` HEAD
-
-[commit]
-  gpgsign = true
 
 [push]
   default = current
@@ -205,10 +204,3 @@
     end\n\
     File.open(%(%A), %(w)) {|f| f.write(b)}\n\
     exit 1 if b.include?(%(<)*%L)'"
-
-[gpg]
-  program = gpg2
-[diff-so-fancy]
-  stripLeadingSymbols = false
-  useUnicodeRuler = false
-  markEmptyLines = false

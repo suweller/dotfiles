@@ -49,6 +49,7 @@ function brew-all {
     cloc
     ctags
     curl
+    fzf
     git
     grep
     imagesnap
@@ -58,34 +59,12 @@ function brew-all {
     readline
     reattach-to-user-namespace
     ruby-build
-    the_silver_searcher
     tmux
     vim
     wget
     zsh
   )
   many-brew 'list' 'install'
-
-  local brews=(
-    1password
-    appcleaner
-    disk-inventory-x
-    dropbox
-    font-inconsolata
-    google-chrome
-    iterm2
-    java
-    licecap
-    minecraft
-    mumble
-    skype
-    slack
-    spectacle
-    steam
-    vlc
-  )
-  many-brew 'cask list' 'cask install'
-
 } && brew-all
 
 cd lib

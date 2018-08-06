@@ -5,13 +5,11 @@ typeset -U PATH
 function add_to_path_once() {
   path=("$1" $path)
 }
-if [[ ! -d "$HOME/.zplug" ]]; then # {{{
-  git clone https://github.com/zplug/zplug "$HOME/.zplug/repos/zplug/zplug"
-  ln -s "$HOME/.zplug/repos/zplug/zplug/init.zsh" "$HOME/.zplug/init.zsh"
-fi # }}}
 
-# Load zplug
-source $HOME/.zplug/init.zsh
+if [[ ! -d "$HOME/.zgen" ]]; then
+  git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+fi
+source "${HOME}/.zgen/zgen.zsh"
 
 export HISTFILE=~/.zsh_history
 export HISTSIZE=20000
@@ -46,8 +44,8 @@ export RUBY_GC_MALLOC_LIMIT=100000000
 export RUBY_GC_HEAP_FREE_SLOTS=500000
 export RUBY_GC_HEAP_INIT_SLOTS=1000000
 
-export JAVA_HOME=$(/usr/libexec/java_home)
-export DISABLE_AUTO_TITLE=true
+# export JAVA_HOME=$(/usr/libexec/java_home)
+# export DISABLE_AUTO_TITLE=true
 
 setopt append_history
 setopt auto_cd
@@ -68,88 +66,51 @@ setopt share_history
 
 unset GREP_OPTIONS
 
-# Make sure to use double quotes
-zplug "zplug/zplug", hook-build:"zplug --self-manage"
-
-zplug "yous/lime"
-zplug "yous/vanilli.sh"
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-history-substring-search", defer:1
-zplug "zsh-users/zsh-syntax-highlighting", defer:2
-
-zplug check --verbose || zplug install
-zplug load --verbose
-
-if zplug check zsh-users/zsh-history-substring-search; then # {{{
-  zmodload zsh/terminfo
-  [ -n "${terminfo[kcuu1]}" ] && bindkey "${terminfo[kcuu1]}" history-substring-search-up
-  [ -n "${terminfo[kcud1]}" ] && bindkey "${terminfo[kcud1]}" history-substring-search-down
-  bindkey -M emacs '^P' history-substring-search-up
-  bindkey -M emacs '^N' history-substring-search-down
-  bindkey -M vicmd 'k' history-substring-search-up
-  bindkey -M vicmd 'j' history-substring-search-down
-else
-  bindkey '^P' up-line-or-history
-  bindkey '^N' down-line-or-history
-fi # }}}
+if ! zgen saved; then
+  zgen load yous/lime
+  # zgen load yous/vanilli.sh
+  zgen load zsh-users/zsh-completions
+  zgen load zsh-users/zsh-history-substring-search
+  zgen load zsh-users/zsh-syntax-highlighting
+  zgen save
+fi
+#
+# zsh-users/zsh-syntax-highlighting
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
+#
+# zgen load zsh-users/zsh-history-substring-search
+if [ -n "${terminfo[kcuu1]}" ]; then
+  bindkey "${terminfo[kcuu1]}" history-substring-search-up
+fi
+if [ -n "${terminfo[kcud1]}" ]; then
+  bindkey "${terminfo[kcud1]}" history-substring-search-down
+fi
+bindkey -M emacs '^P' history-substring-search-up
+bindkey -M emacs '^N' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 bindkey -e
 
 [[ -s `brew --prefix`/etc/autojump.sh ]] && . `brew --prefix`/etc/autojump.sh
 
-if zplug check zsh-users/zsh-syntax-highlighting; then # {{{
-  ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern cursor)
-  ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
-fi # }}}
+export FZF_DEFAULT_COMMAND='ag -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+source ~/.fzf.zsh
+# {{{ Use ag instead of the default find command for listing candidates.
+# - The first argument to the function is the base path to start traversal
+# - Note that ag only lists files not directories
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  ag -g "" "$1"
+} # }}}
 
-if [ -f ~/.fzf.zsh ]; then
-  export FZF_DEFAULT_COMMAND='ag -g ""'
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-  source ~/.fzf.zsh
-
-  # {{{ Use ag instead of the default find command for listing candidates.
-  # - The first argument to the function is the base path to start traversal
-  # - Note that ag only lists files not directories
-  # - See the source code (completion.{bash,zsh}) for the details.
-  _fzf_compgen_path() {
-    ag -g "" "$1"
-  } # }}}
-
-  chrome-history() { # {{{
-    local cols sep
-    cols=$(( COLUMNS / 3 ))
-    sep='{{::}}'
-    # Copy History DB to circumvent the lock
-    # - See http://stackoverflow.com/questions/8936878 for the file path
-    cp -f ~/Library/Application\ Support/Google/Chrome/Default/History /tmp/h
-    sqlite3 -separator $sep /tmp/h \
-      "select substr(title, 1, $cols), url
-      from urls order by last_visit_time desc" |
-    awk -F $sep '{printf "%-'$cols's  \x1b[36m%s\n", $1, $2}' |
-    fzf --ansi --multi | sed 's#.*\(https*://\)#\1#' | xargs open
-  } # }}}
-
-  ptags() { # {{{ search project ctags
-    local f=.git/tags
-    local line
-    [ -e $f ] && line=$(
-      awk 'BEGIN { FS="\t" } !/^!/ {print toupper($4)"\t"$1"\t"$2"\t"$3}' $f |
-      cut -c1-80 | fzf --nth=1,2
-    ) && ${EDITOR:-vim} $(cut -f3 <<< "$line") \
-      -c "set nocst" \
-      -c "silent tag $(cut -f2 <<< "$line")"
-  } # }}}
-fi
-if [ -e "$HOME/.rbenv" ]; then # {{{
-  add_to_path_once "$HOME/.rbenv/bin"
-  add_to_path_once "$HOME/.rbenv/shims"
-  eval "$(rbenv init - zsh)"
-fi # }}}
 add_to_path_once "./bin"
+add_to_path_once "~/.cargo/bin"
 
 # Enable completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 
-# Source my custom files after oh-my-zsh so I can override things.
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions
 [[ -f $HOME/.zshrc_private ]] && source $HOME/.zshrc_private
@@ -157,4 +118,5 @@ source $HOME/.dotfiles/zsh/functions
 # Unset local functions
 unset -f add_to_path_once
 
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh

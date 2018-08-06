@@ -6,11 +6,6 @@ function add_to_path_once() {
   path=("$1" $path)
 }
 
-if [[ ! -d "$HOME/.zgen" ]]; then
-  git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
-fi
-source "${HOME}/.zgen/zgen.zsh"
-
 export HISTFILE=~/.zsh_history
 export HISTSIZE=20000
 export SAVEHIST=20000
@@ -66,20 +61,20 @@ setopt share_history
 
 unset GREP_OPTIONS
 
+if [[ ! -d "$HOME/.zgen" ]]; then
+  git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
+fi
+source "${HOME}/.zgen/zgen.zsh"
 if ! zgen saved; then
   zgen load yous/lime
-  # zgen load yous/vanilli.sh
+  zgen load andrewferrier/fzf-z
   zgen load zsh-users/zsh-completions
   zgen load zsh-users/zsh-history-substring-search
   zgen load zsh-users/zsh-syntax-highlighting
-  zgen oh-my-zsh plugins/autojump
+  zgen oh-my-zsh plugins/z
   zgen save
 fi
-#
-# zsh-users/zsh-syntax-highlighting
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
-#
+
 # zgen load zsh-users/zsh-history-substring-search
 if [ -n "${terminfo[kcuu1]}" ]; then
   bindkey "${terminfo[kcuu1]}" history-substring-search-up
@@ -92,6 +87,10 @@ bindkey -M emacs '^N' history-substring-search-down
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 bindkey -e
+
+# zsh-users/zsh-syntax-highlighting
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
+ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

@@ -10,7 +10,7 @@ noremap <F10> :set spell! spell?<CR>
 nnoremap <F9> :Dispatch<CR>
 
 " set synmaxcol=256
-set updatetime=1000
+" set updatetime=1000
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs

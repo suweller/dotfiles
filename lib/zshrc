@@ -1,5 +1,8 @@
 # vim:foldmethod=marker
 
+# uncomment the following profile startup; then call `zprof` from your shell
+# zmodload zsh/zprof
+
 # Make the $path array have unique values.
 typeset -U PATH
 function add_to_path_once() {
@@ -67,12 +70,12 @@ fi
 source "${HOME}/.zgen/zgen.zsh"
 if ! zgen saved; then
   zgen load yous/lime
-  zgen load andrewferrier/fzf-z
   zgen load zsh-users/zsh-completions
   zgen load zsh-users/zsh-history-substring-search
-  zgen load zsh-users/zsh-syntax-highlighting
+  # zgen load zsh-users/zsh-syntax-highlighting # NOTE: 50ms to load... wtf
   zgen oh-my-zsh plugins/z
   zgen save
+  # repeat 5 time zsh -ic exit
 fi
 
 # zgen load zsh-users/zsh-history-substring-search
@@ -91,6 +94,18 @@ bindkey -e
 # zsh-users/zsh-syntax-highlighting
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
+
+# zgen oh-my-zsh plugins/z
+# zgen load andrewferrier/fzf-z
+unalias z
+j() {
+  if [[ -z "$*" ]]; then
+    cd "$(_z -l 2>&1 | fzf-tmux +s --tac | sed 's/^[0-9,.]* *//')"
+  else
+    _last_z_args="$@"
+    _z "$@"
+  fi
+}
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"

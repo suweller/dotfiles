@@ -20,8 +20,6 @@ endif
 
 call plug#begin('~/.vim/plugged')
 Plug 'vim-scripts/Align'
-" Plug 'chrisbra/csv.vim'
-Plug 'junegunn/vim-slash'
 Plug 'junegunn/goyo.vim' " {{{
   let g:goyo_width = 119
   let g:goyo_margin_top = 2
@@ -37,22 +35,45 @@ Plug 'junegunn/limelight.vim' " {{{ Hide other blocks of code
   " nmap <Leader>l <Plug>(Limelight)
   " xmap <Leader>l <Plug>(Limelight)
 " }}}
-Plug 'sheerun/vim-polyglot' " Highlighter
-Plug 'dearrrfish/vim-applescript' " Highlighter
-Plug 'lambdatoast/elm.vim' " elm -> javascript
-Plug 'moll/vim-node'
-Plug 'AndrewRadev/vim-eco' " Highlighter
-Plug 'maksimr/vim-jsbeautify' " Formatter
-Plug 'wsdjeg/vim-fetch' " Process line and column jump specifications
 
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'tmux-plugins/vim-tmux'
+" Plug 'sheerun/vim-polyglot' " Highlighter {{{
+" let g:polyglot_disabled = ['ruby', 'markdown']
+" " }}}
+Plug 'joker1007/vim-ruby-heredoc-syntax' " Highlighter {{{
+let g:ruby_heredoc_syntax_filetypes = {
+      \ "pgsql" : {"start" : "PGSQL"},
+      \ "sql" : {"start" : "SQL"},
+      \}
+
+Plug 'lifepillar/pgsql.vim' " Highlighter
+Plug 'exu/pgsql.vim' " Highlighter
+Plug 'dearrrfish/vim-applescript' " Highlighter
+Plug 'tpope/vim-markdown' " Highlighter (adds fenced codeblock highlighting)
+let g:markdown_fenced_languages=[
+      \ 'bash=sh',
+      \ 'css',
+      \ 'erb=eruby',
+      \ 'haskell',
+      \ 'html',
+      \ 'javascript',
+      \ 'latex=tex',
+      \ 'python',
+      \ 'ruby',
+      \ 'pgsql',
+      \ 'sql=pgsql',
+      \ ]
 Plug 'nathanaelkane/vim-indent-guides' " Highlighter, Indentation {{{
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 let g:indent_guides_indent_levels = 8
 " }}}
-" Color-Schemes {{{
+Plug 'lambdatoast/elm.vim' " elm -> javascript
+Plug 'moll/vim-node'
+Plug 'maksimr/vim-jsbeautify' " Formatter
+Plug 'wsdjeg/vim-fetch' " Process line and column jump specifications
+
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tmux-plugins/vim-tmux'
 Plug 'nanotech/jellybeans.vim' " {{{
 let g:jellybeans_overrides = {
   \ 'background': {'ctermbg': 'none', '256ctermbg': 'none'},
@@ -68,13 +89,8 @@ let g:jellybeans_overrides = {
   \ 'SpecialKey': {'guibg': '000000'},
   \ }
 " }}}
-" Plug 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
-"   let g:solarized_termcolors=256
-" }}}
-Plug 'junegunn/seoul256.vim'
-Plug 'morhetz/gruvbox'
-Plug 'chriskempson/base16-vim'
-let base16colorspace=256
+Plug 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
+  let g:solarized_termcolors=256
 " }}}
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
 
@@ -94,6 +110,7 @@ Plug 'airblade/vim-gitgutter'
 set signcolumn=yes
 
 " }}}
+Plug 'noprompt/vim-yardoc'
 Plug 'vim-ruby/vim-ruby' " {{{
 let g:ruby_indent_access_modifier_style = 'outdent'
 let g:ruby_indent_block_style = 'do'
@@ -122,12 +139,12 @@ let g:rails_projections = {
 " }}}
 Plug 'tpope/vim-bundler' " Ruby Util Plugin: Gem Ctags
 Plug 'tpope/vim-rake'
+Plug 'tpope/vim-projectionist'
 Plug 'danchoi/ri.vim', {'for': 'ruby'}  " documentation access {{{
   let g:ri_no_mappings=1
   nnoremap  <LEADER>rd :call ri#OpenSearchPrompt(1)<cr> " vertical split
   nnoremap  <LEADER>rc :call ri#LookupNameUnderCursor()<cr> " keyword lookup
 " }}}
-Plug 'GutenYe/gem.vim'
 Plug 'thoughtbot/vim-rspec', {'for': 'ruby'} " {{{
 let $RUBYOPT="-W0"
 let g:rspec_command='Dispatch ./bin/rspec {spec}'
@@ -163,6 +180,7 @@ autocmd VimEnter * command! Colors
   \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
 
 nnoremap <C-G>c :Commits<CR>
+nnoremap <C-T> :Buffers<CR>
 nnoremap <C-G>b :BCommits<CR>
 inoremap <expr> <c-x><c-k> fzf#complete('git commit-words')
 function! s:branch_touched_sink(line)
@@ -213,23 +231,14 @@ Plug 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
 Plug 'tpope/vim-afterimage' " Util: Edit (small) images
 Plug 'vim-scripts/vimwiki' " Util: Nice way to take and organise notes {{{
 let g:vimwiki_global_ext = 0
+let g:vimwiki_ext2syntax = {
+      \ '.md': 'markdown',
+      \ }
 let g:vimwiki_list = [
-  \ {
-  \   'syntax': 'markdown',
-  \   'ext': '.md',
-  \   'path': '~/vimwiki/work/'
-  \ },
-  \ {
-  \   'syntax': 'markdown',
-  \   'ext': '.md',
-  \   'path': '~/vimwiki/play/'
-  \ },
-  \ {
-  \   'syntax': 'markdown',
-  \   'ext': '.md',
-  \   'path': '~/vimwiki/dnd5/'
-  \ }
-\ ]
+      \ {'ext': '.md', 'path': '~/vimwiki/work/'},
+      \ {'ext': '.md', 'path': '~/vimwiki/play/'},
+      \ {'ext': '.md', 'path': '~/vimwiki/dnd5/'},
+      \ ]
 " }}}
 Plug 'tpope/vim-rbenv' " Util: rbenv.vim
 Plug 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
@@ -241,11 +250,14 @@ Plug 'godlygeek/tabular' " Util: vertically aligning things (not for code)
 Plug 'kana/vim-textobj-user' | Plug 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
 Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby'}
 Plug 'AndrewRadev/splitjoin.vim' " Util: Toggle inline/multiline {{{
-  let g:splitjoin_split_mapping = '<LEADER>ss'
-  let g:splitjoin_join_mapping = '<LEADER>sj'
+let g:splitjoin_join_mapping = ''
+let g:splitjoin_ruby_hanging_args = 0
+let g:splitjoin_split_mapping = ''
+nnoremap <LEADER>sl :SplitjoinSplit<CR>
+nnoremap <LEADER>sj :SplitjoinJoin<CR>
 " }}}
 Plug 'jgdavey/vim-blockle' " Ruby: toggle {} <-> do ; end {{{
-  let g:blockle_mapping = '<LEADER>bl'
+let g:blockle_mapping = '<LEADER>bl'
 " }}}
 Plug 'lmeijvogel/vim-yaml-helper', {'for': 'yml'}
 Plug 'embear/vim-localvimrc' " Util: Allow for project specific vim settings
@@ -354,7 +366,6 @@ augroup myfiletypes
         \     'have_no_\(\w\+\)': 'have_\1',
         \     'have_\(\w\+\)': 'have_no_\1',
         \   },
-        \   ['includes', 'eager_load', 'preload'],
         \   ['allow', 'expect'],
         \   ['integration', 'DEBUG_integration'],
         \   ['dark', 'light'],
@@ -362,6 +373,7 @@ augroup myfiletypes
         \   ['foo', 'bar', 'baz'],
         \   ['left', 'right'],
         \   ['rock', 'paper', 'scissors', 'lizard', 'Spock'],
+        \   ['perform_async', 'perform_instantly'],
         \ ]
   " }}}
   " autocmd FileType clojure,c,cpp,objc,objcpp call rainbow#load()
@@ -421,6 +433,7 @@ noremap K <NOP>
 nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
 nnoremap <LEADER>f :set operatorfunc=<SID>GrepOperator<CR>g@
 vnoremap <LEADER>f :<C-U>call <SID>GrepOperator(visualmode())<CR>
+nnoremap <LEADER>fi :grep! ""<LEFT>
 
 function! s:GrepOperator(type)
     let saved_unnamed_register = @@

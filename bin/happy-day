@@ -15,12 +15,14 @@ brew update && brew upgrade --cleanup \
   libssh2 \
   libyaml \
   openssl \
+  pspg \
   rbenv \
   rbenv-bundler \
   rbenv-communal-gems \
   rbenv-default-gems \
   readline \
   ruby-build \
+  ruby-install \
   the_silver_searcher \
   tidy-html5 \
   tmux \

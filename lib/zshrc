@@ -1,7 +1,8 @@
 # vim:foldmethod=marker
 
-# uncomment the following profile startup; then call `zprof` from your shell
-# zmodload zsh/zprof
+if [[ $ZPROF != "" ]]; then
+  zmodload zsh/zprof
+fi
 
 # Make the $path array have unique values.
 typeset -U PATH
@@ -133,3 +134,8 @@ unset -f add_to_path_once
 
 source /usr/local/opt/chruby/share/chruby/chruby.sh
 source /usr/local/opt/chruby/share/chruby/auto.sh
+
+if [[ $ZPROF != "" ]]; then
+ zprof
+ exit
+fi

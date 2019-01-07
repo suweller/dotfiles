@@ -73,7 +73,6 @@ if ! zgen saved; then
   zgen load yous/lime
   zgen load zsh-users/zsh-completions
   zgen load zsh-users/zsh-history-substring-search
-  # zgen load zsh-users/zsh-syntax-highlighting # NOTE: 50ms to load... wtf
   zgen oh-my-zsh plugins/z
   zgen save
   # repeat 5 time zsh -ic exit
@@ -110,12 +109,16 @@ j() {
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+# export FZF_COMPLETION_TRIGGER=''
+export FZF_COMPLETION_OPTS=
+
 source ~/.fzf.zsh
 # {{{ Use ag instead of the default find command for listing candidates.
 # - The first argument to the function is the base path to start traversal
 # - Note that ag only lists files not directories
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
+  # brew install the_silver_searcher
   ag -g "" "$1"
 } # }}}
 

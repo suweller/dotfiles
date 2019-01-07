@@ -13,7 +13,7 @@ alias vi='$EDITOR'
 alias aliases='cd ~/.dotfiles && $EDITOR zsh/aliases && source zsh/aliases; popd'
 alias zshrc='cd ~/.dotfiles && $EDITOR lib/zshrc && source lib/zshrc; popd'
 alias vimrc='cd ~/.dotfiles && $EDITOR lib/vimrc; popd'
-alias tmuxrc='cd ~/.dotfiles && $EDITOR lib/tmux.conf && tmux lib/tmux.conf; popd'
+alias tmuxrc='cd ~/.dotfiles && $EDITOR lib/tmux.conf && tmux source-file lib/tmux.conf; popd'
 alias gitrc='cd ~/.dotfiles && $EDITOR lib/gitconfig; popd'
 alias gems='$EDITOR ~/.rbenv/default-gems'
 

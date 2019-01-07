@@ -2,8 +2,8 @@
 \set PROMPT2 '[more] %R > '
 
 \setenv PAGER pspg
-\pset border 2
-\pset linestyle unicode
+\pset border 1
+-- \pset linestyle unicode
 
 -- By default, NULL displays as an empty space. Is it actually an empty
 -- string, or is it null? This makes that distinction visible.

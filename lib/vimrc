@@ -1,7 +1,7 @@
 " vim:fdm=marker
-set nocompatible      " We're running VIM, not vi
+set nocompatible " We're running VIM, not vi
 scriptencoding utf-8
-filetype off          " Turn off _before_ loading all Plugins
+filetype off " Turn off _before_ loading all Plugins
 let mapleader = " "
 inoremap § <ESC>
 nnoremap <F1> <NOP>
@@ -9,8 +9,11 @@ inoremap <F1> <ESC>
 noremap <F10> :set spell! spell?<CR>
 nnoremap <F9> :Dispatch<CR>
 
-" set synmaxcol=256
-" set updatetime=1000
+" set synmaxcol=119
+set updatetime=1000
+set nobackup
+set nowritebackup
+set noswapfile
 
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
@@ -19,6 +22,7 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'pbrisbin/vim-mkdir'
 Plug 'vim-scripts/Align'
 Plug 'junegunn/goyo.vim' " {{{
   let g:goyo_width = 119
@@ -330,8 +334,8 @@ set winaltkeys=no               " Let vim handle alt keys
 set list                        " Create a list & make invisible chars visible
 set statusline=
 set statusline+=%<%.99f\ %h%m%r%y " absolute filename (max 99) & used syntax properties
-set statusline+=%=\ %{SL('fugitive#statusline')} " Git branchname
-set statusline+=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} " encoding
+" set statusline+=%=\ %{SL('fugitive#statusline')} " Git branchname
+set statusline+=%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} " encoding
 set statusline+=%k\ %-12.(%l,%c%V%) " cursor position & line count
 set statusline+=\ %P
 
@@ -357,6 +361,7 @@ endif
 augroup myfiletypes
   " Clear old autocmds in group
   autocmd!
+  " autocmd FileType vimwiki set syntax=markdown
   " Ruby {{{
   autocmd FileType css,sass
         \ set iskeyword+=-
@@ -430,11 +435,11 @@ noremap H ^
 noremap L $
 " }}}
 noremap K <NOP>
-nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
-nnoremap <LEADER>f :set operatorfunc=<SID>GrepOperator<CR>g@
-vnoremap <LEADER>f :<C-U>call <SID>GrepOperator(visualmode())<CR>
-nnoremap <LEADER>fi :grep! ""<LEFT>
-
+nnoremap <LEADER>G :grep! "\b<cword>\b"<CR>:cw<CR>
+nnoremap <LEADER>g :set operatorfunc=<SID>GrepOperator<CR>g@
+vnoremap <LEADER>g :<C-U>call <SID>GrepOperator(visualmode())<CR>
+nnoremap <LEADER>gr :grep ""<LEFT>
+:command Grep grep
 function! s:GrepOperator(type)
     let saved_unnamed_register = @@
     if a:type ==# 'v'

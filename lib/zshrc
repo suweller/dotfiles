@@ -127,6 +127,8 @@ add_to_path_once "~/.cargo/bin"
 
 # Enable completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*:(cp|mv):*' file-sort modification
+
 
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions

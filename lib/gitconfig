@@ -17,9 +17,6 @@
 [github]
   user = suweller
 
-; [branches]
-;   main = master
-;   keep = "(integration\\d|production|master|HEAD)$"
 [branches]
   main = master
   keep = "(master|develop|HEAD)$"

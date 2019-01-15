@@ -103,7 +103,7 @@ nnoremap <LEADER>gb :Gblame<CR>
 Plug 'int3/vim-extradite'
 nnoremap <LEADER>ge :Extradite<CR>
 nnoremap <LEADER>gd :Gdiff<CR>
-nnoremap <LEADER>gm :Gdiff develop<CR>
+nnoremap <LEADER>gm :execute "Gdiff " . execute("!git config branches.main")<CR>
 nnoremap <LEADER>dd :windo diffthis<CR>
 
 " Util: Make things happen

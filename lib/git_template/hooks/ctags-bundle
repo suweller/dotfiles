@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
 PATH="/usr/local/bin:$PATH"
-ctags \
-  -R \
-  --tag-relative \
-  --exclude=spec \
-  -f.git/tags-includes \
-  $(bundle list --paths)
+bundle list --paths \
+  | ctags \
+    --recurse \
+    --tag-relative \
+    --exclude=spec \
+    -f.git/tags-includes \

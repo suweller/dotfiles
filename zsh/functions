@@ -1,13 +1,14 @@
+#!/bin/bash
 function git-nuke {
   git branch -D $1 && git push origin :$1
 }
 
 function git-on-master {
   branch=`git_branch_name`
-  git checkout master && git pull --rebase 
+  git checkout master && git pull --rebase
   git checkout $branch
   git rebase master
-  }
+}
 
 function g {
   if [[ $# > 0 ]]; then

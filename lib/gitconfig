@@ -2,8 +2,8 @@
   path = .gitconfig-local
 
 [core]
-  excludesfile = ~/.gitignore
   attributesfile = ~/.gitattributes
+  excludesfile = ~/.gitignore
   pager = less \
     --no-init \
     --quit-if-one-screen \

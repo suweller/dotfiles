@@ -3,8 +3,8 @@ set -e
 PATH="/usr/local/bin:$PATH"
 dir="`git rev-parse --git-dir`"
 trap 'rm -f "$dir/tags.$$"' EXIT INT TERM
-ag --files-with-matches |
-  ctags \
+git ls-files \
+  | ctags \
     --tag-relative=yes \
     -L - \
     -f$dir/tags.$$ \

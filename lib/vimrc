@@ -180,28 +180,20 @@ let g:fzf_history_dir = '~/.vim/fzf/'
 "   \   let g:fzf_history_dir = '~/.vim/fzf/'
 "   \ endif
 
-autocmd VimEnter * command! Colors
-  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'})
-
-nnoremap <C-G>c :Commits<CR>
-nnoremap <C-T> :Buffers<CR>
-nnoremap <C-G>b :BCommits<CR>
 inoremap <expr> <c-x><c-k> fzf#complete('git commit-words')
+
 function! s:branch_touched_sink(line)
   let [status, file] = split(a:line, '\s\+')
   execute 'e' file
 endfunction
-nnoremap <C-G>f :call fzf#run({
-  \
-  \ 'source': 'git branch-touched',
-  \ 'options': '--ansi',
-  \ 'sink': function('<sid>branch_touched_sink'),
-  \ })<CR>
 
-nnoremap <C-F>c :Colors<CR>
-" nnoremap <C-F>h :Helptags<CR> " TODO
+nnoremap <C-F>c :Commits<CR>
+nnoremap <C-F>d :BCommits<CR>
+nnoremap <C-F>h :Helptags<CR>
 nnoremap <C-F>t :Tags<CR>
+nnoremap <C-G>f :call fzf#run({'source': 'git branch-touched', 'options': '--ansi', 'sink': function('<sid>branch_touched_sink')})<CR>
 nnoremap <C-P> :Files<CR>
+nnoremap <C-T> :Buffers<CR>
 
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
@@ -435,10 +427,10 @@ noremap H ^
 noremap L $
 " }}}
 noremap K <NOP>
-nnoremap <LEADER>G :grep! "\b<cword>\b"<CR>:cw<CR>
-nnoremap <LEADER>g :set operatorfunc=<SID>GrepOperator<CR>g@
-vnoremap <LEADER>g :<C-U>call <SID>GrepOperator(visualmode())<CR>
-nnoremap <LEADER>gr :grep ""<LEFT>
+nnoremap <LEADER>F :grep! "\b<cword>\b"<CR>:cw<CR>
+nnoremap <LEADER>f :set operatorfunc=<SID>GrepOperator<CR>g@
+vnoremap <LEADER>f :<C-U>call <SID>GrepOperator(visualmode())<CR>
+nnoremap <LEADER>fr :grep ""<LEFT>
 :command Grep grep
 function! s:GrepOperator(type)
     let saved_unnamed_register = @@

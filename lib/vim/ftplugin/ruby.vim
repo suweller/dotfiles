@@ -10,7 +10,7 @@ endif
 nnoremap <buffer> <LEADER>ds :tabe db/schema.rb<CR>
 nnoremap <buffer> <LEADER>dm :Sex db/migrate/<CR>GG
 nnoremap <buffer> <LEADER>pa osave_and_open_page # DEBUG<ESC>
-nnoremap <buffer> <LEADER>fr O<ESC>O# frozen_string_literal: true<ESC>
+nnoremap <buffer> <LEADER>if O<ESC>O# frozen_string_literal: true<ESC>
 nnoremap <buffer> <LEADER>de o(require('pry'); binding.pry) # DEBUG<ESC>
 nnoremap <buffer> <LEADER>df ofail 'fast' # DEBUG<ESC>
 nnoremap <buffer> <LEADER>pu j^y$Oputs '<C-R>"' # DEBUG<ESC>

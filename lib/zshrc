@@ -70,16 +70,26 @@ if [[ ! -d "$HOME/.zgen" ]]; then
 fi
 source "${HOME}/.zgen/zgen.zsh"
 if ! zgen saved; then
-  zgen load yous/lime
+  zgen load agkozak/agkozak-zsh-prompt
   zgen load zdharma/fast-syntax-highlighting
   zgen load zsh-users/zsh-completions
   zgen load zsh-users/zsh-history-substring-search
   zgen oh-my-zsh plugins/z
   zgen save
-  # repeat 5 time zsh -ic exit
+  echo "ZGen update, or it's plugins changed."
+  echo "- Note that it does not remove the directory of unused/deprecated plugins"
+  echo "- Have a look at the load time:"
+  echo "    repeat 5 time zsh -ic exit; ZPROF=true zsh -ic exit"
 fi
 
-# zgen load zsh-users/zsh-history-substring-search
+# zgen load agkozak/agkozak-zsh-prompt {{{
+AGKOZAK_BLANK_LINES=1
+AGKOZAK_LEFT_PROMPT_ONLY=1
+AGKOZAK_PROMPT_CHAR=( ❯ ❯ ❮ )
+AGKOZAK_CUSTOM_SYMBOLS=( 'Y' '!' '!' 'a' 'd' 'm' '>' ' ' )
+# }}}
+
+# zgen load zsh-users/zsh-history-substring-search {{{
 if [ -n "${terminfo[kcuu1]}" ]; then
   bindkey "${terminfo[kcuu1]}" history-substring-search-up
 fi

@@ -71,6 +71,7 @@ fi
 source "${HOME}/.zgen/zgen.zsh"
 if ! zgen saved; then
   zgen load yous/lime
+  zgen load zdharma/fast-syntax-highlighting
   zgen load zsh-users/zsh-completions
   zgen load zsh-users/zsh-history-substring-search
   zgen oh-my-zsh plugins/z
@@ -120,7 +121,8 @@ source ~/.fzf.zsh
 _fzf_compgen_path() {
   # brew install the_silver_searcher
   ag -g "" "$1"
-} # }}}
+}
+# }}}
 
 add_to_path_once "./bin"
 add_to_path_once "~/.cargo/bin"
@@ -128,7 +130,6 @@ add_to_path_once "~/.cargo/bin"
 # Enable completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*:(cp|mv):*' file-sort modification
-
 
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions

@@ -101,13 +101,14 @@ bindkey -M emacs '^N' history-substring-search-down
 bindkey -M vicmd 'k' history-substring-search-up
 bindkey -M vicmd 'j' history-substring-search-down
 bindkey -e
+# }}}
 
-# zsh-users/zsh-syntax-highlighting
+# zsh-users/zsh-syntax-highlighting {{{
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
+# }}}
 
-# zgen oh-my-zsh plugins/z
-# zgen load andrewferrier/fzf-z
+# zgen oh-my-zsh plugins/z {{{
 unalias z
 j() {
   if [[ -z "$*" ]]; then
@@ -117,14 +118,15 @@ j() {
     _z "$@"
   fi
 }
+# }}}
 
+# brew install fzf && brew install the_silver_searcher {{{
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # export FZF_COMPLETION_TRIGGER=''
 export FZF_COMPLETION_OPTS=
-
 source ~/.fzf.zsh
-# {{{ Use ag instead of the default find command for listing candidates.
+# Use ag instead of the default find command for listing candidates.
 # - The first argument to the function is the base path to start traversal
 # - Note that ag only lists files not directories
 # - See the source code (completion.{bash,zsh}) for the details.

@@ -73,7 +73,6 @@ if ! zgen saved; then
   zgen load agkozak/agkozak-zsh-prompt
   zgen load zdharma/fast-syntax-highlighting
   zgen load zsh-users/zsh-completions
-  zgen load zsh-users/zsh-history-substring-search
   zgen oh-my-zsh plugins/z
   zgen save
   echo "ZGen update, or it's plugins changed."
@@ -87,20 +86,6 @@ AGKOZAK_BLANK_LINES=1
 AGKOZAK_LEFT_PROMPT_ONLY=1
 AGKOZAK_PROMPT_CHAR=( ❯ ❯ ❮ )
 AGKOZAK_CUSTOM_SYMBOLS=( 'Y' '!' '!' 'a' 'd' 'm' '>' ' ' )
-# }}}
-
-# zgen load zsh-users/zsh-history-substring-search {{{
-if [ -n "${terminfo[kcuu1]}" ]; then
-  bindkey "${terminfo[kcuu1]}" history-substring-search-up
-fi
-if [ -n "${terminfo[kcud1]}" ]; then
-  bindkey "${terminfo[kcud1]}" history-substring-search-down
-fi
-bindkey -M emacs '^P' history-substring-search-up
-bindkey -M emacs '^N' history-substring-search-down
-bindkey -M vicmd 'k' history-substring-search-up
-bindkey -M vicmd 'j' history-substring-search-down
-bindkey -e
 # }}}
 
 # zsh-users/zsh-syntax-highlighting {{{
@@ -134,6 +119,8 @@ _fzf_compgen_path() {
   # brew install the_silver_searcher
   ag -g "" "$1"
 }
+bindkey '^P' fzf-history-widget
+bindkey '^N' fzf-history-widget
 # }}}
 
 add_to_path_once "./bin"

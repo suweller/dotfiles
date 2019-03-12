@@ -45,7 +45,6 @@ function brew-all {
 
   local brews=(
     autojump
-    caskroom/cask/brew-cask
     cloc
     ctags
     curl
@@ -61,7 +60,6 @@ function brew-all {
     ruby-build
     tmux
     vim
-    wget
     zsh
   )
   many-brew 'list' 'install'

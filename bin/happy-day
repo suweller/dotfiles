@@ -1,7 +1,12 @@
 #!/bin/bash
-set -x
 
-brew update && brew upgrade --cleanup \
+read -p "Run brew cleanup?" yn
+case $yn in
+  [Yy]* ) brew cleanup; break;;
+  * ) echo "skipping brew cleanup";;
+esac
+set -x
+brew update && brew upgrade \
   ansiweather \
   autojump \
   cloc \

@@ -65,6 +65,8 @@ setopt share_history
 
 unset GREP_OPTIONS
 
+bindkey -e
+
 if [[ ! -d "$HOME/.zgen" ]]; then
   git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 fi
@@ -142,5 +144,4 @@ source /usr/local/opt/chruby/share/chruby/auto.sh
 
 if [[ $ZPROF != "" ]]; then
  zprof | less
- exit
 fi

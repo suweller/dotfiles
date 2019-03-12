@@ -48,11 +48,11 @@ let g:ruby_heredoc_syntax_filetypes = {
       \ "pgsql" : {"start" : "PGSQL"},
       \ "sql" : {"start" : "SQL"},
       \}
-
+" }}}
 Plug 'lifepillar/pgsql.vim' " Highlighter
 Plug 'exu/pgsql.vim' " Highlighter
 Plug 'dearrrfish/vim-applescript' " Highlighter
-Plug 'tpope/vim-markdown' " Highlighter (adds fenced codeblock highlighting)
+Plug 'tpope/vim-markdown' " Highlighter (adds fenced codeblock highlighting) {{{
 let g:markdown_fenced_languages=[
       \ 'bash=sh',
       \ 'css',
@@ -66,6 +66,7 @@ let g:markdown_fenced_languages=[
       \ 'pgsql',
       \ 'sql=pgsql',
       \ ]
+" }}}
 Plug 'nathanaelkane/vim-indent-guides' " Highlighter, Indentation {{{
 let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
@@ -97,22 +98,14 @@ Plug 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
   let g:solarized_termcolors=256
 " }}}
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
-
-" Util: Determine what happened and why
+Plug 'tpope/vim-rhubarb' " Enables fugitive :Gbrowse to open GitHub links
 nnoremap <LEADER>gb :Gblame<CR>
-Plug 'int3/vim-extradite'
-nnoremap <LEADER>ge :Extradite<CR>
 nnoremap <LEADER>gd :Gdiff<CR>
-nnoremap <LEADER>gm :execute "Gdiff " . execute("!git config branches.main")<CR>
+nnoremap <LEADER>gm :Gdiff develop<CR>
 nnoremap <LEADER>dd :windo diffthis<CR>
-
-" Util: Make things happen
-nnoremap <LEADER>gs :Gstatus<CR>
-nnoremap <LEADER>gc :Gcommit --verbose<CR>
-
-Plug 'airblade/vim-gitgutter'
+" }}}
+Plug 'airblade/vim-gitgutter' " {{{
 set signcolumn=yes
-
 " }}}
 Plug 'noprompt/vim-yardoc'
 Plug 'vim-ruby/vim-ruby' " {{{
@@ -157,9 +150,6 @@ map <LEADER>sn :call RunNearestSpec()<CR>
 map <LEADER>sl :call RunLastSpec()<CR>
 map <LEADER>sa :Dispatch bin/parallel_rspec spec/<CR>
 " }}}
-Plug 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
-nnoremap - :Switch<cr>
-" }}}
 " Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
 Plug '/usr/local/opt/fzf/' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
 if executable("ag")
@@ -171,15 +161,6 @@ let g:fzf_buffers_jump = 1
 let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 let g:fzf_tags_command = '.git/hooks/ctags'
 let g:fzf_history_dir = '~/.vim/fzf/'
-" autocmd BufWinEnter
-"   \ if isdirectory('.git/')
-"   \   if !isdirectory('.git/fzf/')
-"   \     call mkdir('.git/fzf/')
-"   \   endif
-"   \   let g:fzf_history_dir = '.git/fzf/'
-"   \ else
-"   \   let g:fzf_history_dir = '~/.vim/fzf/'
-"   \ endif
 
 inoremap <expr> <c-x><c-k> fzf#complete('git commit-words')
 
@@ -250,8 +231,11 @@ Plug 'AndrewRadev/splitjoin.vim' " Util: Toggle inline/multiline {{{
 let g:splitjoin_join_mapping = ''
 let g:splitjoin_ruby_hanging_args = 0
 let g:splitjoin_split_mapping = ''
-nnoremap <LEADER>sl :SplitjoinSplit<CR>
-nnoremap <LEADER>sj :SplitjoinJoin<CR>
+nnoremap <LEADER>sj :SplitjoinSplit<CR>
+nnoremap <LEADER>sk :SplitjoinJoin<CR>
+" }}}
+Plug 'AndrewRadev/switch.vim' " Util: Switch between predefined replacements (true <-> false) {{{
+nnoremap - :Switch<cr>
 " }}}
 Plug 'jgdavey/vim-blockle' " Ruby: toggle {} <-> do ; end {{{
 let g:blockle_mapping = '<LEADER>bl'

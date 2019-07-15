@@ -359,6 +359,7 @@ augroup myfiletypes
         \   ['rock', 'paper', 'scissors', 'lizard', 'Spock'],
         \   ['perform_async', 'perform_instantly'],
         \   ['eq', 'match_array'],
+        \   ['asc', 'desc'],
         \ ]
   " }}}
   " autocmd FileType clojure,c,cpp,objc,objcpp call rainbow#load()
@@ -391,6 +392,10 @@ nnoremap <LEADER>cd :cd %:p:h<CR>
 " repeat your recording where needed. You never have to press `@` again.
 nnoremap Q @j
 xnoremap Q @j
+nnoremap W @k
+xnoremap W @k
+nnoremap E @l
+xnoremap E @l
 " }}}
 " nnoremap <LEADER>q :q<CR>
 " nnoremap <LEADER>Q :qal<CR>

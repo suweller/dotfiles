@@ -32,6 +32,8 @@ Plug 'junegunn/goyo.vim' " {{{
   autocmd! User GoyoEnter Limelight
   autocmd! User GoyoLeave Limelight!
 " }}}
+Plug 'junegunn/gv.vim' " {{ Git Commit Browser
+" }}}
 Plug 'junegunn/limelight.vim' " {{{ Hide other blocks of code
   let g:limelight_conceal_ctermfg = 'gray'
   let g:limelight_conceal_ctermfg = 244

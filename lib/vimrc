@@ -123,7 +123,7 @@ let g:rails_projections = {
 \   "alternate": "app/models/%i.rb",
 \   "related":   "db/schema.rb#%s",
 \   "test":      ["unit/models/%i_test.rb", "spec/models/%i_spec.rb"],
-\   "template":  "FactoryGirl.define do\n  factory :%i do\n  end\nend",
+\   "template":  "FactoryBot.define do\n  factory :%i do\n  end\nend",
 \   "keywords":  "factory sequence"
 \ },
 \ "app/mailers/*.rb": {

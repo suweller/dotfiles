@@ -1,11 +1,11 @@
 #!/bin/bash
 
-read -p "Run brew cleanup?" yn
+read -p "Run brew cleanup? /yn/i " yn
+set -x
 case $yn in
   [Yy]* ) brew cleanup; break;;
   * ) echo "skipping brew cleanup";;
 esac
-set -x
 brew update && brew upgrade \
   ansiweather \
   autojump \

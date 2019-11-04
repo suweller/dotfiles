@@ -175,7 +175,7 @@ nnoremap <C-F>c :Commits<CR>
 nnoremap <C-F>d :BCommits<CR>
 nnoremap <C-F>h :Helptags<CR>
 nnoremap <C-F>t :Tags<CR>
-nnoremap <C-G>f :call fzf#run({'source': 'git branch-ls-files', 'down': '40%', 'options': '--ansi', 'sink': function('<sid>branch_ls_files_sink')})<CR>
+nnoremap <C-G>f :call fzf#run({'source': 'git branch-ls-files', 'down': '33%', 'options': '--ansi', 'sink': function('<sid>branch_ls_files_sink')})<CR>
 nnoremap <C-P> :Files<CR>
 nnoremap <C-T> :Buffers<CR>
 

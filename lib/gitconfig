@@ -60,12 +60,16 @@
   branch-stat = !git diff --stat `git branch-base` HEAD^
   branch-l = !git l `git branch-base`...HEAD
   branch-lint = !rubocop-git --display-cop-names `git branch-base` HEAD
-  branch-ls-files = "! ( \
+  branch-ls-touched = "! ( \
       git -c color.status=always status \
         --short \
         --untracked-files=all && \
         git diff --name-only \
           `git branch-base` \
+    ) \
+    "
+  branch-ls-files = "! ( \
+      git branch-ls-touched \
           | awk '{ print \"\\033[34mc_\\033[0m \"$1; }' && \
       git ls-files \
         | awk '{ print \"\\033[90mo_\\033[0m \"$1; }' \

@@ -171,7 +171,7 @@ function! s:branch_ls_files_sink(line)
   execute 'e' file
 endfunction
 
-command! -bang BranchLsFiles call fzf#run(fzf#wrap('git-branch-ls-files', {'source': 'git branch-ls-files', 'down': '33%', 'options': '--ansi', 'sink': function('<sid>branch_ls_files_sink')}, <bang>0))
+command! -bang BranchLsFiles call fzf#run(fzf#wrap('files', {'source': 'git branch-ls-files', 'down': '33%', 'options': '--ansi', 'sink': function('<sid>branch_ls_files_sink')}, <bang>0))
 nnoremap <C-F>c :Commits<CR>
 nnoremap <C-F>d :BCommits<CR>
 nnoremap <C-F>h :Helptags<CR>

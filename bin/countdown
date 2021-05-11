@@ -1,27 +1,20 @@
 #!/bin/bash
 TIME="00:02:00"
+MESSAGE="Time is up!"
 usage="$(basename "$0") [-h] [-t HH:MM:SS] -- count down timer with alert
 
 where:
   -h shows this help text
+  -m set a custom message (default: $MESSAGE)
   -t set the timer (default: $TIME)"
 
-while getopts ':ht:' option; do
+while getopts ':hm:t:' option; do
   case $option in
-    h) echo "$usage"
-      exit
-      ;;
-    t) TIME=$OPTARG
-      ;;
-    \?) printf "illegal option: -%s\n" "$OPTARG" >&2
-      echo "$usage" >&2
-      exit 1
-      ;;
-    :)
-      echo "Option -$OPTARG requires an argument." >&2
-      echo "$usage"
-      exit 1
-      ;;
+    h) echo "$usage"; exit;;
+    m) MESSAGE=$OPTARG;;
+    t) TIME=$OPTARG;;
+    \?) printf "no option: -%s\n%s\n" "$OPTARG" "$usage" >&2; exit 1;;
+    :) printf "no argument -%s\n%s\n" "$OPTARG" "$usage" >&2; exit 1;;
   esac
 done
 shift $((OPTIND - 1))
@@ -48,7 +41,7 @@ function countdown {
 function alert {
   if [ "$(uname)" == "Darwin" ]; then
     afplay /System/Library/Sounds/Funk.aiff &
-    osascript -e 'display dialog "Time is up!" buttons {"OK"} with icon stop'
+    osascript -e "display dialog \"$MESSAGE\" buttons {\"OK\"} with icon stop"
   elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     tput bel
   fi

@@ -66,11 +66,12 @@
         --untracked-files=all && \
         git diff --name-only \
           `git branch-base` \
+          | awk '{ print \"\\033[34mc_\\033[0m \"$1; }' \
     ) \
     "
   branch-ls-files = "! ( \
       git branch-ls-touched \
-          | awk '{ print \"\\033[34mc_\\033[0m \"$1; }' && \
+        && \
       git ls-files \
         | awk '{ print \"\\033[90mo_\\033[0m \"$1; }' \
     ) \

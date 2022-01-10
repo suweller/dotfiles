@@ -19,6 +19,7 @@ export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual
 
 add_to_path_once "$HOME/.dotfiles/bin"
 add_to_path_once "/usr/bin"
+add_to_path_once "/opt/homebrew/bin"
 add_to_path_once "/usr/local/bin"
 add_to_path_once "/usr/sbin"
 add_to_path_once "/sbin"
@@ -139,8 +140,8 @@ source $HOME/.dotfiles/zsh/functions
 # Unset local functions
 unset -f add_to_path_once
 
-source /usr/local/opt/chruby/share/chruby/chruby.sh
-source /usr/local/opt/chruby/share/chruby/auto.sh
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 
 if [[ $ZPROF != "" ]]; then
  zprof | less

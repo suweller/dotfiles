@@ -4,11 +4,6 @@
 [core]
   attributesfile = ~/.gitattributes
   excludesfile = ~/.gitignore
-  pager = less \
-    --no-init \
-    --quit-if-one-screen \
-    --raw-control-chars \
-    --tabs=4
 
 [user]
   name = Steven Weller
@@ -159,6 +154,7 @@
     done \
     "
   x = !sh -c 'git $1 HEAD ^`git merge-base --fork-point $0` $2'
+  rubocop = !bin/rubocop-git `git branch-base` HEAD
   nuke = !sh -c ' \
     git branch \
     | grep --invert-match \"\\*\" \
@@ -166,7 +162,6 @@
     | fzf --multi --preview=\"git l {} --\" \
     | xargs git branch --delete --force \
     '
-  rubocop = !bin/rubocop-git `git branch-base` HEAD
 
 [push]
   default = current

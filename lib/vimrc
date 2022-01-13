@@ -41,6 +41,7 @@ Plug 'junegunn/limelight.vim' " {{{ Hide other blocks of code
   " nmap <Leader>l <Plug>(Limelight)
   " xmap <Leader>l <Plug>(Limelight)
 " }}}
+Plug 'wellle/context.vim' " Add Code Context
 
 " Plug 'sheerun/vim-polyglot' " Highlighter {{{
 " let g:polyglot_disabled = ['ruby', 'markdown']
@@ -74,13 +75,34 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_auto_colors = 0
 let g:indent_guides_indent_levels = 8
 " }}}
-Plug 'lambdatoast/elm.vim' " elm -> javascript
+Plug 'lambdatoast/elm.vim' " elm -> JavaScript
 Plug 'moll/vim-node'
 Plug 'maksimr/vim-jsbeautify' " Formatter
 Plug 'wsdjeg/vim-fetch' " Process line and column jump specifications
 
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux'
+Plug 'itchyny/lightline.vim' " {{{
+let g:lightline = {
+      \ 'colorscheme': 'jellybeans',
+      \ 'component_function': {
+      \   'fileformat': 'LightlineFileformat',
+      \   'filetype': 'LightlineFiletype',
+      \   'fileencoding': 'LightlineEncoding',
+      \ },
+      \ }
+function! LightlineEncoding()
+  let bomb = (exists("+bomb") && &bomb) ? 'b ' : ''
+  let encoding = &fenc == '' ? &enc : &fenc
+  return winwidth(0) > 70 ? bomb . encoding : ''
+endfunction
+function! LightlineFileformat()
+  return winwidth(0) > 70 ? &fileformat : ''
+endfunction
+function! LightlineFiletype()
+  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
+endfunction
+" }}}
 Plug 'nanotech/jellybeans.vim' " {{{
 let g:jellybeans_overrides = {
   \ 'background': {'ctermbg': 'none', '256ctermbg': 'none'},
@@ -101,9 +123,9 @@ Plug 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
 " }}}
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
 Plug 'tpope/vim-rhubarb' " Enables fugitive :Gbrowse to open GitHub links
-nnoremap <LEADER>gb :Gblame<CR>
-nnoremap <LEADER>gd :Gdiff<CR>
-nnoremap <LEADER>gm :Gdiff develop<CR>
+nnoremap <LEADER>gb :Git blame<CR>
+nnoremap <LEADER>gd :Git diff<CR>
+nnoremap <LEADER>gm :Git diff develop<CR>
 nnoremap <LEADER>dd :windo diffthis<CR>
 " }}}
 Plug 'airblade/vim-gitgutter' " {{{
@@ -170,13 +192,27 @@ function! s:branch_ls_files_sink(line)
   let [status, file] = split(a:line, '\s\+')
   execute 'e' file
 endfunction
+command! -bang BranchLsFiles
+      \ call fzf#run(fzf#wrap(
+      \   'files',
+      \   {
+      \     'source': 'git branch-ls-files',
+      \     'options': ['--ansi', '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //")'],
+      \     'sink': function('<sid>branch_ls_files_sink')
+      \   },
+      \   <bang>0
+      \ ))
 
-command! -bang BranchLsFiles call fzf#run(fzf#wrap('files', {'source': 'git branch-ls-files', 'down': '33%', 'options': '--ansi', 'sink': function('<sid>branch_ls_files_sink')}, <bang>0))
+command! -bang -nargs=* GGrep
+    \ call fzf#vim#grep(
+    \   'git grep --line-number '.shellescape(<q-args>), 0,
+    \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
 nnoremap <C-F>c :Commits<CR>
 nnoremap <C-F>d :BCommits<CR>
 nnoremap <C-F>h :Helptags<CR>
 nnoremap <C-F>t :Tags<CR>
-nnoremap <C-P> :BranchLsFiles<CR>
+nnoremap <expr> <C-P> fugitive#head() != '' ? ':BranchLsFiles<CR>' : ':Files<CR>'
 nnoremap <C-G>f :Files<CR>
 nnoremap <C-T> :Buffers<CR>
 
@@ -210,6 +246,9 @@ Plug 'tpope/vim-dispatch' " Util: Allow asynchronous tasks to be dispatched
 Plug 'tpope/vim-endwise' " Util: 'wisely' add `end` after `if` `do` etc.
 Plug 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
 Plug 'tpope/vim-afterimage' " Util: Edit (small) images
+Plug 'alok/notational-fzf-vim' " {{{ Util: Search in my notes
+let g:nv_search_paths = ['~/vimwiki/work']
+" }}}
 Plug 'vim-scripts/vimwiki' " Util: Nice way to take and organise notes {{{
 let g:vimwiki_global_ext = 0
 let g:vimwiki_ext2syntax = {
@@ -312,12 +351,6 @@ set wildignore+=tags            " Don't complete from project code ctag file
 set wildignore+=tags-includes   " Don't complete from includes code ctag file
 set winaltkeys=no               " Let vim handle alt keys
 set list                        " Create a list & make invisible chars visible
-set statusline=
-set statusline+=%<%.99f\ %h%m%r%y " absolute filename (max 99) & used syntax properties
-" set statusline+=%=\ %{SL('fugitive#statusline')} " Git branchname
-set statusline+=%=%{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"} " encoding
-set statusline+=%k\ %-12.(%l,%c%V%) " cursor position & line count
-set statusline+=\ %P
 
 if has("eval")
   function! SL(function)
@@ -497,20 +530,20 @@ function! OpenURL(url)
 endfunction
 " }}}
 
-function! <SID>StripTrailingWhitespace() " {{{
-  " Don't strip any spaces when the filetype is markdown
-  if &ft =~ 'markdown'
-    return
-  endif
-  " Preparation: save last search, and cursor position.
-  let _s=@/
-  let l = line(".")
-  let c = col(".")
-  " Do the business:
-  %s/\s\+$//e
-  " Clean up: restore previous search history, and cursor position
-  let @/=_s
-  call cursor(l, c)
-endfunction
-autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
-" }}}
+" function! <SID>StripTrailingWhitespace() " {{{
+"   " Don't strip any spaces when the filetype is markdown
+"   if &ft =~ 'markdown'
+"     return
+"   endif
+"   " Preparation: save last search, and cursor position.
+"   let _s=@/
+"   let l = line(".")
+"   let c = col(".")
+"   " Do the business:
+"   %s/\s\+$//e
+"   " Clean up: restore previous search history, and cursor position
+"   let @/=_s
+"   call cursor(l, c)
+" endfunction
+" autocmd BufWritePre * :call <SID>StripTrailingWhitespace()
+" " }}}

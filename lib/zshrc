@@ -35,7 +35,7 @@ export LC_TIME=en_DK.UTF-8
 export LC_CTYPE=utf-8
 
 # http://gcc.gnu.org/onlinedocs/gcc-4.7.2/gcc/Optimize-Options.html#Optimize-Options
-export CFLAGS="-march=core2 -O3"
+# export CFLAGS="-march=core2 -O3"
 
 # Ruby performance tweaks, http://astrails.com/blog/2012/11/13/rvm-install-patched-ruby-for-faster-rails-startup
 export RUBY_HEAP_SLOTS_INCREMENT=1000000

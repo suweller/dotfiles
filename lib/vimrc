@@ -175,7 +175,8 @@ map <LEADER>sl :call RunLastSpec()<CR>
 map <LEADER>sa :Dispatch bin/parallel_rspec spec/<CR>
 " }}}
 " Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
-Plug '/usr/local/opt/fzf/' | Plug 'junegunn/fzf.vim' " ag & fzf {{{
+Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim' " ag & fzf {{{
 if executable("ag")
   set grepprg=ag\ --vimgrep\ --hidden
   set grepformat=%f:%l:%c:%m,%f:%l:%m

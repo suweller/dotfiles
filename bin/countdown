@@ -1,12 +1,13 @@
 #!/bin/bash
 TIME="00:02:00"
 MESSAGE="Time is up!"
-usage="$(basename "$0") [-h] [-t HH:MM:SS] -- count down timer with alert
+usage="
+  $(basename "$0") [-h] [-t HH:MM:SS] -- count down timer with alert
 
-where:
-  -h shows this help text
-  -m set a custom message (default: $MESSAGE)
-  -t set the timer (default: $TIME)"
+  where:
+    -h shows this help text
+    -m set a custom message (default: $MESSAGE)
+    -t set the timer (default: $TIME)"
 
 while getopts ':hm:t:' option; do
   case $option in

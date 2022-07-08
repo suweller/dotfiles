@@ -146,3 +146,7 @@ source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 if [[ $ZPROF != "" ]]; then
  zprof | less
 fi
+
+# eval "$(rbenv init - zsh)"
+# TODO... check if this needs ^^^ to be there
+eval "$(/usr/libexec/path_helper)"

@@ -143,7 +143,7 @@
   ; hub-compare = !open https://github.com/$0/compare/$1...$2
   hub-url = !echo https://github.com/` \
     git remote --verbose \
-    | rg --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
+    | rg --pcre2 --only-matching \"(?<=git@github.com:)(.*)(?=\\.git \\(push\\))\" \
     `
   hub-pull-request = !open \
     `git hub-url`/compare/`git config branches.main`...`git branch-head`

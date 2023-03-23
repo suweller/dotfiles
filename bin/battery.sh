@@ -1,9 +1,6 @@
 #!/bin/bash
 if [ `uname` = 'Darwin' ] ; then
-  percent=`ioreg -l \
-    | grep -i capacity \
-    | tr '\n' ' | ' \
-    | awk '{printf("%d", $10/$5 * 100)}'`
+  percent=`pmset -g batt | grep -Eo "\d+%" | cut -d% -f1`
 fi
 
 direction='#[nobright]'

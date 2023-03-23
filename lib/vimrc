@@ -16,12 +16,17 @@ set nowritebackup
 set noswapfile
 
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  silent !curl
+        \ --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+        \ --fail
+        \ --location
+        \ --output ~/.vim/autoload/plug.vim
+        \ --silent
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
 call plug#begin('~/.vim/plugged')
+Plug 'chrisbra/unicode.vim'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'vim-scripts/Align'
 Plug 'junegunn/goyo.vim' " {{{
@@ -124,8 +129,8 @@ Plug 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
 Plug 'tpope/vim-rhubarb' " Enables fugitive :Gbrowse to open GitHub links
 nnoremap <LEADER>gb :Git blame<CR>
-nnoremap <LEADER>gd :Git diff<CR>
-nnoremap <LEADER>gm :Git diff develop<CR>
+nnoremap <LEADER>gd :Gdiff<CR>
+nnoremap <LEADER>gm :Gdiff develop<CR>
 nnoremap <LEADER>dd :windo diffthis<CR>
 " }}}
 Plug 'airblade/vim-gitgutter' " {{{
@@ -177,10 +182,13 @@ map <LEADER>sa :Dispatch bin/parallel_rspec spec/<CR>
 " Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim' " ag & fzf {{{
-if executable("ag")
+if executable("rg")
+  set grepprg=rg\ --vimgrep
+  " set grepformat=%f:%l:%c:%m,%f:%l:%m
+elseif executable("ag")
   set grepprg=ag\ --vimgrep\ --hidden
-  set grepformat=%f:%l:%c:%m,%f:%l:%m
-endif
+  " set grepformat=%f:%l:%c:%m,%f:%l:%m
+end
 
 let g:fzf_buffers_jump = 1
 let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
@@ -266,6 +274,7 @@ Plug 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
 Plug 'tpope/vim-unimpaired' " Util: brakety Things
 Plug 'tpope/vim-repeat' " Util: make things repeatable with '.'
 Plug 'tpope/vim-speeddating' " Util: CTRL-A/CTRL-X to increment dates/times &  more
+Plug 'tpope/vim-characterize' " Util: Press ga to see character representation
 Plug 'godlygeek/tabular' " Util: vertically aligning things (not for code)
 Plug 'kana/vim-textobj-user' | Plug 'nelstrom/vim-textobj-rubyblock' " Motion: Ruby text objects
 Plug 'ecomba/vim-ruby-refactoring', { 'for': 'ruby'}

@@ -5,7 +5,7 @@ if [[ $ZPROF != "" ]]; then
 fi
 
 # Make the $path array have unique values.
-typeset -U PATH
+# typeset -U path
 function add_to_path_once() {
   path=("$1" $path)
 }
@@ -18,7 +18,6 @@ export CLICOLOR=1
 export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
 
 add_to_path_once "$HOME/.dotfiles/bin"
-add_to_path_once "/usr/bin"
 add_to_path_once "/opt/homebrew/bin"
 add_to_path_once "/usr/local/bin"
 add_to_path_once "/usr/sbin"
@@ -108,8 +107,15 @@ j() {
 }
 # }}}
 
-# brew install fzf && brew install the_silver_searcher {{{
-export FZF_DEFAULT_COMMAND='ag -g ""'
+# brew install fzf && brew install ripgrep {{{
+export SKIM_DEFAULT_COMMAND='ag'
+# --files: List files that would be searched but do not search
+# --no-ignore: Do not respect .gitignore, etc...
+# --hidden: Search hidden files and folders
+# --follow: Follow symlinks
+# --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
+# export FZF_DEFAULT_COMMAND='ag --glob ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # export FZF_COMPLETION_TRIGGER=''
 export FZF_COMPLETION_OPTS=
@@ -127,7 +133,8 @@ bindkey '^N' fzf-history-widget
 # }}}
 
 add_to_path_once "./bin"
-add_to_path_once "~/.cargo/bin"
+# add_to_path_once "~/.cargo/bin"
+source "$HOME/.cargo/env"
 
 # Enable completions
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -149,4 +156,5 @@ fi
 
 # eval "$(rbenv init - zsh)"
 # TODO... check if this needs ^^^ to be there
-eval "$(/usr/libexec/path_helper)"
+# eval "$(/usr/libexec/path_helper)"
+export PATH="/opt/homebrew/bin/vim${PATH:+:${PATH}}"

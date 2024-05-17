@@ -56,12 +56,11 @@ function brew-all {
     git
     grep
     imagesnap
-    rbenv
-    rbenv-communal-gems
-    rbenv-default-gems
     readline
     reattach-to-user-namespace
+    ripgrep
     ruby-build
+    ruby-install
     tmux
     vim
     zsh

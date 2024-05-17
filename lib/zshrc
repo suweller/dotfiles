@@ -97,14 +97,27 @@ ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
 
 # zgen oh-my-zsh plugins/z {{{
 unalias z
+# j() {
+#   if [[ -z "$*" ]]; then
+#     cd "$(_z -l 2>&1 | fzf-tmux +s --tac | sed 's/^[0-9,.]* *//')"
+#   else
+#     _last_z_args="$@"
+#     _z "$@"
+#   fi
+# }
 j() {
-  if [[ -z "$*" ]]; then
-    cd "$(_z -l 2>&1 | fzf-tmux +s --tac | sed 's/^[0-9,.]* *//')"
-  else
-    _last_z_args="$@"
-    _z "$@"
-  fi
-}
+    [ $# -gt 0 ] && zshz "$*" && return
+    cd "$(zshz -l 2>&1 \
+      | fzf \
+        --height 40% \
+        --nth 2.. \
+        --reverse \
+        --inline-info \
+        +s \
+        --tac \
+        --query "${*##-* }" \
+      | sed 's/^[0-9,.]* *//')"
+  }
 # }}}
 
 # brew install fzf && brew install ripgrep {{{
@@ -133,7 +146,7 @@ bindkey '^N' fzf-history-widget
 # }}}
 
 add_to_path_once "./bin"
-# add_to_path_once "~/.cargo/bin"
+add_to_path_once "~/.cargo/bin"
 source "$HOME/.cargo/env"
 
 # Enable completions

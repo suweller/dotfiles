@@ -46,7 +46,7 @@ Plug 'junegunn/limelight.vim' " {{{ Hide other blocks of code
   " nmap <Leader>l <Plug>(Limelight)
   " xmap <Leader>l <Plug>(Limelight)
 " }}}
-Plug 'wellle/context.vim' " Add Code Context
+" Plug 'wellle/context.vim' " Add Code Context
 
 " Plug 'sheerun/vim-polyglot' " Highlighter {{{
 " let g:polyglot_disabled = ['ruby', 'markdown']

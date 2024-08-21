@@ -60,6 +60,7 @@ let g:ruby_heredoc_syntax_filetypes = {
 Plug 'lifepillar/pgsql.vim' " Highlighter
 Plug 'exu/pgsql.vim' " Highlighter
 Plug 'dearrrfish/vim-applescript' " Highlighter
+Plug 'tpope/vim-liquid'
 Plug 'tpope/vim-markdown' " Highlighter (adds fenced codeblock highlighting) {{{
 let g:markdown_fenced_languages=[
       \ 'bash=sh',

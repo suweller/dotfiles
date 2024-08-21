@@ -75,7 +75,6 @@ if ! zgen saved; then
   zgen load agkozak/agkozak-zsh-prompt
   zgen load zdharma/fast-syntax-highlighting
   zgen load zsh-users/zsh-completions
-  zgen oh-my-zsh plugins/z
   zgen save
   echo "ZGen update, or it's plugins changed."
   echo "- Note that it does not remove the directory of unused/deprecated plugins"
@@ -95,16 +94,8 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
 ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
 # }}}
 
+# brew install autojump
 # zgen oh-my-zsh plugins/z {{{
-unalias z
-# j() {
-#   if [[ -z "$*" ]]; then
-#     cd "$(_z -l 2>&1 | fzf-tmux +s --tac | sed 's/^[0-9,.]* *//')"
-#   else
-#     _last_z_args="$@"
-#     _z "$@"
-#   fi
-# }
 j() {
     [ $# -gt 0 ] && zshz "$*" && return
     cd "$(zshz -l 2>&1 \
@@ -113,7 +104,7 @@ j() {
         --nth 2.. \
         --reverse \
         --inline-info \
-        +s \
+        --no-sort \
         --tac \
         --query "${*##-* }" \
       | sed 's/^[0-9,.]* *//')"
@@ -121,25 +112,25 @@ j() {
 # }}}
 
 # brew install fzf && brew install ripgrep {{{
-export SKIM_DEFAULT_COMMAND='ag'
+export SKIM_DEFAULT_COMMAND='rg'
 # --files: List files that would be searched but do not search
 # --no-ignore: Do not respect .gitignore, etc...
 # --hidden: Search hidden files and folders
 # --follow: Follow symlinks
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
-# export FZF_DEFAULT_COMMAND='ag --glob ""'
+# export FZF_DEFAULT_COMMAND='rg --glob ""'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # export FZF_COMPLETION_TRIGGER=''
 export FZF_COMPLETION_OPTS=
 source <(fzf --zsh)
-# Use ag instead of the default find command for listing candidates.
+# Use rg instead of the default find command for listing candidates.
 # - The first argument to the function is the base path to start traversal
-# - Note that ag only lists files not directories
+# - Note that rg only lists files not directories
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
-  # brew install the_silver_searcher
-  ag -g "" "$1"
+  # brew install ripgrep
+  rg -g "" "$1"
 }
 bindkey '^P' fzf-history-widget
 bindkey '^N' fzf-history-widget
@@ -162,12 +153,13 @@ unset -f add_to_path_once
 
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-
-if [[ $ZPROF != "" ]]; then
- zprof | less
-fi
+[ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
 
 # eval "$(rbenv init - zsh)"
 # TODO... check if this needs ^^^ to be there
 # eval "$(/usr/libexec/path_helper)"
 export PATH="/opt/homebrew/bin/vim${PATH:+:${PATH}}"
+
+if [[ $ZPROF != "" ]]; then
+ zprof | less
+fi

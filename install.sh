@@ -13,7 +13,7 @@ fi
 
 if [[ ! -x /usr/local/bin/brew ]]; then
   echo "Install homebrew"
-  ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
 if [[ ! -x  ~/.tmux/plugins/tpm ]]; then

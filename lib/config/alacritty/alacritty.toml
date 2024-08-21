@@ -1,0 +1,15 @@
+live_config_reload = true
+
+[font]
+size = 12.0
+
+[font.normal]
+family = "Monego"
+
+[window]
+decorations = "None"
+
+[colors.primary]
+  # background = '#181818'
+  background = '#000000'
+

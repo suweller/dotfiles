@@ -80,7 +80,7 @@ if ! zgen saved; then
   echo "ZGen update, or it's plugins changed."
   echo "- Note that it does not remove the directory of unused/deprecated plugins"
   echo "- Have a look at the load time:"
-  echo "    repeat 5 time zsh -ic exit; ZPROF=true zsh -ic exit"
+  echo "    repeat 5 time zsh --interactive -c exit; ZPROF=true zsh --interactive -c exit"
 fi
 
 # zgen load agkozak/agkozak-zsh-prompt {{{

@@ -4,6 +4,18 @@
 [core]
   attributesfile = ~/.gitattributes
   excludesfile = ~/.gitignore
+  pager = delta
+
+[interactive]
+  diffFilter = delta --color-only
+
+[delta]
+  navigate = true  # use n and N to move between diff sections
+  side-by-side = true
+  ; dark = true      # or light = true, or omit for auto-detection
+
+[merge]
+  conflictstyle = zdiff3
 
 [user]
   name = Steven Weller

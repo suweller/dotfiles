@@ -212,7 +212,6 @@ command! -bang BranchLsFiles
       \         '--style', 'full',
       \         '--ansi',
       \         '--border',
-      \         '--padding', '1,2',
       \         '--border-label', ' Open File ',
       \         '--input-label', ' Input ',
       \         '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //")',

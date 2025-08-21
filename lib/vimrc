@@ -195,6 +195,7 @@ let g:fzf_buffers_jump = 1
 let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 let g:fzf_tags_command = '.git/hooks/ctags'
 let g:fzf_history_dir = '~/.vim/fzf/'
+let g:fzf_layout = {'window': {'width': 0.8, 'height': 0.8}}
 
 inoremap <expr> <c-x><c-k> fzf#complete('git commit-words')
 
@@ -207,7 +208,22 @@ command! -bang BranchLsFiles
       \   'files',
       \   {
       \     'source': 'git branch-ls-files',
-      \     'options': ['--ansi', '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //")'],
+      \     'options': [
+      \         '--style', 'full',
+      \         '--ansi',
+      \         '--border',
+      \         '--padding', '1,2',
+      \         '--border-label', ' Open File ',
+      \         '--input-label', ' Input ',
+      \         '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //")',
+      \         '--preview-window', 'right,60%',
+      \         '--bind', 'focus:transform-preview-label:printf " %s " $(eza --icons $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //"))',
+      \         '--color', 'border:#aaaaaa,label:#cccccc',
+      \         '--color', 'preview-border:#9999cc,preview-label:#ccccff',
+      \         '--color', 'list-border:#669966,list-label:#99cc99',
+      \         '--color', 'input-border:#996666,input-label:#ffcccc',
+      \         '--color', 'header-border:#6699cc,header-label:#99ccff'
+      \     ],
       \     'sink': function('<sid>branch_ls_files_sink')
       \   },
       \   <bang>0

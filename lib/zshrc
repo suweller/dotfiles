@@ -5,7 +5,7 @@ if [[ $ZPROF != "" ]]; then
 fi
 
 # Make the $path array have unique values.
-# typeset -U path
+typeset -U path
 function add_to_path_once() {
   path=("$1" $path)
 }
@@ -75,7 +75,6 @@ if [[ ! -d "$HOME/.zgen" ]]; then
 fi
 source "${HOME}/.zgen/zgen.zsh"
 if ! zgen saved; then
-  zgen load zdharma/fast-syntax-highlighting
   zgen load Aloxaf/fzf-tab
   zgen save
   echo "ZGen update, or it's plugins changed."
@@ -83,28 +82,6 @@ if ! zgen saved; then
   echo "- Have a look at the load time:"
   echo "    repeat 5 time zsh --interactive -c exit; ZPROF=true zsh --interactive -c exit"
 fi
-
-# zsh-users/zsh-syntax-highlighting {{{
-ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
-ZSH_HIGHLIGHT_PATTERNS=('rm -rf*' 'fg=white,bold,bg=red')
-# }}}
-
-# brew install autojump
-# zgen oh-my-zsh plugins/z {{{
-j() {
-    [ $# -gt 0 ] && zshz "$*" && return
-    cd "$(zshz -l 2>&1 \
-      | fzf \
-        --height 40% \
-        --nth 2.. \
-        --reverse \
-        --inline-info \
-        --no-sort \
-        --tac \
-        --query "${*##-* }" \
-      | sed 's/^[0-9,.]* *//')"
-  }
-# }}}
 
 # brew install fzf && brew install ripgrep {{{
 export SKIM_DEFAULT_COMMAND='rg'
@@ -125,14 +102,14 @@ source <(fzf --zsh)
 # - See the source code (completion.{bash,zsh}) for the details.
 _fzf_compgen_path() {
   # brew install ripgrep
-  rg -g "" "$1"
+  rg --glob "" "$1"
 }
 bindkey '^P' fzf-history-widget
 bindkey '^N' fzf-history-widget
 # }}}
 
 add_to_path_once "./bin"
-add_to_path_once "~/.cargo/bin"
+add_to_path_once "$HOME/.cargo/bin"
 source "$HOME/.cargo/env"
 
 # Configure fzf-tab
@@ -151,6 +128,9 @@ unset -f add_to_path_once
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+
+bindkey -r '^G'
+source ~/fzf-git.sh
 
 eval "$(starship init zsh)"
 

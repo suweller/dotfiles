@@ -26,7 +26,10 @@ add_to_path_once "/usr/local/sbin"
 
 export EDITOR='vim'
 # export PAGER="col -b | vim -MR - "
-# export MANPAGER='col -b | vim -MR -c ":set syntax=man" - '
+export MANPAGER='col -b | vim -MR -c ":set filetype=man" - '
+
+# export MANPAGER="less -R --use-color -Dd+r -Du+b" # colored man pages
+
 export LC_ALL=en_US.utf-8
 export LANG=en_US.utf-8
 export LANGUAGE=en_US.utf-8:C

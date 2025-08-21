@@ -433,6 +433,7 @@ augroup myfiletypes
   " autocmd FileType * 2match ExcessiveWhitespace /\S\s\s\+\S/
   " Some file types use real tabs
   autocmd FileType make set noexpandtab sw=4
+  autocmd FileType man set readonly tabstop=8
 augroup END
 
 " Format xml files

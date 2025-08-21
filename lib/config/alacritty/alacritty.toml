@@ -1,10 +1,12 @@
-live_config_reload = true
-
 [font]
-size = 12.0
+size = 18.5
 
 [font.normal]
-family = "Monego"
+# family = "Nerd Font Propo"
+# family = "FantasqueSansM Nerd Font"
+# family = "Monego"
+family = "Inconsolata Nerd Font Propo"
+# family = "Operator Mono for Powerline"
 
 [window]
 decorations = "None"
@@ -13,3 +15,5 @@ decorations = "None"
   # background = '#181818'
   background = '#000000'
 
+[general]
+live_config_reload = true

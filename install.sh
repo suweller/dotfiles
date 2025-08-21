@@ -11,7 +11,7 @@ if [[ ! $(xcode-select -p) ]]; then
   yes-no 'Did Xcode install successfully?' || exit 1
 fi
 
-if [[ ! -x /usr/local/bin/brew ]]; then
+if [[ ! "$(command -v brew)" ]]; then
   echo "Install homebrew"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi

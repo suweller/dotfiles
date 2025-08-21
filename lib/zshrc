@@ -76,7 +76,7 @@ fi
 source "${HOME}/.zgen/zgen.zsh"
 if ! zgen saved; then
   zgen load zdharma/fast-syntax-highlighting
-  zgen load zsh-users/zsh-completions
+  zgen load Aloxaf/fzf-tab
   zgen save
   echo "ZGen update, or it's plugins changed."
   echo "- Note that it does not remove the directory of unused/deprecated plugins"
@@ -135,9 +135,11 @@ add_to_path_once "./bin"
 add_to_path_once "~/.cargo/bin"
 source "$HOME/.cargo/env"
 
-# Enable completions
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*:(cp|mv):*' file-sort modification
+# Configure fzf-tab
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' popup-min-size 80
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:complete:cd:*' fzf-preview "ls --color=always \${realpath}"
 
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions

@@ -275,14 +275,14 @@ Plug 'tpope/vim-afterimage' " Util: Edit (small) images
 Plug 'alok/notational-fzf-vim' " {{{ Util: Search in my notes
 let g:nv_search_paths = ['~/vimwiki/work']
 " }}}
-Plug 'vim-scripts/vimwiki' " Util: Nice way to take and organise notes {{{
+Plug 'vimwiki/vimwiki' " Util: Nice way to take and organise notes {{{
 let g:vimwiki_global_ext = 0
 let g:vimwiki_ext2syntax = {
       \ '.md': 'markdown',
       \ }
 let g:vimwiki_list = [
-      \ {'ext': '.md', 'path': '~/vimwiki/work/'},
-      \ {'ext': '.md', 'path': '~/vimwiki/play/'},
+      \ {'syntax': 'markdown', 'ext': '.md', 'path': '~/vimwiki/work/'},
+      \ {'syntax': 'markdown', 'ext': '.md', 'path': '~/vimwiki/play/'},
       \ ]
 " }}}
 Plug 'tpope/vim-rbenv' " Util: rbenv.vim

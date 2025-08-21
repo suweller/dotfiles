@@ -326,9 +326,14 @@ runtime! ftplugin/man.vim
 if &t_Co > 2 || has('gui_running')
   syntax on
 endif
-if &t_Co == 256 || has('gui_running')
+if &t_Co >= 256 || has('gui_running')
   set background=dark
   colorscheme jellybeans
+endif
+if exists('+termguicolors')
+  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
 endif
 
 " Cursor on a command word and let vim help you: `:help <C-R><C-W>`

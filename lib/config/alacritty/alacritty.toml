@@ -1,5 +1,5 @@
 [font]
-size = 18.5
+size = 18
 
 [font.normal]
 # family = "Nerd Font Propo"
@@ -9,11 +9,13 @@ family = "Inconsolata Nerd Font Propo"
 # family = "Operator Mono for Powerline"
 
 [window]
-decorations = "None"
+decorations = "Transparent"
+startup_mode = "SimpleFullscreen"
+resize_increments = true
 
 [colors.primary]
-  # background = '#181818'
-  background = '#000000'
+# background = '#181818'
+background = '#000000'
 
 [general]
 live_config_reload = true

@@ -475,8 +475,6 @@ nmap <LEADER>te :vnew <C-R>=expand("%:p:h") . '/'<CR>
 nnoremap <LEADER>o :set paste!<CR>
 nnoremap <LEADER>w :setlocal wrap!<CR>:setlocal wrap?<CR>
 inoremap <C-L> :<SPACE>
-noremap <C-S> <ESC>:w<CR>
-inoremap <C-S> <ESC>:w<CR>
 noremap <LEADER><LEADER> :w<CR>
 " Emacs-like beginning and end of line. {{{
 inoremap <C-E> <C-O>$
@@ -561,3 +559,12 @@ function! OpenURL(url)
 endfunction
 " }}}
 
+" {{{ Search in Repo with 
+command! -bang -nargs=* Rg
+      \ call fzf#vim#grep(
+      \   'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1,
+      \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
+      \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
+      \   <bang>0)
+nnoremap <C-S> :Rg<Cr>
+" }}}

@@ -75,7 +75,6 @@ if [[ ! -d "$HOME/.zgen" ]]; then
 fi
 source "${HOME}/.zgen/zgen.zsh"
 if ! zgen saved; then
-  zgen load agkozak/agkozak-zsh-prompt
   zgen load zdharma/fast-syntax-highlighting
   zgen load zsh-users/zsh-completions
   zgen save
@@ -84,13 +83,6 @@ if ! zgen saved; then
   echo "- Have a look at the load time:"
   echo "    repeat 5 time zsh --interactive -c exit; ZPROF=true zsh --interactive -c exit"
 fi
-
-# zgen load agkozak/agkozak-zsh-prompt {{{
-AGKOZAK_BLANK_LINES=1
-AGKOZAK_LEFT_PROMPT_ONLY=1
-AGKOZAK_PROMPT_CHAR=( ❯ ❯ ❮ )
-AGKOZAK_CUSTOM_SYMBOLS=( 'Y' '!' '!' 'a' 'd' 'm' '>' ' ' )
-# }}}
 
 # zsh-users/zsh-syntax-highlighting {{{
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets pattern)
@@ -157,6 +149,8 @@ unset -f add_to_path_once
 source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
 source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 [ -f /opt/homebrew/etc/profile.d/autojump.sh ] && . /opt/homebrew/etc/profile.d/autojump.sh
+
+eval "$(starship init zsh)"
 
 # eval "$(rbenv init - zsh)"
 # TODO... check if this needs ^^^ to be there

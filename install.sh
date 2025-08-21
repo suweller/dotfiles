@@ -61,6 +61,7 @@ function brew-all {
     ripgrep
     ruby-build
     ruby-install
+    starship
     tmux
     vim
     zsh

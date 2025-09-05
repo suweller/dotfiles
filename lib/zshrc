@@ -118,6 +118,8 @@ zstyle ':fzf-tab:*' popup-min-size 80
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':fzf-tab:complete:cd:*' fzf-preview "ls --color=always \${realpath}"
 
+zstyle ':completion:*:*:task:*' format '%d'
+
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions
 [[ -f $HOME/.zshrc_private ]] && source $HOME/.zshrc_private

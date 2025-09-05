@@ -55,7 +55,9 @@ function brew-all {
     fzf
     git
     grep
+    hyperfine
     imagesnap
+    procs
     readline
     reattach-to-user-namespace
     ripgrep

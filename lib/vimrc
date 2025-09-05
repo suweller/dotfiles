@@ -29,6 +29,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'chrisbra/unicode.vim'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'vim-scripts/Align'
+Plug 'awelormro/fzf-vim-nerdpicker'
 Plug 'junegunn/goyo.vim' " {{{
   let g:goyo_width = 119
   let g:goyo_margin_top = 2

@@ -6,7 +6,9 @@ size = 18
 # family = "FantasqueSansM Nerd Font"
 # family = "Monego"
 family = "Inconsolata Nerd Font Propo"
-# family = "Operator Mono for Powerline"
+style = "Regular"
+[font.bold]
+style = "Bold"
 
 [window]
 decorations = "Transparent"

@@ -91,7 +91,7 @@ export SKIM_DEFAULT_COMMAND='rg'
 # --follow: Follow symlinks
 # --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
-# export FZF_DEFAULT_COMMAND='rg --glob ""'
+export FZF_DEFAULT_OPTS="--color=header:#d0d0d0"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # export FZF_COMPLETION_TRIGGER=''
 export FZF_COMPLETION_OPTS=
@@ -113,12 +113,14 @@ add_to_path_once "$HOME/.cargo/bin"
 source "$HOME/.cargo/env"
 
 # Configure fzf-tab
+zstyle ':completion:*:*:task:*' format '[%d]'
 zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+zstyle ':fzf-tab:*' fzf-flags $(echo $FZF_DEFAULT_OPTS)
 zstyle ':fzf-tab:*' popup-min-size 80
+zstyle ':fzf-tab:*' switch-group 'ctrl-h' 'ctrl-l'
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:*:*:task:*' colors ''
 zstyle ':fzf-tab:complete:cd:*' fzf-preview "ls --color=always \${realpath}"
-
-zstyle ':completion:*:*:task:*' format '%d'
 
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions

@@ -48,15 +48,18 @@ function brew-all {
   many-brew 'tap' 'tap'
 
   local brews=(
-    autojump
+    chruby
     cloc
     ctags
     curl
+    dust
+    eza
     fzf
     git
     grep
     hyperfine
     imagesnap
+    jq
     procs
     readline
     reattach-to-user-namespace
@@ -64,8 +67,11 @@ function brew-all {
     ruby-build
     ruby-install
     starship
+    taskwarrior-tui
     tmux
+    uz
     vim
+    yq
     zsh
   )
   many-brew 'list' 'install'

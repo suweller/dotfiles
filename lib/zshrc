@@ -85,30 +85,18 @@ fi
 
 # brew install fzf && brew install ripgrep {{{
 export SKIM_DEFAULT_COMMAND='rg'
-# --files: List files that would be searched but do not search
-# --no-ignore: Do not respect .gitignore, etc...
-# --hidden: Search hidden files and folders
-# --follow: Follow symlinks
-# --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
 export FZF_DEFAULT_OPTS="--color=header:#d0d0d0"
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 # export FZF_COMPLETION_TRIGGER=''
 export FZF_COMPLETION_OPTS=
 source <(fzf --zsh)
-# Use rg instead of the default find command for listing candidates.
-# - The first argument to the function is the base path to start traversal
-# - Note that rg only lists files not directories
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  # brew install ripgrep
-  rg --glob "" "$1"
-}
+source ~/fzf-git.sh
+_fzf_compgen_path() { rg --glob "" "$1" }
 bindkey '^P' fzf-history-widget
 bindkey '^N' fzf-history-widget
 # }}}
 
-add_to_path_once "./bin"
 add_to_path_once "$HOME/.cargo/bin"
 source "$HOME/.cargo/env"
 
@@ -124,7 +112,7 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview "ls --color=always \${realpath}"
 
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions
-[[ -f $HOME/.zshrc_private ]] && source $HOME/.zshrc_private
+source $HOME/.zshrc_private
 
 # Unset local functions
 unset -f add_to_path_once
@@ -134,12 +122,8 @@ source /opt/homebrew/opt/chruby/share/chruby/auto.sh
 
 bindkey -r '^G'
 source ~/fzf-git.sh
-
 eval "$(starship init zsh)"
 
-# eval "$(rbenv init - zsh)"
-# TODO... check if this needs ^^^ to be there
-# eval "$(/usr/libexec/path_helper)"
 export PATH="/opt/homebrew/bin/vim${PATH:+:${PATH}}"
 
 if [[ $ZPROF != "" ]]; then

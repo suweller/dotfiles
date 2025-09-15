@@ -1,0 +1,32 @@
+data.location=~/Dropbox/tasks
+news.version=3.4.1
+include /opt/homebrew/Cellar/task/3.4.1/share/doc/task/rc/solarized-dark-256.theme
+
+uda.reviewed.type=date
+uda.reviewed.label=Reviewed
+report._reviewed.columns=uuid
+report._reviewed.description=Tasksh review report.  Adjust the filter to your needs.
+report._reviewed.filter=( reviewed.none: or reviewed.before:now-6days ) and ( +PENDING or +WAITING )
+report._reviewed.sort=reviewed+,modified+
+report.next.filter=(status:pending or status:waiting)
+
+report.due.columns=id,start.age,entry.age,depends.indicator,priority,project,tags,recur.indicator,scheduled.countdown,due.relative,until.remaining,description.count,urgency
+report.due.context=1
+report.due.description=Most details of tasks
+report.due.labels=ID,Active,Age,D,P,Project,Tags,R,Sch,Due,Until,Description,Urg
+report.due.sort=start-,due+,project+,urgency-
+
+
+uda.ignored_tags.description=Tags to ignore when reviewing tasks.
+uda.ignored_tags.label=Ignored tags
+uda.ignored_tags.type=string
+uda.ignored_tags.values=ACTIVE,ANNOTATED,BLOCKED,BLOCKING,CHILD,COMPLETED,DELETED,DUE,DUETODAY,INSTANCE,LATEST,MONTH,ORPHAN,OVERDUE,PARENT,PENDING,PRIORITY,PROJECT,QUARTER,READY,SCHEDULED,TAGGED,TEMPLATE,TODAY,TOMORROW,UDA,UNBLOCKED,UNTIL,WAITING,WEEK,YEAR,YESTERDAY,
+
+context.home.read=+home
+context.home.write=+home
+context.work.read=+work
+context.work.write=+work
+context.zouk.read=+zouk
+context.zouk.write=+zouk
+
+context=home

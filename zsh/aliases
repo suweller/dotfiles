@@ -14,3 +14,4 @@ alias myip='ifconfig en0 | grep  inet\  | cut -d \  -f2'
 
 alias du='dust'
 alias ls='eza --icons=auto'
+alias t='task'

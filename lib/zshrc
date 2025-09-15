@@ -10,19 +10,19 @@ function add_to_path_once() {
   path=("$1" $path)
 }
 
-export HISTFILE=~/.zsh_history
 export HISTSIZE=20000
 export SAVEHIST=20000
 
 export CLICOLOR=1
 export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
 
+add_to_path_once "$HOME/.cargo/bin"
 add_to_path_once "$HOME/.dotfiles/bin"
 add_to_path_once "/opt/homebrew/bin"
-add_to_path_once "/usr/local/bin"
-add_to_path_once "/usr/sbin"
 add_to_path_once "/sbin"
+add_to_path_once "/usr/local/bin"
 add_to_path_once "/usr/local/sbin"
+add_to_path_once "/usr/sbin"
 
 export EDITOR='vim'
 # export PAGER="col -b | vim -MR - "
@@ -73,7 +73,7 @@ bindkey -e
 if [[ ! -d "$HOME/.zgen" ]]; then
   git clone https://github.com/tarjoilija/zgen.git "${HOME}/.zgen"
 fi
-source "${HOME}/.zgen/zgen.zsh"
+source $HOME/.zgen/zgen.zsh
 if ! zgen saved; then
   zgen load Aloxaf/fzf-tab
   zgen save
@@ -97,8 +97,6 @@ bindkey '^P' fzf-history-widget
 bindkey '^N' fzf-history-widget
 # }}}
 
-add_to_path_once "$HOME/.cargo/bin"
-source "$HOME/.cargo/env"
 
 # Configure fzf-tab
 zstyle ':completion:*:*:task:*' format '[%d]'
@@ -110,19 +108,31 @@ zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':fzf-tab:*:*:task:*' colors ''
 zstyle ':fzf-tab:complete:cd:*' fzf-preview "ls --color=always \${realpath}"
 
+source $HOME/.cargo/env
 source $HOME/.dotfiles/zsh/aliases
 source $HOME/.dotfiles/zsh/functions
-source $HOME/.zshrc_private
+
+if [[ -z $PLAIN ]]; then
+  source $HOME/.zshrc_private
+  source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+  source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+  bindkey -r '^G'
+  eval "$(starship init zsh)"
+else
+  PS1=' '
+fi
 
 # Unset local functions
 unset -f add_to_path_once
 
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+# 1. The ZLE widget remains the same.
+_task_prompt() {
+    zle push-input "task add "
+    zle redisplay
+}
+zle -N _task_prompt
 
-bindkey -r '^G'
-source ~/fzf-git.sh
-eval "$(starship init zsh)"
+
 
 export PATH="/opt/homebrew/bin/vim${PATH:+:${PATH}}"
 

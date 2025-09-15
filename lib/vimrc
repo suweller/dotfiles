@@ -449,6 +449,7 @@ autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vimrc<CR>
 nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>
+nnoremap <LEADER>zh :tabe ~/.dotfiles/lib/zshrc<CR>
 
 nnoremap <LEADER>lcd :lcd %:p:h<CR>
 nnoremap <LEADER>cd :cd %:p:h<CR>

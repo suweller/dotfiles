@@ -48,24 +48,30 @@ function brew-all {
   many-brew 'tap' 'tap'
 
   local brews=(
+    bash
+    bat
     chruby
     cloc
     ctags
     curl
     dust
     eza
+    fnm
     fzf
     git
+    git-delta
     grep
     hyperfine
     imagesnap
     jq
+    k9s
     procs
     readline
     reattach-to-user-namespace
     ripgrep
     ruby-build
     ruby-install
+    sd
     starship
     taskwarrior-tui
     tmux

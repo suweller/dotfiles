@@ -56,7 +56,6 @@ function brew-all {
     curl
     dust
     eza
-    fnm
     fzf
     git
     git-delta
@@ -65,12 +64,12 @@ function brew-all {
     imagesnap
     jq
     k9s
+    mise
     procs
     readline
     reattach-to-user-namespace
     ripgrep
     ruby-build
-    ruby-install
     sd
     starship
     taskwarrior-tui

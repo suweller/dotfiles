@@ -10,12 +10,6 @@ function add_to_path_once() {
   path=("$1" $path)
 }
 
-export HISTSIZE=20000
-export SAVEHIST=20000
-
-export CLICOLOR=1
-export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
-
 add_to_path_once "$HOME/.dotfiles/bin"
 add_to_path_once "/opt/homebrew/bin"
 add_to_path_once "/sbin"
@@ -24,7 +18,15 @@ add_to_path_once "/usr/local/sbin"
 add_to_path_once "/usr/sbin"
 
 # Export Variables {{{
+export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
+export CLICOLOR=1
 export EDITOR='vim'
+export FZF_COMPLETION_OPTS=
+export FZF_COMPLETION_TRIGGER='**'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_COMMAND='rg --files --hidden'
+export FZF_DEFAULT_OPTS="--color=header:#d0d0d0"
+export HISTSIZE=20000
 export LANG=en_US.utf-8
 export LANGUAGE=en_US.utf-8:C
 export LC_ALL=en_US.utf-8
@@ -36,8 +38,12 @@ export MANPAGER='col -b | vim -c " \
   | noremap <buffer> <Esc> :qa!<CR> \
   | noremap <buffer> q :qa!<CR> \
   " -'
+export SAVEHIST=20000
+export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
+export XDG_STATE_HOME=$HOME/.local/state
 export ZGENOM_HOME=$XDG_DATA_HOME/zgenom
+export ZGEN_RESET_ON_CHANGE=($HOME/.zshrc $HOME/.dotfiles/zsh/aliases.zsh)
 # }}}
 
 # Set Options {{{
@@ -58,70 +64,42 @@ setopt pushd_silent
 setopt rm_star_wait
 setopt share_history
 # }}}
-
 unset GREP_OPTIONS
-
 bindkey -e
 
 if [[ ! -d $ZGENOM_HOME ]]; then
   git clone https://github.com/jandamm/zgenom.git $ZGENOM_HOME
 fi
+
+zstyle ':completion:*:*:task:*' format '[%d]'
+zstyle ':fzf-tab:*' switch-group 'ctrl-h' 'ctrl-l'
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:*:*:task:*' colors ''
+
 source "$ZGENOM_HOME/zgenom.zsh"
+source "$HOME/.dotfiles/zsh/aliases.zsh"
+
+zgenom autoupdate
 if ! zgenom saved; then
-  zgenom compdef
   zgenom load jandamm/zgenom-ext-eval
-  zgenom eval --name fzf <<ZSH # {{{
-    export SKIM_DEFAULT_COMMAND='rg'
-    export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.git/*"'
-    export FZF_DEFAULT_OPTS="--color=header:#d0d0d0"
-    export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-    # export FZF_COMPLETION_TRIGGER=''
-    export FZF_COMPLETION_OPTS=
+  zgenom eval --name starship "$(starship init zsh)"
+
+  zgenom eval --name fzf-config <<-ZSH # {{{
+    $(fzf --zsh)
     bindkey '^P' fzf-history-widget
     bindkey '^N' fzf-history-widget
     bindkey -r '^G'
-    $(fzf --zsh)
 ZSH
-  # }}}
-  zgenom load Aloxaf/fzf-tab # {{{
-  zgenom eval --name fzf_tab_config <<ZSH
-    # Configure fzf-tab
-    zstyle ':completion:*:*:task:*' format '[%d]'
-    zstyle ':fzf-tab:*' fzf-flags $(echo $FZF_DEFAULT_OPTS)
-    zstyle ':fzf-tab:*' popup-min-size 80
-    zstyle ':fzf-tab:*' switch-group 'ctrl-h' 'ctrl-l'
-    zstyle ':fzf-tab:*' use-fzf-default-opts yes
-    zstyle ':fzf-tab:*:*:task:*' colors ''
-ZSH
-  # }}}
-  zgenom eval --name mise <<ZSH # {{{
-  $(mise activate zsh --shims)
-  $(mise completions zsh)
-ZSH
-  # }}}
+# }}}
+  zgenom load Aloxaf/fzf-tab
+  zgenom eval --name mise "$(mise hook-env -s zsh)"
   zgenom eval --name jira_config <<ZSH # {{{
     export JIRA_HOST="https://fugamusic.atlassian.net"
     export JIRA_EMAIL="steven.weller@fuga.com"
     export JIRA_API_TOKEN=$(security find-generic-password -a "$USER" -s "JiraAPItoken" -w)
 ZSH
 # }}}
-  zgenom eval --name aliases <<ZSH # {{{
-    alias aliases='cd ~/.dotfiles && $EDITOR zsh/aliases && source zsh/aliases; popd'
-    alias zshrc='cd ~/.dotfiles && $EDITOR lib/zshrc && source lib/zshrc; popd'
-    alias vimrc='cd ~/.dotfiles && $EDITOR lib/vimrc; popd'
-    alias tmuxrc='cd ~/.dotfiles && $EDITOR lib/tmux.conf && tmux source-file lib/tmux.conf; popd'
-    alias gitrc='cd ~/.dotfiles && $EDITOR --cmd "set filetype=gitconfig" lib/gitconfig; popd'
-    alias gems='$EDITOR ~/.rbenv/default-gems'
-    alias migrate='bundle exec rake db:migrate db:test:clone parallel:prepare'
-    alias rollback='bundle exec rake db:rollback'
-    alias myip='ifconfig en0 | grep  inet\  | cut -d \  -f2'
-    alias du='dust'
-    alias ls='eza --icons=auto'
-    alias t='task'
-    alias g='git'
-ZSH
-# }}}
-  zgenom eval --name starship "$(starship init zsh)"
+  zgenom load zsh-users/zsh-completions
   echo "ZGenom update, or it's plugins changed."
   echo "- Note that it does not remove the directory of unused/deprecated plugins"
   echo "- Have a look at the load time:"

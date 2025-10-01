@@ -12,6 +12,7 @@ function add_to_path_once() {
 
 add_to_path_once "$HOME/.dotfiles/bin"
 add_to_path_once "/opt/homebrew/bin"
+add_to_path_once "/opt/workbrew/bin"
 add_to_path_once "/sbin"
 add_to_path_once "/usr/local/bin"
 add_to_path_once "/usr/sbin"

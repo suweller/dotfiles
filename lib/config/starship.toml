@@ -27,6 +27,8 @@ $docker_context\
 $time\
 [ ](fg:#33658A)\
 """
+command_timeout = 10
+scan_timeout = 0
 
 # Disable the blank line at the start of the prompt
 # add_newline = false
@@ -35,7 +37,7 @@ $time\
 # You can also replace your username with a neat symbol like   or disable this
 # and use the os module below
 [username]
-show_always = true
+show_always = false
 style_user = "bg:#9A348E"
 style_root = "bg:#9A348E"
 format = '[$user ]($style)'

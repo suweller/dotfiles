@@ -1,6 +1,6 @@
 # vim:foldmethod=marker
 
-if [[ $ZPROF != "" ]]; then
+if [[ -v ZPROF ]]; then
   zmodload zsh/zprof
 fi
 
@@ -14,7 +14,6 @@ add_to_path_once "$HOME/.dotfiles/bin"
 add_to_path_once "/opt/homebrew/bin"
 add_to_path_once "/sbin"
 add_to_path_once "/usr/local/bin"
-add_to_path_once "/usr/local/sbin"
 add_to_path_once "/usr/sbin"
 
 # Export Variables {{{
@@ -38,21 +37,28 @@ export MANPAGER='col -b | vim -c " \
   | noremap <buffer> <Esc> :qa!<CR> \
   | noremap <buffer> q :qa!<CR> \
   " -'
-export SAVEHIST=20000
+export SAVEHIST=10000
 export XDG_CONFIG_HOME=$HOME/.config
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_STATE_HOME=$HOME/.local/state
+export XDG_CACHE_HOME=$HOME/.local/cache
 export ZGENOM_HOME=$XDG_DATA_HOME/zgenom
-export ZGEN_RESET_ON_CHANGE=($HOME/.zshrc $HOME/.dotfiles/zsh/aliases.zsh)
+export ZGEN_RESET_ON_CHANGE=(
+  $HOME/.zshrc
+  $HOME/.dotfiles/zsh/aliases.zsh
+  $XDG_DATA_HOME/zgenom/sources/zgenom_eval/fzf-config/___/init.zsh
+)
 # }}}
 
 # Set Options {{{
 setopt append_history
 setopt auto_cd
 setopt auto_pushd
+setopt extended_history
 setopt hist_expire_dups_first
 setopt hist_fcntl_lock
 setopt hist_ignore_all_dups
+setopt hist_ignore_space
 setopt hist_lex_words
 setopt hist_reduce_blanks
 setopt hist_save_no_dups
@@ -67,52 +73,79 @@ setopt share_history
 unset GREP_OPTIONS
 bindkey -e
 
-if [[ ! -d $ZGENOM_HOME ]]; then
-  git clone https://github.com/jandamm/zgenom.git $ZGENOM_HOME
-fi
-
+zstyle ':completion:*' cache-path "$HOME/.zcompcache"
+zstyle ':completion:*' use-cache on
 zstyle ':completion:*:*:task:*' format '[%d]'
 zstyle ':fzf-tab:*' switch-group 'ctrl-h' 'ctrl-l'
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':fzf-tab:*:*:task:*' colors ''
+zstyle ':hist:*' expand-aliases yes
 
-source "$ZGENOM_HOME/zgenom.zsh"
 source "$HOME/.dotfiles/zsh/aliases.zsh"
 
-zgenom autoupdate
-if ! zgenom saved; then
-  zgenom load jandamm/zgenom-ext-eval
-  zgenom eval --name starship "$(starship init zsh)"
+if [[ -v PLAIN ]]; then
+  PS1="%F{green}󰓅 %F{white} %n@%m %1~: "
+else
+  if [[ ! -d $ZGENOM_HOME ]]; then
+    git clone https://github.com/jandamm/zgenom.git $ZGENOM_HOME
+  fi
+  source "$ZGENOM_HOME/zgenom.zsh"
 
-  zgenom eval --name fzf-config <<-ZSH # {{{
-    $(fzf --zsh)
-    bindkey '^P' fzf-history-widget
-    bindkey '^N' fzf-history-widget
-    bindkey -r '^G'
-ZSH
-# }}}
-  zgenom load Aloxaf/fzf-tab
-  zgenom eval --name mise "$(mise hook-env -s zsh)"
-  zgenom eval --name jira_config <<ZSH # {{{
+  jira() {
     export JIRA_HOST="https://fugamusic.atlassian.net"
     export JIRA_EMAIL="steven.weller@fuga.com"
     export JIRA_API_TOKEN=$(security find-generic-password -a "$USER" -s "JiraAPItoken" -w)
+    unfunction "$0"
+    jira $@
+  }
+
+  fzf-bindkey() {
+    ( bindkey \
+      | sd '^' 'zsh ' \
+      && tmux list-keys \
+      | rg --invert-match ' root ' \
+      | sd '^bind-key[^T]+T ' 'tmux ' \
+      ) \
+      | sd '\^(.)' 'ctrl+$1 ' \
+      | fzf
+  }
+
+  # zgenom autoupdate
+  if ! zgenom saved; then
+    zgenom load 'jandamm/zgenom-ext-eval'
+    zgenom eval --name starship "$(starship init zsh)"
+    zgenom load 'marlonrichert/zsh-hist'
+    zgenom eval --name fzf-config <<ZSH # {{{
+      $(fzf --zsh)
+      bindkey '^P' fzf-history-widget
+      bindkey '^N' fzf-cd-widget
+      bindkey -r '^G'
 ZSH
 # }}}
-  zgenom load zsh-users/zsh-completions
-  echo "ZGenom update, or it's plugins changed."
-  echo "- Note that it does not remove the directory of unused/deprecated plugins"
-  echo "- Have a look at the load time:"
-  echo "    repeat 5 time zsh --interactive -c exit"
-  echo "- In case of slowness, inspect what happened:"
-  echo "    ZPROF=true zsh --interactive -c exit"
-  zgenom compile "$HOME/.zshrc"
-  zgenom  save
+    zgenom load 'Aloxaf/fzf-tab'
+
+    zgenom eval --name mise_config <<-ZSH # {{{
+      $(mise activate zsh)
+      $(mise hook-env -s zsh)
+ZSH
+# }}}
+    zgenom compile "$HOME/.zshrc"
+    zgenom save
+    echo ""
+    echo "\e[0;32m󰓅  zsh\e[0;37m performance:"
+    repeat 5 time PLAIN= zsh --interactive -c exit
+    echo ""
+    echo "\e[0;32m󰾅  zsh + zgenom\e[0;37m performance:"
+    repeat 5 time zsh --interactive -c exit
+    echo ""
+    echo "\e[0;31m󰾆  Slow?\e[0;37m Find out why using:"
+    echo "ZPROF= zsh --interactive -c exit"
+  fi
 fi
 
 # Unset local functions
 unset -f add_to_path_once
 
-if [[ $ZPROF != "" ]]; then
+if [[ -v ZPROF ]]; then
  zprof | less
 fi

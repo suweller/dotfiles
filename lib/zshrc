@@ -9,8 +9,15 @@ typeset -U path
 function add_to_path_once() {
   path=("$1" $path)
 }
+typeset -U fpath
+function add_to_fpath_once() {
+  fpath=("$1" $fpath)
+}
+
+add_to_fpath_once "/opt/homebrew/share/zsh/site-functions"
 
 add_to_path_once "$HOME/.dotfiles/bin"
+add_to_path_once "/opt/homebrew/sbin"
 add_to_path_once "/opt/homebrew/bin"
 add_to_path_once "/opt/workbrew/bin"
 add_to_path_once "/sbin"
@@ -24,8 +31,15 @@ export EDITOR='vim'
 export FZF_COMPLETION_OPTS=
 export FZF_COMPLETION_TRIGGER='**'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-export FZF_DEFAULT_COMMAND='rg --files --hidden'
+# export FZF_CTRL_R_OPTS='--bind="ctrl-x:become(env hist delete {1})"'
+export FZF_CTRL_R_OPTS="$(cat <<'FZF_FTW'
+  --with-shell='/bin/zsh -fc'
+  --bind "ctrl-x:execute(hist delete {1})"
+FZF_FTW
+)"
+export FZF_DEFAULT_COMMAND='fd --type f --color=never'
 export FZF_DEFAULT_OPTS="--color=header:#d0d0d0"
+export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=20000
 export LANG=en_US.utf-8
 export LANGUAGE=en_US.utf-8:C
@@ -74,7 +88,7 @@ setopt share_history
 unset GREP_OPTIONS
 bindkey -e
 
-zstyle ':completion:*' cache-path "$HOME/.zcompcache"
+zstyle ':completion:*' cache-path $XDG_CACHE_HOME/zcompletion
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*:*:task:*' format '[%d]'
 zstyle ':fzf-tab:*' switch-group 'ctrl-h' 'ctrl-l'
@@ -85,7 +99,7 @@ zstyle ':hist:*' expand-aliases yes
 source "$HOME/.dotfiles/zsh/aliases.zsh"
 
 if [[ -v PLAIN ]]; then
-  PS1="%F{green}󰓅 %F{white} %n@%m %1~: "
+  PS1="%F{green}󰓅 %F{white}20%D %*%B %F{magenta}%~%F{white} $ %b "
 else
   if [[ ! -d $ZGENOM_HOME ]]; then
     git clone https://github.com/jandamm/zgenom.git $ZGENOM_HOME
@@ -113,6 +127,11 @@ else
 
   # zgenom autoupdate
   if ! zgenom saved; then
+    # TODO: Remove Workbrew hack
+    sudo chown $(id -u) /opt/homebrew/share/zsh
+    sudo chown -RL $(id -u) /opt/homebrew/share/zsh/site-functions
+    # TODO: End Remove Workbrew hack
+
     zgenom load 'jandamm/zgenom-ext-eval'
     zgenom eval --name starship "$(starship init zsh)"
     zgenom load 'marlonrichert/zsh-hist'
@@ -132,20 +151,25 @@ ZSH
 # }}}
     zgenom compile "$HOME/.zshrc"
     zgenom save
-    echo ""
-    echo "\e[0;32m󰓅  zsh\e[0;37m performance:"
-    repeat 5 time PLAIN= zsh --interactive -c exit
-    echo ""
-    echo "\e[0;32m󰾅  zsh + zgenom\e[0;37m performance:"
-    repeat 5 time zsh --interactive -c exit
-    echo ""
-    echo "\e[0;31m󰾆  Slow?\e[0;37m Find out why using:"
-    echo "ZPROF= zsh --interactive -c exit"
+    # TODO: Remove Workbrew hack
+    sudo chown -R workbrew /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions
+    # TODO: End Remove Workbrew hack
+    #
+    # echo ""
+    # echo "\e[0;32m󰓅  zsh\e[0;37m performance:"
+    # repeat 5 time PLAIN= zsh --interactive -c exit
+    # echo ""
+    # echo "\e[0;32m󰾅  zsh + zgenom\e[0;37m performance:"
+    # repeat 5 time zsh --interactive -c exit
+    # echo ""
+    # echo "\e[0;31m󰾆  Slow?\e[0;37m Find out why using:"
+    # echo "ZPROF= zsh --interactive -c exit"
   fi
 fi
 
 # Unset local functions
 unset -f add_to_path_once
+unset -f add_to_fpath_once
 
 if [[ -v ZPROF ]]; then
  zprof | less

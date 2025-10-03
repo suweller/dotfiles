@@ -1,4 +1,5 @@
 alias aliases="cd ~/.dotfiles && \$EDITOR ${0:a} && source ${0:a}; popd"
+alias xsv="qsv"
 alias zshrc='cd ~/.dotfiles && $EDITOR lib/zshrc && source lib/zshrc; popd'
 alias vimrc='cd ~/.dotfiles && $EDITOR lib/vimrc; popd'
 alias tmuxrc='cd ~/.dotfiles && $EDITOR lib/tmux.conf && tmux source-file lib/tmux.conf; popd'

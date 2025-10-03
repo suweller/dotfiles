@@ -56,6 +56,7 @@ function brew-all {
     curl
     dust
     eza
+    fd
     fzf
     git
     git-delta
@@ -66,6 +67,7 @@ function brew-all {
     k9s
     mise
     procs
+    qsv
     readline
     reattach-to-user-namespace
     ripgrep

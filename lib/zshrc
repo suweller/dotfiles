@@ -24,47 +24,6 @@ add_to_path_once "/sbin"
 add_to_path_once "/usr/local/bin"
 add_to_path_once "/usr/sbin"
 
-# Export Variables {{{
-export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
-export CLICOLOR=1
-export EDITOR='vim'
-export FZF_COMPLETION_OPTS=
-export FZF_COMPLETION_TRIGGER='**'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-# export FZF_CTRL_R_OPTS='--bind="ctrl-x:become(env hist delete {1})"'
-export FZF_CTRL_R_OPTS="$(cat <<'FZF_FTW'
-  --with-shell='/bin/zsh -fc'
-  --bind "ctrl-x:execute(hist delete {1})"
-FZF_FTW
-)"
-export FZF_DEFAULT_COMMAND='fd --type f --color=never'
-export FZF_DEFAULT_OPTS="--color=header:#d0d0d0"
-export HISTFILE="$HOME/.zsh_history"
-export HISTSIZE=20000
-export LANG=en_US.utf-8
-export LANGUAGE=en_US.utf-8:C
-export LC_ALL=en_US.utf-8
-export LC_CTYPE=utf-8
-export LC_TIME=en_DK.UTF-8
-export MANPAGER='col -b | vim -c " \
-  set filetype=man tabstop=8 nomodifiable nomodeline nonumber nomagic \
-  | noremap <buffer> <C-c> :qa!<CR> \
-  | noremap <buffer> <Esc> :qa!<CR> \
-  | noremap <buffer> q :qa!<CR> \
-  " -'
-export SAVEHIST=10000
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
-export XDG_CACHE_HOME=$HOME/.local/cache
-export ZGENOM_HOME=$XDG_DATA_HOME/zgenom
-export ZGEN_RESET_ON_CHANGE=(
-  $HOME/.zshrc
-  $HOME/.dotfiles/zsh/aliases.zsh
-  $XDG_DATA_HOME/zgenom/sources/zgenom_eval/fzf-config/___/init.zsh
-)
-# }}}
-
 # Set Options {{{
 setopt append_history
 setopt auto_cd

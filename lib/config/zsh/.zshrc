@@ -120,9 +120,6 @@ else
 
   # zgenom autoupdate
   if ! zgenom saved; then
-    echo "󰇷  sudo chown completions temporarily to 'myself'"
-    sudo chown $(id -u) /opt/homebrew/share/zsh
-    sudo chown -RL $(id -u) /opt/homebrew/share/zsh/site-functions
     zgenom load 'jandamm/zgenom-ext-eval'
     # zgenom eval --name starship "$(starship init zsh)"
     zgenom load 'marlonrichert/zsh-hist'
@@ -140,10 +137,17 @@ ZSH
 ZSH
 # }}}
     zgenom compile "$ZDOTDIR/.zshrc"
+    echo "\e[0;31m 󰇷  Fixing workbrew mistake so compaudit works"
+    set -o xtrace
+    sudo chown -RL $(id -run) /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions
+    set +o xtrace
+    echo "\e[0;37m"
     zgenom save
-    echo "󱉏  sudo chown completion back to 'workbrew'"
-    sudo chown -R workbrew /opt/homebrew/share/zsh \
-      /opt/homebrew/share/zsh/site-functions
+    echo "\e[0;31m 󰇷  Unfixing workbrew mistake so brew install works"
+    set -o xtrace
+    sudo chown -R workbrew /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions
+    set +o xtrace
+    echo "\e[0;37m"
     zsh-performance
   fi
 fi

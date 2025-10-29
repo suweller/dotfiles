@@ -2,8 +2,6 @@
   path = .gitconfig-local
 
 [core]
-  attributesfile = ~/.gitattributes
-  excludesfile = ~/.gitignore
   pager = delta
 
 [interactive]
@@ -68,25 +66,26 @@
   branch-l = !git l `git branch-base`...HEAD
   branch-lint = !rubocop-git --display-cop-names `git branch-base` HEAD
   branch-ls-touched = "! ( \
-      git -c color.status=always status \
-        --short \
-        --untracked-files=all && \
-        git diff --name-only \
-          `git branch-base` \
-          | awk '{ print \"\\033[34mc_\\033[0m \"$1; }' \
+    git -c color.status=always status \
+    --short \
+    --untracked-files=all \
+    && \
+    git diff --name-only \
+    `git branch-base` \
+    | awk '{ print \"\\033[34mc_\\033[0m \"$0; }' \
     ) \
     "
   branch-ls-files = "! ( \
       git branch-ls-touched \
         && \
       git ls-files \
-        | awk '{ print \"\\033[90mo_\\033[0m \"$1; }' \
+        | awk '{ print \"\\033[90mo_\\033[0m \"$0; }' \
     ) \
-    | awk '{ print NR-1 \" \" $0}' \
+    | awk '{ print NR-1 \"\t\" $0}' \
     | uniq -f 2 \
     | sort --key=3 --unique \
     | sort --key=1 --numeric-sort --unique \
-    | sed -E \"s/^[0-9]* //\" \
+    | sed -E \"s/^[0-9]*\t//\" \
     "
   branch-summary = "! \
     if [ `git branch-merges-behind | wc -c` -eq 0 ]; then \
@@ -179,7 +178,8 @@
   default = current
 
 [init]
-  templatedir = ~/.git_template
+  templatedir = ~/.config/git/git_template
+  defaultBranch = master
 
 [diff]
   # For Github-style word diffs

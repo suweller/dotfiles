@@ -1,11 +1,51 @@
-export ZDOTDIR=$HOME/.config/zsh
+export XDG_RUNTIME_DIR="/run/user/$UID"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
 
-export XDG_CONFIG_HOME=$HOME/.config
-export XDG_DATA_HOME=$HOME/.local/share
-export XDG_STATE_HOME=$HOME/.local/state
-export XDG_CACHE_HOME=$HOME/.local/cache
+export ANSIBLE_CONFIG="$XDG_CONFIG_HOME/ansible.cfg"
+export ANSIBLE_GALAXY_CACHE_DIR="$XDG_CACHE_HOME/ansible/galaxy_cache"
+export ANSIBLE_HOME="$XDG_CONFIG_HOME/ansible"
 
-export ZGENOM_HOME=$XDG_DATA_HOME/zgenom
+export DOCKER_CONFIG="$XDG_CONFIG_HOME/docker"
+
+export INPUTRC="$XDG_CONFIG_HOME/readline/inputrc"
+
+export IRBRC="$XDG_CONFIG_HOME/irb/irbrc"
+export PGPASSFILE="$XDG_CONFIG_HOME/pg/pgpass"
+export PGSERVICEFILE="$XDG_CONFIG_HOME/pg/pg_service.conf"
+
+export LESSHISTFILE="$XDG_STATE_HOME/lesshst"
+
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export HISTFILE="$XDG_STATE_HOME/zsh/zsh_history"
+
+export NODE_REPL_HISTORY="$XDG_STATE_HOME/node_repl_history"
+export PYTHON_HISTORY="$XDG_STATE_HOME/python_history"
+
+export PSQLRC="$XDG_CONFIG_HOME/pg/psqlrc"
+export PSQL_HISTORY="$XDG_STATE_HOME/psql/psql_history"
+export PSPG_CONF="$XDG_CONFIG_HOME/pspg/pspgrc"
+
+export BUNDLE_USER_CONFIG="$XDG_CONFIG_HOME"/bundle
+export BUNDLE_USER_CACHE="$XDG_CACHE_HOME"/bundle
+export BUNDLE_USER_PLUGIN="$XDG_DATA_HOME"/bundle
+
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+
+export PYENV_ROOT="$XDG_DATA_HOME/pyenv"
+
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+
+export ZGEN_DIR="$XDG_DATA_HOME/zgenom"
+export ZGEN_CUSTOM_COMPDUMP="$XDG_CACHE_HOME/zgenom"
+export ZGEN_RESET_ON_CHANGE=(
+  $ZDOTDIR/.zshrc
+  $ZDOTDIR/aliases.zsh
+)
 
 export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
 export CLICOLOR=1
@@ -21,7 +61,6 @@ FZF_FTW
 )"
 export FZF_DEFAULT_COMMAND='fd --type f --color=never'
 export FZF_DEFAULT_OPTS="--color=header:#d0d0d0"
-export HISTFILE="$ZDOTDIR/.zsh_history"
 export HISTSIZE=20000
 export LANG=en_US.utf-8
 export LANGUAGE=en_US.utf-8:C
@@ -35,7 +74,3 @@ export MANPAGER='col -b | vim -c " \
   | noremap <buffer> q :qa!<CR> \
   " -'
 export SAVEHIST=10000
-export ZGEN_RESET_ON_CHANGE=(
-  $ZDOTDIR/.zshrc
-  $HOME/.dotfiles/zsh/aliases.zsh
-)

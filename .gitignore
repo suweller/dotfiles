@@ -1,5 +1,6 @@
+!lib/rbenv/default-gems
+lib/config/gcloud/logs
 lib/rbenv/
 lib/rbenv/**
 lib/vim/
 lib/vim/**
-!lib/rbenv/default-gems

@@ -7,7 +7,7 @@
 
 -- By default, NULL displays as an empty space. Is it actually an empty
 -- string, or is it null? This makes that distinction visible.
--- \pset null '[NULL]'
+\pset null ∅
 
 -- Use table format (with headers across the top) by default, but switch to
 -- expanded table format when there's a lot of data, which makes it much
@@ -18,7 +18,7 @@
 \set VERBOSITY verbose
 
 -- Use a separate history file per-database.
-\set HISTFILE ~/.psql_history- :DBNAME
+\set HISTFILE ~/.local/state/psql/psql_history- :DBNAME
 
 -- If a command is run more than once in a row, only store it once in the
 -- history.

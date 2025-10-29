@@ -9,6 +9,8 @@ family = "Inconsolata Nerd Font Propo"
 style = "Regular"
 [font.bold]
 style = "Bold"
+[font.italic]
+style = "Italic"
 
 [window]
 decorations = "Transparent"

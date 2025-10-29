@@ -16,8 +16,9 @@ if [[ ! "$(command -v brew)" ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-if [[ ! -x  ~/.tmux/plugins/tpm ]]; then
-  git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+TPM_PATH="~/.config/tmux/plugins/tpm"
+if [[ ! -x  $TPM_PATH ]]; then
+  git clone https://github.com/tmux-plugins/tpm $TPM_PATH
 fi
 
 function brew-all {

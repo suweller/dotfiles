@@ -15,21 +15,23 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-if empty(glob('~/.vim/autoload/plug.vim'))
+
+if empty(glob('~/.config/vim/autoload/plug.vim'))
   silent !curl
         \ --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
         \ --fail
         \ --location
-        \ --output ~/.vim/autoload/plug.vim
+        \ --output ~/.config/vim/autoload/plug.vim
         \ --silent
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 
-call plug#begin('~/.vim/plugged')
+call plug#begin('~/.config/vim/plugged')
 Plug 'chrisbra/unicode.vim'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'vim-scripts/Align'
 Plug 'awelormro/fzf-vim-nerdpicker', {'on': 'NerdFontsFzF'}
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'dstein64/vim-startuptime'
 Plug 'junegunn/goyo.vim' " {{{
   let g:goyo_width = 119
@@ -53,12 +55,14 @@ Plug 'junegunn/limelight.vim' " {{{ Hide other blocks of code
 " Plug 'sheerun/vim-polyglot' " Highlighter {{{
 " let g:polyglot_disabled = ['ruby', 'markdown']
 " " }}}
-Plug 'joker1007/vim-ruby-heredoc-syntax' " Highlighter {{{
-let g:ruby_heredoc_syntax_filetypes = {
-      \ "pgsql" : {"start" : "PGSQL"},
-      \ "sql" : {"start" : "SQL"},
-      \}
-" }}}
+" Plug 'joker1007/vim-ruby-heredoc-syntax' " Highlighter {{{
+" Plug 'acarapetis/vim-sh-heredoc-highlighting' " Highlighter {{{
+" let g:heredocs = {
+"       \ "pgsql" : {"start" : "PGSQL"},
+"       \ "sql" : {"start" : "SQL"},
+"       \ "zsh" : {"start" : "ZSH"},
+"       \}
+" " }}}
 Plug 'lifepillar/pgsql.vim' " Highlighter
 Plug 'exu/pgsql.vim' " Highlighter
 Plug 'dearrrfish/vim-applescript' " Highlighter
@@ -185,8 +189,9 @@ map <LEADER>sa :Dispatch bin/parallel_rspec spec/<CR>
 " Plug '/usr/local/opt/flow/' | Plug 'flowtype/vim-flow', {'for': 'javascript'} " Util: JavaScript type checker
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim' " ag & fzf {{{
+
 if executable("rg")
-  set grepprg=rg\ --vimgrep
+  set grepprg=rg\ --vimgrep\ --glob\ '!Library/'\ --glob\ '!Dropbox/'\ --glob\ '!.svg'
   " set grepformat=%f:%l:%c:%m,%f:%l:%m
 elseif executable("ag")
   set grepprg=ag\ --vimgrep\ --hidden
@@ -209,10 +214,9 @@ let g:fzf_colors = {
       \ 'spinner': ['fg', 'Label'],
       \ 'header': ['fg', 'Comment'] }
 let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
-let g:fzf_history_dir = '~/.vim/fzf/'
+let g:fzf_history_dir = '~/.local/share/fzf'
 let g:fzf_layout = {'window': {'width': 0.8, 'height': 0.8}}
-let g:fzf_tags_command = '.git/hooks/ctags'
-
+" let g:fzf_tags_command = '~/.config/git/git_template/hooks/ctags'
 inoremap <expr> <c-x><c-k> fzf#complete('git commit-words')
 
 function! s:branch_ls_files_sink(line)
@@ -230,8 +234,6 @@ command! -bang BranchLsFiles
       \         '--border',
       \         '--border-label', ' Open File ',
       \         '--input-label', ' Input ',
-      \         '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //")',
-      \         '--preview-window', 'right,60%',
       \         '--bind', 'focus:transform-preview-label:printf " %s " $(eza --icons $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //"))',
       \         '--color', 'border:#aaaaaa,label:#cccccc',
       \         '--color', 'preview-border:#9999cc,preview-label:#ccccff',
@@ -243,6 +245,8 @@ command! -bang BranchLsFiles
       \   },
       \   <bang>0
       \ ))
+      " \         '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //")',
+      " \         '--preview-window', 'right,60%',
 
 command! -bang -nargs=* GGrep
     \ call fzf#vim#grep(
@@ -393,6 +397,7 @@ set gdefault                    " assume the /g flag on :s
 set wildmenu                    " Better? completion on command line
 set wildmode=list:longest,full  " Completion settings
 set tags+=.git/tags-includes    " Search for ctag file in .git/
+set tags+=.git/tags             " Search for ctag file in .git/
 set wildignore+=tags            " Don't complete from project code ctag file
 set wildignore+=tags-includes   " Don't complete from includes code ctag file
 set winaltkeys=no               " Let vim handle alt keys
@@ -462,9 +467,10 @@ autocmd BufWinLeave * call clearmatches() " Fix some performance issues
 
 " {{{ quick open some default locations
 nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
-nnoremap <LEADER>vi :tabe ~/.dotfiles/lib/vimrc<CR>
-nnoremap <LEADER>tm :tabe ~/.dotfiles/lib/tmux.conf<CR>
-nnoremap <LEADER>zh :tabe ~/.dotfiles/lib/zshrc<CR>
+nnoremap <LEADER>vi :tabe ~/.config/vim/vimrc<CR>
+nnoremap <LEADER>tm :tabe ~/.config/tmux/tmux.conf<CR>
+nnoremap <LEADER>zh :tabe ~/.config/zsh/.zshrc<CR>
+nnoremap <LEADER>nf :NerdFontsFzF<CR>
 
 nnoremap <LEADER>lcd :lcd %:p:h<CR>
 nnoremap <LEADER>cd :cd %:p:h<CR>
@@ -579,7 +585,7 @@ endfunction
 " {{{ Search in Repo with 
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
-      \   'rg --column --line-number --hidden --ignore-case --no-heading --color=always '.shellescape(<q-args>), 1,
+      \   "rg --column --line-number --hidden --ignore-case --no-heading --color=always ".shellescape(<q-args>), 1,
       \   <bang>0 ? fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'up:60%')
       \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
       \   <bang>0)

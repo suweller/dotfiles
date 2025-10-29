@@ -1,0 +1,219 @@
+#!/usr/bin/ruby
+# frozen_string_literal: true
+
+def _in_green(str)
+  "\e[32m#{str}\e[0m"
+end
+
+puts _in_green("[info] Loading Pry config: #{__FILE__}")
+require 'rb-readline'
+require 'readline'
+require 'shellwords'
+Pry.config.hooks.add_hook(:before_session, :autocompletion) { Reline.autocompletion = true }
+
+# begin
+#   require 'readline'
+#   # Unset the pure-ruby implementation if it's loaded
+#   Object.send(:remove_const, :Readline) if defined?(Readline.lib_prefix) # Check for reline
+#   require 'readline-ext'
+# rescue LoadError
+#   puts "Could not load readline-ext. Falling back to default."
+#   require 'reline'
+#   Pry.config.hooks.add_hook(:before_session, :autocompletion) { Reline.autocompletion = true }
+# end
+
+# my_completer = proc do |input_string|
+#   # Example: Add custom completions for a specific word
+#   if input_string.start_with?("greet")
+#     ["greeting_from_custom_completer", "hello_there"]
+#   else
+#     # To keep the default behavior, you can call the original proc
+#     # Or, for a simple example, just return an empty array
+#     []
+#   end
+# end
+
+# # Assign your custom logic to Readline
+# Readline.completion_proc = my_completer
+
+__END__
+def _in_green(str)
+  "\e[32m#{str}\e[0m"
+end
+puts _in_green("[info] Loading Pry config: #{__FILE__}")
+require 'rb-readline'
+require 'readline'
+require 'shellwords'
+
+class Pry
+  class FzfCompleter < InputCompleter
+    def initialize(*args)
+      super
+    end
+
+    if system('command -v fzf > /dev/null 2>&1')
+
+      puts _in_green('[info] Using "fzf" to enhance keybindings.')
+
+      FZF_DEFAULT =
+        if ENV.key?('TMUX')
+          puts _in_green('[info] In "tmux".')
+          'fzf --ignore-case --layout=reverse --height=20 --tmux=bottom,20'
+        else
+          warn _in_red('[warn] Not in "tmux"')
+          'fzf'
+        end
+
+      def call(*args)
+        token = Readline.line_buffer
+        completions = super
+        chosen = ` \
+          echo "#{completions.map(&:to_s).join("\n")}" \
+          | #{FZF_DEFAULT} \
+          --bind='tab:replace-query' \
+          --expect='.,:,ctrl-h,enter' \
+          --query="#{token}" \
+        `
+        chosen.lines.last&.chomp
+      end
+    else
+      def call(*args)
+        super
+      end
+    end
+  end
+end
+# Pry.config.hooks.add_hook(:before_session, :autocompletion) { Reline.autocompletion = true }
+Pry.config.completer = Pry::FzfCompleter
+
+# Pry.config.prompt = Pry::Prompt.new(
+#   "custom",
+#   "my custom prompt",
+#   [proc { |obj, nest_level, _| "#{obj}:#{nest_level}> " }]
+# )
+# def _in_green(str)
+#   "\e[32m#{str}\e[0m"
+# end
+
+# def _in_red(str)
+#   "\e[31m#{str}\e[0m"
+# end
+
+# puts _in_green("[info] Loading Pry config: #{__FILE__}")
+# require 'rb-readline'
+# require 'readline'
+# require 'shellwords'
+
+# if defined?(RbReadline)
+#   if system('command -v fzf > /dev/null 2>&1')
+#     puts _in_green('[info] Using "fzf" to enhance keybindings.')
+
+#     FZF_DEFAULT =
+#       if ENV.key?('TMUX')
+#         puts _in_green('[info] In "tmux".')
+#         'fzf --ignore-case --layout=reverse --height=20 --tmux=bottom,20'
+#       else
+#         warn _in_red('[warn] Not in "tmux"')
+#         'fzf'
+#       end
+
+#     ##
+#     # FZF History Search (Ctrl+R)
+#     def RbReadline.rl_reverse_search_history(_sign, _key)
+#       history_file = Pry.config.history_file
+#       rl_insert_text(`cat #{Shellwords.escape(history_file)} | #{FZF_DEFAULT} --tac --no-sort`.chomp)
+#     end
+
+#     ##
+#     # FZF Completions (Tab) with In-FZF "Go Back"
+#     def RbReadline.rl_complete(_sign, _key)
+#       final_buffer = loop do
+#         current_buffer = Readline.line_buffer
+#         target = Pry.current
+#         completer = Pry.config.completer.new(target)
+#         completions = completer.call(current_buffer).uniq
+#         is_proactive_list = false
+
+#         if completions.empty?
+#           if current_buffer.empty?
+#             begin
+#               self_obj = target.send(:eval, 'self')
+#               locals = target.send(:eval, 'local_variables')
+#               methods = self_obj.methods + self_obj.private_methods
+#               ivars = self_obj.instance_variables
+#               constants = target.send(:eval, 'Module.constants')
+#               completions = (methods + locals + ivars + constants).map(&:to_s).uniq.sort
+#             rescue => e
+#               warn e.message
+#             end
+#           else
+#             proactive_candidates = []
+#             proactive_candidates << '.' unless completer.call(current_buffer + '.').empty?
+#             proactive_candidates << '::' unless completer.call(current_buffer + '::').empty?
+#             unless proactive_candidates.empty?
+#               completions = proactive_candidates; is_proactive_list = true
+#             end
+#           end
+#         end
+
+#         break current_buffer if completions.empty? && !current_buffer.end_with?('.', '::')
+
+#         # --- MODIFICATION START ---
+#         # This new, robust regex correctly splits the buffer into the context and the token.
+#         # - "Pry.conf" -> context="Pry.", token="conf"
+#         # - "pr"       -> context="",       token="pr"
+#         # - "Pry."     -> context="Pry.",   token=""
+#         match_data = current_buffer.match(/^(.*?)(\w*)$/)
+#         context = match_data[1]
+#         token = match_data[2]
+#         # --- MODIFICATION END ---
+
+#         input = completions.join("\n")
+#         output = ` \
+#           echo #{Shellwords.escape(input)} \
+#           | #{FZF_DEFAULT} \
+#           --prompt=#{Shellwords.escape("#{context}> ")} \
+#           --bind='tab:replace-query' \
+#           --expect='.,:,ctrl-h,enter' \
+#           --query="#{token}" \
+#         `
+#         break current_buffer if output.empty?
+
+#         lines = output.lines
+#         key_pressed = lines.first&.chomp
+#         selection = lines.drop(1).join('').chomp
+
+#         if key_pressed == 'ctrl-h'
+#           parent_context = current_buffer.sub(/\w*\.?\w*(\.|\:\:)$/, '')
+#           RbReadline.rl_beg_of_line(1, ''); RbReadline.rl_kill_line(1, '')
+#           RbReadline.rl_insert_text(parent_context); RbReadline.rl_redisplay
+#           next
+#         end
+
+#         if is_proactive_list && ['.', '::'].include?(selection)
+#           RbReadline.rl_beg_of_line(1, ''); RbReadline.rl_kill_line(1, '')
+#           RbReadline.rl_insert_text(current_buffer + selection); RbReadline.rl_redisplay
+#           next
+#         end
+
+#         # --- MODIFICATION START ---
+#         # Reconstruct the buffer using the correctly parsed context.
+#         next_buffer = context + selection
+#         # --- MODIFICATION END ---
+
+#         drilldown_chars = case key_pressed; when '.' then '.'; when ':' then '::'; end
+
+#         if drilldown_chars
+#           RbReadline.rl_beg_of_line(1, ''); RbReadline.rl_kill_line(1, '')
+#           RbReadline.rl_insert_text(next_buffer + drilldown_chars); RbReadline.rl_redisplay
+#           next
+#         else
+#           break next_buffer
+#         end
+#       end
+#       RbReadline.rl_beg_of_line(1, ''); RbReadline.rl_kill_line(1, ''); RbReadline.rl_insert_text(final_buffer)
+#     end
+#   else
+#     warn _in_red('[warn] The "fzf" command was not found.'); warn _in_red('[warn]   Custom fzf keybindings for Tab and Ctrl+R are disabled.')
+#   end
+# end

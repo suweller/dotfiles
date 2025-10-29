@@ -106,7 +106,7 @@ bindkey '^w' cd-code
 zle -N openapp
 bindkey '^G' openapp
 
-PS1="%F{green}󰓅 %F{white}20%D{%y/%m/%f} %*%B %F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
+PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
 if [[ -v PLAIN ]]; then
 else
   if [ -z "$TMUX" ]; then

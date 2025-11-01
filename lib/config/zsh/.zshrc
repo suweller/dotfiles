@@ -58,54 +58,6 @@ zstyle ':fzf-tab:*' switch-group 'ctrl-h' 'ctrl-l'
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':hist:*' expand-aliases yes
 
-source "$ZDOTDIR/aliases.zsh"
-
-jira() {
-  export JIRA_HOST="https://fugamusic.atlassian.net"
-  export JIRA_EMAIL="steven.weller@fuga.com"
-  export JIRA_API_TOKEN=$(security find-generic-password -a "$USER" -s "JiraAPItoken" -w)
-  unfunction "$0"
-  jira $@
-}
-
-fzf-bindkey() {
-  ( bindkey \
-    | sd '^' 'zsh ' \
-    && tmux list-keys \
-    | rg --invert-match ' root ' \
-    | sd '^bind-key[^T]+T ' 'tmux ' \
-    ) \
-    | sd '\^(.)' 'ctrl+$1 ' \
-    | fzf
-}
-
-zsh-performance() {
-  echo "\e[0;32m󰓅  PLAIN= zsh\e[0;37m"
-  repeat 3 time PLAIN= zsh --interactive -c exit
-  echo "\n\e[0;32m󰾅  zsh\e[0;37m"
-  repeat 3 time zsh --interactive -c exit
-  echo "\n\e[0;31m󰾆  Slow?\e[0;37m Run:"
-  echo "  ZPROF= zsh --interactive -c exit"
-}
-
-cd-code() {
-  dir='/Users/suweller/Documents/code/'
-  BUFFER="cd $(
-    fd . $dir \
-      --exact-depth=2 \
-      --type=directory \
-      | sd $dir '' \
-      | fzf --tmux \
-      | sd '^(.+)' '~/Documents/code/$1'
-    )"
-  zle end-of-line
-}
-zle -N cd-code
-bindkey '^w' cd-code
-
-zle -N openapp
-bindkey '^G' openapp
-
 PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
 if [[ -v PLAIN ]]; then
 else
@@ -121,21 +73,19 @@ else
   # zgenom autoupdate
   if ! zgenom saved; then
     zgenom load 'jandamm/zgenom-ext-eval'
-    # zgenom eval --name starship "$(starship init zsh)"
-    zgenom load 'marlonrichert/zsh-hist'
-    zgenom eval --name fzf-config <<-ZSH # {{{
+    zgenom eval <<-ZSH # {{{
       $(fzf --zsh)
       bindkey '^P' fzf-history-widget
       bindkey '^N' fzf-cd-widget
       # bindkey -r '^G'
-ZSH
-# }}}
-    zgenom load 'Aloxaf/fzf-tab'
-    zgenom eval --name mise_config <<-ZSH # {{{
       $(mise activate zsh)
       $(mise hook-env -s zsh)
+      source "$ZDOTDIR/aliases.zsh"
+      source "$ZDOTDIR/functions.zsh"
 ZSH
 # }}}
+    zgenom load 'marlonrichert/zsh-hist'
+    zgenom load 'Aloxaf/fzf-tab'
     zgenom compile "$ZDOTDIR/.zshrc"
     echo "\e[0;31m 󰇷  Fixing workbrew mistake so compaudit works"
     set -o xtrace

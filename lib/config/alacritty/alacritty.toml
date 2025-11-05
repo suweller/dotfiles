@@ -1,11 +1,12 @@
 [font]
-size = 18
+size = 30 # Inconsolata Nerd Font Mono
+# size = 24 # Inconsolata Nerd Font Mono
+# size = 48  # ProggyClean Nerd Font Mono
 
 [font.normal]
-# family = "Nerd Font Propo"
-# family = "FantasqueSansM Nerd Font"
-# family = "Monego"
-family = "Inconsolata Nerd Font Propo"
+# family = "FantasqueSansM Nerd Font Mono"
+family = "Inconsolata Nerd Font Mono"
+# family = "ProggyClean Nerd Font Mono"
 style = "Regular"
 [font.bold]
 style = "Bold"
@@ -18,8 +19,8 @@ startup_mode = "SimpleFullscreen"
 resize_increments = true
 
 [colors.primary]
-# background = '#181818'
-background = '#000000'
+background = '#181818'
+# background = '#1c1c1c'
 
 [general]
 live_config_reload = true

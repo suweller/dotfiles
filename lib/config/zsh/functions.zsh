@@ -20,12 +20,11 @@ _present_vimwiki() {
   A_DIR='/Users/suweller/vimwiki/work/diary/'
   R_DIR='~/vimwiki/work/diary/'
   CMD='presenterm --enable-snippet-execution'
-  BUFFER=$(ls --only-files --reverse $A_DIR \
-    | fzf \
+  BUFFER=$(fzf \
     --accept-nth=1 \
     --ansi \
     --bind="enter:become(echo '$CMD $R_DIR{1}')" \
-    --no-sort \
+    --bind "start,ctrl-r:reload:ls $A_DIR" \
     --nth=1 \
     --preview="bat --color=always --language=md --line-range=:30 --style='snip' $R_DIR{1}" \
     --preview-window="right,70%"
@@ -58,12 +57,47 @@ jira() {
 }
 
 zsh-performance() {
-  echo "\e[0;32m󰓅  PLAIN= zsh\e[0;37m"
+  echo " 󰓅\e[0;32m PLAIN= zsh\e[0;37m"
   repeat 3 time PLAIN= zsh --interactive -c exit
-  echo "\n\e[0;32m󰾅  zsh\e[0;37m"
+  echo "\n 󰾅\e[0;32m zsh\e[0;37m"
   repeat 3 time zsh --interactive -c exit
-  echo "\n\e[0;31m󰾆  Slow?\e[0;37m Run:"
+  echo "\n 󰾆\e[0;31m Slow?\e[0;37m Run:"
   echo "  ZPROF= zsh --interactive -c exit"
 }
 
+local workbrew_bleed=(
+  /opt/homebrew/share/zsh
+  /opt/homebrew/share/zsh/site-functions
+  /opt/homebrew/Cellar/zsh/5.9/share/zsh/functions
+  /opt/homebrew/Cellar/zsh/5.9/share/zsh
+)
+# Transparently lend ownership to workbrew user
+embrew() {
+  echo "\e[0;32m 󱍅 This is a custom function wrapping brew\e[0m"
+  echo "  \$workbrew_bleed="
+  printf "    %s\n" $workbrew_bleed
+  echo " 󰇷\e[0;31m sudo chown -R workbrew \$workbrew_bleed\e[0m to fix:\e[0;32m brew\e[0m $@"
+  sudo chown -R workbrew $workbrew_bleed
+  /opt/workbrew/bin/brew "$@"
+  echo " 󰇷\e[0;31m sudo chown -RL $(id -run) \$workbrew_bleed\e[0m to fix:\e[0;32m brew\e[0m $1"
+  sudo chown -RL $(id -run) $workbrew_bleed
+}
+
+# Wrap workbrew paths in embrew for affected commands
+brew() {
+  case $1 in
+    doctor)
+      embrew "$@"
+      ;;
+    install | uninstall | upgrade | update)
+      embrew "$@"
+      echo "\e[0;32m 󱍅 zgenom reset: Resetting zgenom caches\e[0m"
+      zgenom reset
+      ;;
+
+    *)
+      /opt/workbrew/bin/brew "$@"
+      ;;
+  esac
+}
 

@@ -7,6 +7,7 @@ config:
 icons:
   jira: " "
   links: "󰌹 "
+  presenterm: "󰐨 "
   slides: "󰐨 "
   taskwarrior-tui: " "
   tw: " "

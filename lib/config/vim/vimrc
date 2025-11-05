@@ -3,18 +3,18 @@ set nocompatible " We're running VIM, not vi
 scriptencoding utf-8
 filetype off " Turn off _before_ loading all Plugins
 let mapleader = " "
+let $PATH = $XDG_DATA_HOME . '/mise/shims:' . $PATH
+
 inoremap § <ESC>
 nnoremap <F1> <NOP>
 inoremap <F1> <ESC>
 noremap <F10> :set spell! spell?<CR>
-nnoremap <F9> :Dispatch<CR>
 
 " set synmaxcol=119
 set updatetime=1000
 set nobackup
 set nowritebackup
 set noswapfile
-
 
 if empty(glob('~/.config/vim/autoload/plug.vim'))
   silent !curl
@@ -260,6 +260,7 @@ nnoremap <C-F>t :Tags<CR>
 nnoremap <expr> <C-P> FugitiveGitDir() != '' ? ':BranchLsFiles<CR>' : ':Files<CR>'
 nnoremap <C-G>f :Files<CR>
 nnoremap <C-T> :Buffers<CR>
+nnoremap <c-x><c-i> :NerdfontsFzF<CR>
 
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
@@ -303,6 +304,7 @@ let g:vimwiki_list = [
       \ {'syntax': 'markdown', 'ext': '.md', 'path': '~/vimwiki/work/'},
       \ {'syntax': 'markdown', 'ext': '.md', 'path': '~/vimwiki/play/'},
       \ ]
+nmap <leader>mp :Spawn presenterm -x "%"<CR>
 " }}}
 Plug 'tpope/vim-rbenv' " Util: rbenv.vim
 Plug 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
@@ -340,7 +342,6 @@ call plug#end()
 filetype plugin indent on " Turn on _after_ loading all Plugins
 runtime macros/matchit.vim
 runtime! ftplugin/man.vim
-
 
 if &t_Co > 2 || has('gui_running')
   syntax on

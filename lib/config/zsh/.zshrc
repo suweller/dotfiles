@@ -58,10 +58,13 @@ zstyle ':fzf-tab:*' switch-group 'ctrl-h' 'ctrl-l'
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':hist:*' expand-aliases yes
 
+source "$ZDOTDIR/aliases.zsh"
+source "$ZDOTDIR/functions.zsh"
+
 PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
 if [[ -v PLAIN ]]; then
 else
-  if [ -z "$TMUX" ]; then
+  if [[ -z "$TMUX" ]]; then
     tmux attach -t default || tmux new-session -s default || exit 1
     exit 0
   fi
@@ -80,24 +83,12 @@ else
       # bindkey -r '^G'
       $(mise activate zsh)
       $(mise hook-env -s zsh)
-      source "$ZDOTDIR/aliases.zsh"
-      source "$ZDOTDIR/functions.zsh"
 ZSH
 # }}}
     zgenom load 'marlonrichert/zsh-hist'
     zgenom load 'Aloxaf/fzf-tab'
     zgenom compile "$ZDOTDIR/.zshrc"
-    echo "\e[0;31m 󰇷  Fixing workbrew mistake so compaudit works"
-    set -o xtrace
-    sudo chown -RL $(id -run) /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions
-    set +o xtrace
-    echo "\e[0;37m"
     zgenom save
-    echo "\e[0;31m 󰇷  Unfixing workbrew mistake so brew install works"
-    set -o xtrace
-    sudo chown -R workbrew /opt/homebrew/share/zsh /opt/homebrew/share/zsh/site-functions
-    set +o xtrace
-    echo "\e[0;37m"
     zsh-performance
   fi
 fi

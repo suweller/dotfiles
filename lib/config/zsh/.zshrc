@@ -46,6 +46,11 @@ setopt share_history
 unset GREP_OPTIONS
 bindkey -e
 
+export TINTED_TMUX_OPTION_ACTIVE=1
+# export TINTED_TMUX_OPTION_STATUSBAR=0
+export TINTED_SHELL_ENABLE_BASE16_VARS=1
+export TINTED_SHELL_ENABLE_BASE24_VARS=1
+
 zstyle ':completion:*' cache-path $XDG_CACHE_HOME/zcompletion
 zstyle ':completion:*' completer _complete _match _approximate
 zstyle ':completion:*' ignore-case yes
@@ -65,8 +70,7 @@ PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
 if [[ -v PLAIN ]]; then
 else
   if [[ -z "$TMUX" ]]; then
-    tmux attach -t default || tmux new-session -s default || exit 1
-    exit 0
+    (tmux  -T 256 attach -t default || tmux  -T 256 new-session -s default) && exit 0
   fi
   if [[ ! -d $ZGEN_DIR ]]; then
     git clone https://github.com/jandamm/zgenom.git $ZGEN_DIR

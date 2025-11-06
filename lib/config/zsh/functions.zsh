@@ -23,17 +23,34 @@ _present_vimwiki() {
   BUFFER=$(fzf \
     --accept-nth=1 \
     --ansi \
-    --bind="enter:become(echo '$CMD $R_DIR{1}')" \
     --bind "start,ctrl-r:reload:ls $A_DIR" \
+    --bind="enter:become(echo '$CMD $R_DIR{1}')" \
     --nth=1 \
+    --history="$XDG_DATA_HOME/fzf/history-present_vimwiki" \
+    --preview-window="right,70%" \
     --preview="bat --color=always --language=md --line-range=:30 --style='snip' $R_DIR{1}" \
-    --preview-window="right,70%"
   )
   zle end-of-line
   zle accept-line
 }
 zle -N _present_vimwiki
 bindkey '^mp' _present_vimwiki
+
+_tinty_switch() {
+  BUFFER=$(fzf \
+    --accept-nth=1 \
+    --ansi \
+    --bind "start,ctrl-r:reload:tinty list" \
+    --bind="enter:become(echo 'tinty apply {1}')" \
+    --history="$XDG_DATA_HOME/fzf/history-tinty_switch" \
+    --preview-window="right,70%" \
+    --preview="tinty info {}" \
+  )
+  zle end-of-line
+  zle accept-line
+}
+zle -N _tinty_switch
+bindkey '^mc' _tinty_switch
 
 fzf-bindkey() {
   ( bindkey \
@@ -94,7 +111,6 @@ brew() {
       echo "\e[0;32m 󱍅 zgenom reset: Resetting zgenom caches\e[0m"
       zgenom reset
       ;;
-
     *)
       /opt/workbrew/bin/brew "$@"
       ;;

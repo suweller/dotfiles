@@ -33,7 +33,7 @@ main() {
     while getopts ":dfi" option; do
       case $option in
         d)
-          result+="$bat_perc%"
+          result+="$bat_perc"
           ;;
 
         f)

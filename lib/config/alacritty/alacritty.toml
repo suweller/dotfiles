@@ -23,4 +23,5 @@ background = '#181818'
 # background = '#1c1c1c'
 
 [general]
+import = ["~/.config/alacritty/colors.toml"]
 live_config_reload = true

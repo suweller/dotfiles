@@ -1,4 +1,4 @@
-" vim:fdm=marker
+" him:fdm=marker
 set nocompatible " We're running VIM, not vi
 scriptencoding utf-8
 filetype off " Turn off _before_ loading all Plugins
@@ -25,6 +25,24 @@ if empty(glob('~/.config/vim/autoload/plug.vim'))
         \ --silent
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
+" {{{ tinted-vim
+let theme_script_path = expand("~/.local/share/tinted-theming/tinty/tinted-vim-colors-file.vim")
+function! FileExists(file_path)
+  return filereadable(a:file_path) == 1
+endfunction
+function! HandleFocusGained()
+  if FileExists(g:theme_script_path)
+    execute 'source ' . g:theme_script_path
+  endif
+endfunction
+if FileExists(theme_script_path)
+  set termguicolors
+  let g:tinted_colorspace = 256
+  execute 'source ' . theme_script_path
+  autocmd FocusGained * call HandleFocusGained()
+endif
+" }}}
 
 call plug#begin('~/.config/vim/plugged')
 Plug 'chrisbra/unicode.vim'
@@ -94,27 +112,7 @@ Plug 'wsdjeg/vim-fetch' " Process line and column jump specifications
 
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux'
-Plug 'itchyny/lightline.vim' " {{{
-let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
-      \ 'component_function': {
-      \   'fileformat': 'LightlineFileformat',
-      \   'filetype': 'LightlineFiletype',
-      \   'fileencoding': 'LightlineEncoding',
-      \ },
-      \ }
-function! LightlineEncoding()
-  let bomb = (exists("+bomb") && &bomb) ? 'b ' : ''
-  let encoding = &fenc == '' ? &enc : &fenc
-  return winwidth(0) > 70 ? bomb . encoding : ''
-endfunction
-function! LightlineFileformat()
-  return winwidth(0) > 70 ? &fileformat : ''
-endfunction
-function! LightlineFiletype()
-  return winwidth(0) > 70 ? (&filetype !=# '' ? &filetype : 'no ft') : ''
-endfunction
-" }}}
+Plug 'tinted-theming/tinted-vim'
 Plug 'nanotech/jellybeans.vim' " {{{
 let g:jellybeans_overrides = {
   \ 'background': {'ctermbg': 'none', '256ctermbg': 'none'},
@@ -347,8 +345,8 @@ if &t_Co > 2 || has('gui_running')
   syntax on
 endif
 if &t_Co >= 256 || has('gui_running')
-  set background=dark
-  colorscheme jellybeans
+  " set background=dark
+  " colorscheme jellybeans
 endif
 if exists('+termguicolors')
   let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
@@ -403,6 +401,41 @@ set wildignore+=tags            " Don't complete from project code ctag file
 set wildignore+=tags-includes   " Don't complete from includes code ctag file
 set winaltkeys=no               " Let vim handle alt keys
 set list                        " Create a list & make invisible chars visible
+
+function! StatuslineGit()
+  let l:branchname = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+  return (winwidth(0) > 70 && strlen(l:branchname) > 0) ? '  '.l:branchname.' ':''
+endfunction
+function! BaseLineEncoding()
+  let bomb = (exists("+bomb") && &bomb) ? 'b ' : ''
+  let encoding = &fenc == '' ? &enc : &fenc
+  return winwidth(0) > 70 ? '  ' . bomb . encoding . ' ' : ''
+endfunction
+function! BaseLineFileformat()
+  return winwidth(0) > 70 ? ' ' . &fileformat . ' ' : ''
+endfunction
+function! BaseLineFiletype()
+  return winwidth(0) > 70 ? '  '.(&filetype !=# '' ? &filetype : 'no ft').' ' : ''
+endfunction
+" set statusline+=%#PmenuSel#
+" set statusline+=%#CursorColumn#
+set statusline=
+set statusline+=%#PMenuSel#
+set statusline+=%{StatuslineGit()}
+set statusline+=%#PmenuMatch#
+set statusline+=\ %f\ 
+set statusline+=%m
+set statusline+=%=
+set statusline+=%#LineNr#
+set statusline+=\ %p%%\ 
+set statusline+=%#PMenuMatch#
+set statusline+=\ %l:%c\ 
+set statusline+=%#PMenuSel#
+set statusline+=%{BaseLineFileformat()}
+set statusline+=%#PMenuSbar#
+set statusline+=%{BaseLineEncoding()}
+set statusline+=%#PMenuThumb#
+set statusline+=%{BaseLineFiletype()}
 
 if has("eval")
   function! SL(function)

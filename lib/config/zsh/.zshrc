@@ -91,7 +91,7 @@ ZSH
 # }}}
     zgenom load 'marlonrichert/zsh-hist'
     zgenom load 'Aloxaf/fzf-tab'
-    zgenom compile "$ZDOTDIR/.zshrc"
+    zgenom compile $ZDOTDIR
     zgenom save
     zsh-performance
   fi
@@ -104,3 +104,10 @@ unset -f add2fpath
 if [[ -v ZPROF ]]; then
  zprof | less
 fi
+
+export FZF_DEFAULT_OPTS=" \
+  --color=bg:0,fg:7,hl:3 \
+  --color=bg+:8,fg+:7,hl+:11 \
+  --color=info:3,border:3,prompt:4 \
+  --color=pointer:0,marker:9,spinner:9,header:1 \
+  "

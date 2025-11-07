@@ -27,22 +27,6 @@ if empty(glob('~/.config/vim/autoload/plug.vim'))
 endif
 
 " {{{ tinted-vim
-let theme_script_path = expand("~/.local/share/tinted-theming/tinty/tinted-vim-colors-file.vim")
-function! FileExists(file_path)
-  return filereadable(a:file_path) == 1
-endfunction
-function! HandleFocusGained()
-  if FileExists(g:theme_script_path)
-    execute 'source ' . g:theme_script_path
-  endif
-endfunction
-if FileExists(theme_script_path)
-  set termguicolors
-  let g:tinted_colorspace = 256
-  execute 'source ' . theme_script_path
-  autocmd FocusGained * call HandleFocusGained()
-endif
-" }}}
 
 call plug#begin('~/.config/vim/plugged')
 Plug 'chrisbra/unicode.vim'
@@ -233,11 +217,6 @@ command! -bang BranchLsFiles
       \         '--border-label', ' Open File ',
       \         '--input-label', ' Input ',
       \         '--bind', 'focus:transform-preview-label:printf " %s " $(eza --icons $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //"))',
-      \         '--color', 'border:#aaaaaa,label:#cccccc',
-      \         '--color', 'preview-border:#9999cc,preview-label:#ccccff',
-      \         '--color', 'list-border:#669966,list-label:#99cc99',
-      \         '--color', 'input-border:#996666,input-label:#ffcccc',
-      \         '--color', 'header-border:#6699cc,header-label:#99ccff'
       \     ],
       \     'sink': function('<sid>branch_ls_files_sink')
       \   },
@@ -402,10 +381,6 @@ set wildignore+=tags-includes   " Don't complete from includes code ctag file
 set winaltkeys=no               " Let vim handle alt keys
 set list                        " Create a list & make invisible chars visible
 
-function! StatuslineGit()
-  let l:branchname = system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-  return (winwidth(0) > 70 && strlen(l:branchname) > 0) ? '  '.l:branchname.' ':''
-endfunction
 function! BaseLineEncoding()
   let bomb = (exists("+bomb") && &bomb) ? 'b ' : ''
   let encoding = &fenc == '' ? &enc : &fenc
@@ -417,13 +392,10 @@ endfunction
 function! BaseLineFiletype()
   return winwidth(0) > 70 ? '  '.(&filetype !=# '' ? &filetype : 'no ft').' ' : ''
 endfunction
-" set statusline+=%#PmenuSel#
-" set statusline+=%#CursorColumn#
 set statusline=
-set statusline+=%#PMenuSel#
-set statusline+=%{StatuslineGit()}
-set statusline+=%#PmenuMatch#
+" set statusline+=%#PMenuSel#
 set statusline+=\ %f\ 
+set statusline+=%#PmenuMatch#
 set statusline+=%m
 set statusline+=%=
 set statusline+=%#LineNr#
@@ -624,4 +596,33 @@ command! -bang -nargs=* Rg
       \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
       \   <bang>0)
 nnoremap <C-S> :Rg<Cr>
+" }}}
+
+let g:default_theme = "base16-oceanicnext"
+function! GetTintyTheme()
+  let l:theme_name = system("tinty current &> /dev/null && tinty current")
+  if v:shell_error != 0
+    return g:default_theme
+  else
+    return trim(l:theme_name)
+  endif
+endfunction
+function! HandleFocusGained()
+  let l:new_theme_name = GetTintyTheme()
+  let l:current_theme_name = g:colors_name
+  if l:current_theme_name != l:new_theme_name
+    execute "colorscheme " . l:new_theme_name
+  endif
+endfunction
+function! Main()
+  set termguicolors
+  let g:tinted_colorspace = 256
+  let l:current_theme_name = GetTintyTheme()
+  execute "colorscheme " . l:current_theme_name
+  augroup TintyThemeChange
+    autocmd!
+    autocmd FocusGained * call HandleFocusGained()
+  augroup END
+endfunction
+call Main()
 " }}}

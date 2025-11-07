@@ -8,7 +8,12 @@ _cd_code() {
     | sd $A_DIR '' \
     | fzf \
     --bind="enter:become(echo '$CMD $R_DIR{1}')" \
-    --preview="bat --color=always --language=md --style='snip' $R_DIR{1}/README.md" \
+    --preview="bat \
+      --color=always \
+      --language=md \
+      --style='snip' \
+      $R_DIR{1}/README.md \
+      || ls $R_DIR{1}"
   )
   zle end-of-line
   zle accept-line
@@ -43,8 +48,14 @@ _tinty_switch() {
     --bind "start,ctrl-r:reload:tinty list" \
     --bind="enter:become(echo 'tinty apply {1}')" \
     --history="$XDG_DATA_HOME/fzf/history-tinty_switch" \
-    --preview-window="right,70%" \
-    --preview="tinty info {}" \
+    --preview-label="$(tinty current)" \
+    --preview-window="right,42" \
+    --preview="paste \
+      <(tinty info $(tinty current) | tail -n +3 | sd '^(.+)  (.+)$' '\$2  \$1') \
+      <(tinty info {} | tail -n +3) \
+      | sd '^\t' '                    \t' \
+      | column -t -s\"\t\"" \
+    --tac \
   )
   zle end-of-line
   zle accept-line
@@ -88,19 +99,20 @@ local workbrew_bleed=(
   /opt/homebrew/Cellar/zsh/5.9/share/zsh/functions
   /opt/homebrew/Cellar/zsh/5.9/share/zsh
 )
-# Transparently lend ownership to workbrew user
+
 embrew() {
   echo "\e[0;32m 󱍅 This is a custom function wrapping brew\e[0m"
   echo "  \$workbrew_bleed="
   printf "    %s\n" $workbrew_bleed
-  echo " 󰇷\e[0;31m sudo chown -R workbrew \$workbrew_bleed\e[0m to fix:\e[0;32m brew\e[0m $@"
+  echo " 󰇷\e[0;31m sudo chown -R workbrew \$workbrew_bleed\e[0m to fix:" \
+    "\e[0;32m brew\e[0m $@"
   sudo chown -R workbrew $workbrew_bleed
   /opt/workbrew/bin/brew "$@"
-  echo " 󰇷\e[0;31m sudo chown -RL $(id -run) \$workbrew_bleed\e[0m to fix:\e[0;32m brew\e[0m $1"
+  echo " 󰇷\e[0;31m sudo chown -RL $(id -run) \$workbrew_bleed\e[0m to fix:" \
+    "\e[0;32m brew\e[0m $1"
   sudo chown -RL $(id -run) $workbrew_bleed
 }
 
-# Wrap workbrew paths in embrew for affected commands
 brew() {
   case $1 in
     doctor)
@@ -116,4 +128,3 @@ brew() {
       ;;
   esac
 }
-

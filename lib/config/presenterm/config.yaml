@@ -1,0 +1,6 @@
+# defaults:
+#   theme: terminal-dark
+options:
+  implicit_slide_ends: true
+typst:
+  ppi: 100

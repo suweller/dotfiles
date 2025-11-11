@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 TIME="00:02:00"
 MESSAGE="Time is up!"
 usage="

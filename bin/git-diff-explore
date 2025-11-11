@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 select_branch() {
   branch=$(git branch -v | fzf --prompt="$1" --ansi --no-sort --reverse |

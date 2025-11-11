@@ -1,4 +1,4 @@
-" him:fdm=marker
+" vim:fdm=marker
 set nocompatible " We're running VIM, not vi
 scriptencoding utf-8
 filetype off " Turn off _before_ loading all Plugins
@@ -25,8 +25,6 @@ if empty(glob('~/.config/vim/autoload/plug.vim'))
         \ --silent
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-
-" {{{ tinted-vim
 
 call plug#begin('~/.config/vim/plugged')
 Plug 'chrisbra/unicode.vim'
@@ -97,24 +95,6 @@ Plug 'wsdjeg/vim-fetch' " Process line and column jump specifications
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'tinted-theming/tinted-vim'
-Plug 'nanotech/jellybeans.vim' " {{{
-let g:jellybeans_overrides = {
-  \ 'background': {'ctermbg': 'none', '256ctermbg': 'none'},
-  \ 'TabLine': {'guibg': '000000', 'guifg': '585858', '256ctermbg': '16', 'attr': 'underline'},
-  \ 'TabLineSel': {'guibg': '343434', 'guifg': 'FFFFFF', '256ctermbg': 'none' },
-  \ 'TabLineFill': {'guibg': '000000', 'guifg': '343434', 'attr': 'underline'},
-  \ 'StatusLine': {'guibg': '444444', 'guifg': 'FFFFFF'},
-  \ 'StatusLineNC': {'guibg': '121212', 'guifg': '808080'},
-  \ 'CursorLine': {'guibg': '343434'},
-  \ 'ColorColumn': {'guibg': '1C1C1C'},
-  \ 'IndentGuidesOdd': {'guibg': '000000'},
-  \ 'IndentGuidesEven': {'guibg': '1C1C1C'},
-  \ 'SpecialKey': {'guibg': '000000'},
-  \ }
-" }}}
-Plug 'altercation/solarized', {'rtp': 'vim-colors-solarized'} " {{{
-  let g:solarized_termcolors=256
-" }}}
 Plug 'tpope/vim-fugitive' " Git: command Integration {{{
 Plug 'tpope/vim-rhubarb' " Enables fugitive :Gbrowse to open GitHub links
 nnoremap <LEADER>gb :Git blame<CR>
@@ -197,45 +177,47 @@ let g:fzf_colors = {
       \ 'header': ['fg', 'Comment'] }
 let g:fzf_commits_log_options = '--color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"'
 let g:fzf_history_dir = '~/.local/share/fzf'
-let g:fzf_layout = {'window': {'width': 0.8, 'height': 0.8}}
+if exists('$TMUX')
+  let g:fzf_layout = {'tmux': '90%,70%'}
+else
+  let g:fzf_layout = {'window': { 'width': 0.8, 'height': 0.8}}
+endif
 " let g:fzf_tags_command = '~/.config/git/git_template/hooks/ctags'
 inoremap <expr> <c-x><c-k> fzf#complete('git commit-words')
 
-function! s:branch_ls_files_sink(line)
-  let [status, file] = split(a:line, '\s\+')
-  execute 'e' file
-endfunction
+command! FZFiles execute (FugitiveGitDir() !=# '' ? 'BranchLsFiles' : 'Files')
 command! -bang BranchLsFiles
       \ call fzf#run(fzf#wrap(
       \   'files',
       \   {
-      \     'source': 'git branch-ls-files',
+      \     'source': 'git ls-files-with-context',
       \     'options': [
-      \         '--style', 'full',
+      \         '--accept-nth=2',
       \         '--ansi',
-      \         '--border',
-      \         '--border-label', ' Open File ',
-      \         '--input-label', ' Input ',
-      \         '--bind', 'focus:transform-preview-label:printf " %s " $(eza --icons $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //"))',
+      \         '--border-label=Open Git File',
+      \         '--delimiter=\t',
+      \         '--nth=2',
+      \         '--reverse',
+      \         '--style=minimal',
+      \         '--preview=bat --color=always --line-range=0:200 --terminal-width=$FZF_PREVIEW_COLUMNS {2}',
+      \         '--preview-window', 'right,60%',
       \     ],
-      \     'sink': function('<sid>branch_ls_files_sink')
       \   },
       \   <bang>0
       \ ))
-      " \         '--preview', '~/.vim/plugged/fzf.vim/bin/preview.sh $(echo {} | sed "s/^[ACcMox\? ][M_\? ] //")',
-      " \         '--preview-window', 'right,60%',
 
 command! -bang -nargs=* GGrep
     \ call fzf#vim#grep(
     \   'git grep --line-number '.shellescape(<q-args>), 0,
     \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
-nnoremap <C-F>c :Commits<CR>
+nnoremap <C-F>c :Commands<CR>
+nnoremap <C-F>l :Commits<CR>
 nnoremap <C-F>d :BCommits<CR>
 nnoremap <C-F>h :Helptags<CR>
 nnoremap <C-F>t :Tags<CR>
-nnoremap <expr> <C-P> FugitiveGitDir() != '' ? ':BranchLsFiles<CR>' : ':Files<CR>'
-nnoremap <C-G>f :Files<CR>
+nnoremap <C-P> :FZFiles<CR>
+
 nnoremap <C-T> :Buffers<CR>
 nnoremap <c-x><c-i> :NerdfontsFzF<CR>
 
@@ -266,6 +248,7 @@ let g:ale_linters = {
 Plug 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
 Plug 'tpope/vim-commentary' " Util: (Un)Comment made easy
 Plug 'tpope/vim-dispatch' " Util: Allow asynchronous tasks to be dispatched
+Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tpope/vim-endwise' " Util: 'wisely' add `end` after `if` `do` etc.
 Plug 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
 Plug 'tpope/vim-afterimage' " Util: Edit (small) images
@@ -316,22 +299,37 @@ Plug 'vim-scripts/Improved-AnsiEsc'
 " }}}
 call plug#end()
 
+let g:default_theme = "base16-oceanicnext"
+function! GetTintyTheme()
+  let l:theme_name = system("tinty current &> /dev/null && tinty current")
+  if v:shell_error != 0
+    return g:default_theme
+  else
+    return trim(l:theme_name)
+  endif
+endfunction
+function! HandleFocusGained()
+  let l:new_theme_name = GetTintyTheme()
+  let l:current_theme_name = g:colors_name
+  if l:current_theme_name != l:new_theme_name
+    execute "colorscheme " . l:new_theme_name
+  endif
+endfunction
+function! Main()
+  set termguicolors
+  let g:tinted_colorspace = 256
+  let l:current_theme_name = GetTintyTheme()
+  execute "colorscheme " . l:current_theme_name
+  augroup TintyThemeChange
+    autocmd!
+    autocmd FocusGained * call HandleFocusGained()
+  augroup END
+endfunction
+call Main()
+
 filetype plugin indent on " Turn on _after_ loading all Plugins
 runtime macros/matchit.vim
 runtime! ftplugin/man.vim
-
-if &t_Co > 2 || has('gui_running')
-  syntax on
-endif
-if &t_Co >= 256 || has('gui_running')
-  " set background=dark
-  " colorscheme jellybeans
-endif
-if exists('+termguicolors')
-  let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
-  set termguicolors
-endif
 
 " Cursor on a command word and let vim help you: `:help <C-R><C-W>`
 set viminfo='10,f1,<100,:20,@20,/20,h,n~/.vim/.viminfo "-- Files & Directories {{{
@@ -596,33 +594,4 @@ command! -bang -nargs=* Rg
       \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
       \   <bang>0)
 nnoremap <C-S> :Rg<Cr>
-" }}}
-
-let g:default_theme = "base16-oceanicnext"
-function! GetTintyTheme()
-  let l:theme_name = system("tinty current &> /dev/null && tinty current")
-  if v:shell_error != 0
-    return g:default_theme
-  else
-    return trim(l:theme_name)
-  endif
-endfunction
-function! HandleFocusGained()
-  let l:new_theme_name = GetTintyTheme()
-  let l:current_theme_name = g:colors_name
-  if l:current_theme_name != l:new_theme_name
-    execute "colorscheme " . l:new_theme_name
-  endif
-endfunction
-function! Main()
-  set termguicolors
-  let g:tinted_colorspace = 256
-  let l:current_theme_name = GetTintyTheme()
-  execute "colorscheme " . l:current_theme_name
-  augroup TintyThemeChange
-    autocmd!
-    autocmd FocusGained * call HandleFocusGained()
-  augroup END
-endfunction
-call Main()
 " }}}

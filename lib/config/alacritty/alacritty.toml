@@ -1,7 +1,7 @@
 [font]
 size = 30 # Inconsolata Nerd Font Mono
 # size = 24 # Inconsolata Nerd Font Mono
-# size = 48  # ProggyClean Nerd Font Mono
+# size = 42  # ProggyClean Nerd Font Mono
 
 [font.normal]
 # family = "FantasqueSansM Nerd Font Mono"
@@ -23,5 +23,5 @@ background = '#181818'
 # background = '#1c1c1c'
 
 [general]
-import = ["~/.config/alacritty/colors.toml"]
+import = ["~/.local/state/alacritty/colors.toml"]
 live_config_reload = true

@@ -47,7 +47,6 @@ unset GREP_OPTIONS
 bindkey -e
 
 export TINTED_TMUX_OPTION_ACTIVE=1
-# export TINTED_TMUX_OPTION_STATUSBAR=0
 export TINTED_SHELL_ENABLE_BASE16_VARS=1
 export TINTED_SHELL_ENABLE_BASE24_VARS=1
 
@@ -70,7 +69,7 @@ PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
 if [[ -v PLAIN ]]; then
 else
   if [[ -z "$TMUX" ]]; then
-    (tmux  -T 256 attach -t default || tmux  -T 256 new-session -s default) && exit 0
+    (tmux  -T 256 attach -t default || tmux  -T 256 new-session -s default -c ~/.dotfiles) && exit 0
   fi
   if [[ ! -d $ZGEN_DIR ]]; then
     git clone https://github.com/jandamm/zgenom.git $ZGEN_DIR
@@ -89,8 +88,9 @@ else
       $(mise hook-env -s zsh)
 ZSH
 # }}}
-    zgenom load 'marlonrichert/zsh-hist'
     zgenom load 'Aloxaf/fzf-tab'
+    zgenom load 'marlonrichert/zsh-hist'
+    zgenom load 'reegnz/jq-zsh-plugin'
     zgenom compile $ZDOTDIR
     zgenom save
     zsh-performance
@@ -104,10 +104,3 @@ unset -f add2fpath
 if [[ -v ZPROF ]]; then
  zprof | less
 fi
-
-export FZF_DEFAULT_OPTS=" \
-  --color=bg:0,fg:7,hl:3 \
-  --color=bg+:8,fg+:7,hl+:11 \
-  --color=info:3,border:3,prompt:4 \
-  --color=pointer:0,marker:9,spinner:9,header:1 \
-  "

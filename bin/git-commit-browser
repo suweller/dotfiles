@@ -1,4 +1,5 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+
 git l --color=always "$@" \
   | fzf \
     --ansi \

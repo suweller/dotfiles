@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 local f=.git/tags
 local line
 [ -e $f ] && line=$(

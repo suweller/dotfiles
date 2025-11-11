@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 read -p "Run brew cleanup? /yn/i " yn
 set -x
@@ -7,8 +7,6 @@ case $yn in
   * ) echo "skipping brew cleanup";;
 esac
 brew update && brew upgrade \
-  ansiweather \
-  autojump \
   cloc \
   ctags \
   curl \
@@ -21,22 +19,12 @@ brew update && brew upgrade \
   libyaml \
   openssl \
   pspg \
-  rbenv \
-  rbenv-bundler \
-  rbenv-communal-gems \
-  rbenv-default-gems \
   readline \
-  ruby-build \
-  ruby-install \
   the_silver_searcher \
-  tidy-html5 \
   tmux \
   valgrind \
   vim \
-  weechat \
-  wireshark \
   xz \
-  yarn \
   youtube-dl \
   zsh \
 

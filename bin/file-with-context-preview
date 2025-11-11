@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+if [[ "file --mime $1" =~ '*charset=binary*' ]]; then
+  identify $1
+else
+  bat --color=always --line-range=0:200 --terminal-width=$COLUMNS $1
+fi
+

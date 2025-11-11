@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 tmux_stub=$(sed '/AUTO SOLARIZED/q' < ~/.tmux.conf)
 
 update_theme () {

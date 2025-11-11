@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function yes-no() {
   read -p "$1 [y/n]" -n 1 -r

@@ -1,5 +1,4 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 
 # White Space Trimming: http://codesnippets.joyent.com/posts/show/1816
 trim() {
@@ -8,7 +7,6 @@ trim() {
   var="${var%"${var##*[![:space:]]}"}"   # remove trailing whitespace characters
   /bin/echo -n "$var"
 }
-
 
 ### Get Input
 /bin/echo "What should the Application be called?"
@@ -22,7 +20,6 @@ url=`trim "$inputline"`
 /bin/echo "What is the full path to the icon (e.g. /Users/username/Desktop/icon.png)?"
 read inputline
 icon=`trim "$inputline"`
-
 
 #### Find Chrome. If its not in the standard spot, try using spotlight.
 chromePath="/Applications/Google Chrome.app"

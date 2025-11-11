@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 select_branch() {
   echo $(git branch --verbose |

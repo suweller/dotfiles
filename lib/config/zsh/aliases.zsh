@@ -1,5 +1,4 @@
 alias aliases="cd ~/.dotfiles && \$EDITOR ${0:a} && source ${0:a}; popd # aliases"
-alias bat="bat --theme='base16-256'"
 alias xsv="qsv"
 alias zshrc='cd ~/.dotfiles && $EDITOR lib/config/zsh/.zshrc && source lib/config/zsh/.zshrc; popd # zshrc'
 alias vimrc='cd ~/.dotfiles && $EDITOR lib/config/vim/vimrc; popd # vimrc'
@@ -13,3 +12,11 @@ alias du='dust'
 alias ls='eza --icons=auto'
 alias t='task'
 alias g='git'
+
+function vim() {
+  if [[ $# -eq 0 ]]; then
+    command vim -c ":FZFiles"
+  else
+    command vim "$@"
+  fi
+}

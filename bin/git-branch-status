@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 #  please direct comments, bug reports, feature requests, or PRs to the upstream repo:
 #      https://github.com/bill-auger/git-branch-status/issues/

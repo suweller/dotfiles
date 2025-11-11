@@ -1,0 +1,39 @@
+# Global settings
+shell = "zsh -c '{}'"
+default-scheme = "base16-mocha"
+preferred-schemes = ["base24-the-hulk", "base24-jellybeans", "base16-github-dark"]
+
+[[items]]
+name = "tinted-terminal"
+path = "https://github.com/tinted-theming/tinted-terminal"
+themes-dir = "themes/alacritty"
+hook = "cp -f %f ~/.local/state/alacritty/colors.toml && touch ~/.config/alacritty/alacritty.toml"
+supported-systems = ["base16", "base24"]
+
+[[items]]
+name = "tinted-shell"
+path = "https://github.com/tinted-theming/tinted-shell"
+themes-dir = "scripts"
+hook = "source \"$TINTY_THEME_FILE_PATH\""
+supported-systems = ["base16", "base24"]
+
+[[items]]
+name = "tinted-vim"
+path = "https://github.com/tinted-theming/tinted-vim"
+themes-dir = "colors"
+supported-systems = ["base16", "base24"]
+# Look at USAGE.md for more information on sourcing the generated file in vim
+
+[[items]]
+name = "tinted-tmux"
+path = "https://github.com/tinted-theming/tinted-tmux"
+# Check if tmux is in use and if it is, reload the config file
+hooks = ["tmux source-file $XDG_CONFIG_HOME/tmux/tmux.conf"]
+hook = "tmux run 2> /dev/null && tmux source-file %f"
+themes-dir = "colors"
+
+[[items]]
+name = "tinted-delta"
+path = "https://github.com/tinted-theming/tinted-delta"
+themes-dir = "configs"
+supported-systems = ["base16", "base24"]

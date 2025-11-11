@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+declare -A seen
+
+print_colored() {
+  local color
+  case "$1" in
+    M*)  color=31 ;;  # Red (modified)
+    A*)  color=32 ;;  # Green (added)
+    D*)  color=31 ;;  # Red (deleted)
+    R*)  color=33 ;;  # Yellow (renamed)
+    C*)  color=33 ;;  # Yellow (copied)
+    \?\?*) color=31 ;; # Red (untracked)
+    _)   color=0  ;;  # Default
+    *)   color=0  ;;  # Fallback
+  esac
+  printf "\033[%sm%-3s\033[0m\t%s\n" "$color" "$1" "$2"
+}
+
+while read -r status file; do
+  if [[ "$status" == "??" && -d "$file" ]]; then
+    while IFS= read -r -d '' f; do
+      seen["$f"]=1
+      print_colored "??" "$f"
+    done < <(find "$file" -type f -print0)
+  else
+    seen["$file"]=1
+    print_colored "$status" "$file"
+  fi
+done < <(git status --short --untracked-files=all)
+
+while read -r file; do
+  if [[ -z "${seen[$file]}" ]]; then
+    print_colored "_" "$file"
+  fi
+done < <(git ls-files)
+

@@ -1,4 +1,4 @@
-_cd_code() {
+_open_project() {
   A_DIR='/Users/suweller/Documents/code/'
   R_DIR='~/Documents/code/'
   CMD='cd '
@@ -7,19 +7,21 @@ _cd_code() {
     --type=directory \
     | sd $A_DIR '' \
     | fzf \
-    --bind="enter:become(echo '$CMD $R_DIR{1}')" \
+    --bind="enter:become(echo '$CMD $R_DIR{1} && \$EDITOR')" \
+    --preview-window='right,70%' \
     --preview="bat \
       --color=always \
-      --language=md \
       --style='snip' \
+      --terminal-width="\${FZF_PREVIEW_COLUMNS:-}" \
+      --wrap=character \
       $R_DIR{1}/README.md \
       || ls $R_DIR{1}"
   )
   zle end-of-line
   zle accept-line
 }
-zle -N _cd_code
-bindkey '^mj' _cd_code
+zle -N _open_project
+bindkey '^mj' _open_project
 
 _present_vimwiki() {
   A_DIR='/Users/suweller/vimwiki/work/diary/'

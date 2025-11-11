@@ -1,4 +1,5 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 local cols sep
 cols=$(( COLUMNS / 3 ))
 sep='{{::}}'

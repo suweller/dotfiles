@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 while out=$(git branch -v "$@" |
   fzf --ansi --no-sort --prompt="[branch] > " --reverse              \

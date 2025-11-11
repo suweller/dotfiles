@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
 black=`tput setaf 0`
 red=`tput setaf 1`
 green=`tput setaf 2`
 reset=`tput sgr0`
 inv=`tput setab 1`
-
 
 usage() {
   echo "usage: git purge"

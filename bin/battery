@@ -30,10 +30,24 @@ main() {
     bat_perc="$(battery_percent)"
 
     local result=""
-    while getopts ":dfi" option; do
+    while getopts ":sbfi" option; do
       case $option in
-        d)
+        s)
           result+="$bat_perc"
+          ;;
+
+        b)
+          local entries=(
+            [12]='▁' [25]='▂' [37]='▃' [50]='▄'
+            [62]='▅' [75]='▆' [87]='▇' [100]='█'
+          )
+          for threshold in ${!entries[@]}; do
+            if (( threshold >= bat_perc ));then
+              result+=${entries[$threshold]}
+              break;
+            fi
+          done
+
           ;;
 
         f)

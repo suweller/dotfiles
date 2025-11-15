@@ -25,18 +25,6 @@ battery_status() {
     esac
 }
 
-first_le() {
-  local target=$1
-  local -n keys=$2
-  local -n values=$3
-  for i in "${!keys[@]}"; do
-    if (( keys[i] <= target )); then
-      echo "${values[i]}"
-      return
-    fi
-  done
-}
-
 main() {
     bat_stat=$(battery_status)
     t="$(battery_percent)"
@@ -49,26 +37,34 @@ main() {
           ;;
 
         b)
-          local k=(100 87 75 62 50 37 25 12)
-          local v=(█ ▇ ▆ ▅ ▄ ▃ ▂ ▁)
-          result+=$(first_le t k v)
+          local v=(▁ ▂ ▃ ▄ ▅ ▆ ▇ █)
+          local n="${#v[@]}"
+          local i=$(( t * n / 101 ))
+          result+="${v[i]}"
           ;;
 
         f)
-          local k=(100 87 83 80 66 62 60 40 37 33 20 16 12)
-          local v=(1 ⅞ ⅚ ⅘ ⅔ ⅝ ⅗ ⅖ ⅜ ⅓ ⅕ ⅙ ⅛)
-          result+=$(first_le t k v)
+          local v=(⅛ ⅙ ⅕ ⅓ ⅜ ⅖ ⅗ ⅝ ⅔ ⅘ ⅚ ⅞ 1)
+          local n="${#v[@]}"
+          local i=$(( t * n / 101 ))
+          result+="${v[i]}"
           ;;
 
         i)
           if $bat_stat; then
-            local k=(100 90 80 70 60 50 40 30 20 10 0)
-            local v=(󰂅 󰂋 󰂊 󰢞 󰂉 󰢝 󰂈 󰂇 󰂆 󰢜 󰢟) # '󱉞'
+            # local v=(󰢟 󰢜 󰂆 󰂇 󰂈 󰢝 󰂉 󰢞 󰂊 󰂋 󰂅)
+            # local n="${#v[@]}"
+            # local i=$(( t * n / 101 ))
+            # # 󱉞
+            # result+="${v[i]}"
+            result+='󰂄'
           else
-            local k=(100 90 80 70 60 50 40 30 20 10 0)
-            local v=(󰁹 󰂂 󰂁 󰂀 󰁿 󰁾 󰁽 󰁼 󰁻 󰁺 󰂎) # [false]='󱉞'
+            # 󱉞
+            local v=(󰂎 󰁺 󰁻 󰁼 󰁽 󰁾 󰁿 󰂀 󰂁 󰂂 󰁹)
+            local n="${#v[@]}"
+            local i=$(( t * n / 101 ))
+            result+="${v[i]}"
           fi
-          result+=$(first_le t k v)
           ;;
 
         \?) # Invalid option

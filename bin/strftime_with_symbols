@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+days_astrological_sign() {
+  local v=(♌ ♋ ♈ ♊ ♐ ♉ ♑)
+  local i=$(( $(printf '%(%w)T\n' -1) ))
+  echo "${v[i]}"
+}
+
+days_kanji() {
+  local v=(㊐ ㊊ ㊋ ㊌ ㊍ ㊎ ㊏)
+  local i=$(( $(printf '%(%w)T\n' -1) ))
+  echo "${v[i]}"
+}
+
+hours_icon() {
+  local v=(󱑖 󱑋 󱑌 󱑍 󱑎 󱑏 󱑐 󱑑 󱑆 󱑇 󱑈 󱑉 󱑊 󱐿 󱑀 󱑁 󱑂 󱑃 󱑄 󱑅 󱑒 󱑓 󱑔 󱑕)
+  local i=$((10#$(printf '%(%H)T\n' -1)))
+  echo "${v[i]}"
+}
+
+hours_quarter() {
+  local v=(◷ ◶ ◵ ◴)
+  local i=$(( $(printf '%(%M)T') / 15 ))
+  echo "${v[i]}"
+}
+
+main() {
+  fmt="$1"
+  case "$fmt" in
+    *%as*) fmt="${fmt//%as/$(days_astrological_sign)}" ;;
+    *%ak*) fmt="${fmt//%ak/$(days_kanji)}" ;;
+  esac
+  case "$fmt" in
+    *%HI*) fmt="${fmt//%HI/$(hours_icon)}" ;;
+  esac
+  case "$fmt" in
+    *%HQ*) fmt="${fmt//%HQ/$(hours_quarter)}" ;;
+  esac
+  printf '%s\n' "$fmt"
+}
+main "$@"

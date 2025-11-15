@@ -31,7 +31,8 @@ _present_vimwiki() {
     --accept-nth=1 \
     --ansi \
     --bind "start,ctrl-r:reload:ls $A_DIR" \
-    --bind="enter:become(echo '$CMD $R_DIR{1}')" \
+    --bind="enter:replace-query+become(echo '$CMD $R_DIR{1}')" \
+    --bind="tab:replace-query" \
     --nth=1 \
     --history="$XDG_DATA_HOME/fzf/history-present_vimwiki" \
     --preview-window="right,70%" \
@@ -42,28 +43,6 @@ _present_vimwiki() {
 }
 zle -N _present_vimwiki
 bindkey '^mp' _present_vimwiki
-
-_tinty_switch() {
-  BUFFER=$(fzf \
-    --accept-nth=1 \
-    --ansi \
-    --bind "start,ctrl-r:reload:tinty list" \
-    --bind="enter:become(echo 'tinty apply {1}')" \
-    --history="$XDG_DATA_HOME/fzf/history-tinty_switch" \
-    --preview-label="$(tinty current)" \
-    --preview-window="right,42" \
-    --preview="paste \
-      <(tinty info $(tinty current) | tail -n +3 | sd '^(.+)  (.+)$' '\$2  \$1') \
-      <(tinty info {} | tail -n +3) \
-      | sd '^\t' '                    \t' \
-      | column -t -s\"\t\"" \
-    --tac \
-  )
-  zle end-of-line
-  zle accept-line
-}
-zle -N _tinty_switch
-bindkey '^mc' _tinty_switch
 
 fzf-bindkey() {
   ( bindkey \

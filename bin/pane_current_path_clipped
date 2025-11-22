@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+current_path=$(tmux display -p "#{pane_current_path}")
+echo "$(basename "$current_path")"

@@ -1,7 +1,13 @@
 # Global settings
 shell = "zsh -c '{}'"
 default-scheme = "base16-mocha"
-preferred-schemes = ["base24-the-hulk", "base24-jellybeans", "base16-github-dark"]
+preferred-schemes = [
+  "base16-github-dark",
+  "base24-jellybeans",
+  "base24-mona-lisa",
+  "base24-red-planet",
+  "base24-the-hulk",
+  ]
 
 [[items]]
 name = "tinted-terminal"

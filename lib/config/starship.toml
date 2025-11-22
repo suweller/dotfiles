@@ -27,7 +27,7 @@ $docker_context\
 $time\
 [ ](fg:#33658A)\
 """
-command_timeout = 10
+command_timeout = 20
 scan_timeout = 0
 
 # Disable the blank line at the start of the prompt
@@ -101,11 +101,11 @@ format = '[ $symbol $branch ]($style)'
 
 [git_status]
 style = "bg:#FF875F"
-modified = "${count}󰷈 "
-untracked = "${count}󱀶 "
-stashed = "${count}󰘓 "
-staged = "${count}󱖫 "
-conflicted = "󱚠 "
+modified = "${count}󰷈"
+untracked = "${count}󱀶"
+stashed = "${count}󰘓"
+staged = "${count}󱖫"
+conflicted = "󱚠"
 ahead = '⇡${count}'
 diverged = '⇕⇡${ahead_count}⇣${behind_count}'
 behind = '⇣${count}'

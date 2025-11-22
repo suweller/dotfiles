@@ -2,10 +2,18 @@
 
 set -euo pipefail
 
+# | Day       | Planet  | UTF | Escape Sequence |
+# | Sunday    | Sun     | ☉   | \u2609          |
+# | Monday    | Moon    | ☽   | \u263D          |
+# | Tuesday   | Mars    | ♂   | \u2642          |
+# | Wednesday | Mercury | ☿   | \u263F          |
+# | Thursday  | Jupiter | ♃   | \u2643          |
+# | Friday    | Venus   | ♀   | \u2640          |
+# | Saturday  | Saturn  | ♄   | \u2644          |
 days_astrological_sign() {
-  local v=(♌ ♋ ♈ ♊ ♐ ♉ ♑)
+  local v=("\u2609" "\u263D" "\u2642" "\u263F" "\u2643" "\u2640" "\u2644")
   local i=$(( $(printf '%(%w)T\n' -1) ))
-  echo "${v[i]}"
+  printf "%b" "${v[i]}"
 }
 
 days_kanji() {
@@ -26,18 +34,15 @@ hours_quarter() {
   echo "${v[i]}"
 }
 
-main() {
-  fmt="$1"
-  case "$fmt" in
-    *%as*) fmt="${fmt//%as/$(days_astrological_sign)}" ;;
-    *%ak*) fmt="${fmt//%ak/$(days_kanji)}" ;;
-  esac
-  case "$fmt" in
-    *%HI*) fmt="${fmt//%HI/$(hours_icon)}" ;;
-  esac
-  case "$fmt" in
-    *%HQ*) fmt="${fmt//%HQ/$(hours_quarter)}" ;;
-  esac
-  printf '%s\n' "$fmt"
-}
-main "$@"
+fmt="$1"
+case "$fmt" in
+  *%as*) fmt="${fmt//%as/$(days_astrological_sign)}" ;;
+  *%ak*) fmt="${fmt//%ak/$(days_kanji)}" ;;
+esac
+case "$fmt" in
+  *%HI*) fmt="${fmt//%HI/$(hours_icon)}" ;;
+esac
+case "$fmt" in
+  *%HQ*) fmt="${fmt//%HQ/$(hours_quarter)}" ;;
+esac
+printf '%s\n' "$fmt"

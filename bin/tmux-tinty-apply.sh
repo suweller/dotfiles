@@ -10,36 +10,24 @@ FZF_DEFAULT_OPTS="\
 
 current_pane=$(tmux display-message -p '#{pane_id}')
 cmd=$(tmux list-panes -F '#{pane_id} #{pane_current_command}' | awk -v p="$current_pane" '$1==p {print $2}')
-export current_pane
-export cmd
-
-preview() {
-  become $1
-  paste \
-    <(tinty info $previous_theme | tail -n +3 | sd '^(.+)  (.+)$' '$2  $1') \
-    <(tinty info $1 | tail -n +3) \
-    | sd '^\t' '                    \t' \
-    | column -t -s"\t"
-}
-export -f preview
-
 become() {
-  tinty apply $1
+  tinty apply "$1"
   # Check if the current pane is Vim/Neovim
   if [ "$cmd" = "vim" ] || [ "$cmd" = "nvim" ]; then
     tmux send-keys -t "$current_pane" Escape ':doautocmd FocusGained' Enter
   fi
 }
-export -f become
 
-export previous_theme=$(tinty current)
-selected_theme=$(fzf \
-  --accept-nth=1 \
-  --bind "start,ctrl-r:reload:$FZF_DEFAULT_COMMAND" \
-  --bind "enter:replace-query+accept" \
-  --preview-label="$(tinty current)" \
-  --preview='bash -c "preview {}"' \
-  --tac \
+previous_theme=$(tinty current)
+
+selected_theme=$(
+  PREVIOUS="$previous_theme" fzf \
+    --accept-nth=1 \
+    --bind "start,ctrl-r:reload:$FZF_DEFAULT_COMMAND" \
+    --bind "enter:replace-query+accept" \
+    --preview-label="$previous_theme" \
+    --preview='tmux-tinty-preview.sh {}' \
+    --tac
 )
 
 # Restore previous theme if cancelled

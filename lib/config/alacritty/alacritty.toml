@@ -1,7 +1,13 @@
 [font]
-size = 30 # Inconsolata Nerd Font Mono
-# size = 24 # Inconsolata Nerd Font Mono
-# size = 42  # ProggyClean Nerd Font Mono
+# family = "Inconsolata Nerd Font Mono"
+# size = 64 # Presenterm
+# size = 36 # McDipSize
+
+# family = "ProggyClean Nerd Font Mono"
+# size = 46 # McDipSize
+
+# family = "FantasqueSansM Nerd Font Mono"
+size = 36 # McDipSize
 
 [font.normal]
 # family = "FantasqueSansM Nerd Font Mono"
@@ -14,13 +20,13 @@ style = "Bold"
 style = "Italic"
 
 [window]
+blur = true
 decorations = "Transparent"
-startup_mode = "SimpleFullscreen"
+decorations_theme_variant = "Dark"
+# dynamic_padding = true
+opacity = 0.7
 resize_increments = true
-
-[colors.primary]
-background = '#181818'
-# background = '#1c1c1c'
+startup_mode = "SimpleFullscreen"
 
 [general]
 import = ["~/.local/state/alacritty/colors.toml"]

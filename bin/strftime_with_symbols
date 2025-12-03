@@ -2,6 +2,24 @@
 
 set -euo pipefail
 
+months_astrological_sign() {
+  md=$(date +%m%d)  # e.g. 0314
+  if   (( md >= 321  && md <= 419 )); then sign="♈" # Aries"
+  elif (( md >= 420  && md <= 520 )); then sign="♉" # Taurus"
+  elif (( md >= 521  && md <= 620 )); then sign="♊" # Gemini"
+  elif (( md >= 621  && md <= 722 )); then sign="♋" # Cancer"
+  elif (( md >= 723  && md <= 822 )); then sign="♌" # Leo"
+  elif (( md >= 823  && md <= 922 )); then sign="♍" # Virgo"
+  elif (( md >= 923  && md <= 1022 )); then sign="♎" # Libra"
+  elif (( md >= 1023 && md <= 1121 )); then sign="♏" # Scorpio"
+  elif (( md >= 1122 && md <= 1221 )); then sign="♐" # Sagittarius"
+  elif (( md >= 1222 || md <= 119 ));  then sign="♑" # Capricorn"
+  elif (( md >= 120  && md <= 218 ));  then sign="♒" # Aquarius"
+  elif (( md >= 219  && md <= 320 ));  then sign="♓" # Pisces"
+  fi
+  echo "$sign"
+}
+
 # | Day       | Planet  | UTF | Escape Sequence |
 # | Sunday    | Sun     | ☉   | \u2609          |
 # | Monday    | Moon    | ☽   | \u263D          |
@@ -11,9 +29,9 @@ set -euo pipefail
 # | Friday    | Venus   | ♀   | \u2640          |
 # | Saturday  | Saturn  | ♄   | \u2644          |
 days_astrological_sign() {
-  local v=("\u2609" "\u263D" "\u2642" "\u263F" "\u2643" "\u2640" "\u2644")
+  local v=(☉ ☽ ♂ ☿ ♃ ♀ ♄)
   local i=$(( $(printf '%(%w)T\n' -1) ))
-  printf "%b" "${v[i]}"
+  printf "${v[i]}"
 }
 
 days_kanji() {
@@ -24,17 +42,25 @@ days_kanji() {
 
 hours_icon() {
   local v=(󱑖 󱑋 󱑌 󱑍 󱑎 󱑏 󱑐 󱑑 󱑆 󱑇 󱑈 󱑉 󱑊 󱐿 󱑀 󱑁 󱑂 󱑃 󱑄 󱑅 󱑒 󱑓 󱑔 󱑕)
-  local i=$((10#$(printf '%(%H)T\n' -1)))
+  local i=$((10#$(printf '%(%-H)T\n' -1)))
   echo "${v[i]}"
 }
 
 hours_quarter() {
   local v=(◷ ◶ ◵ ◴)
-  local i=$(( $(printf '%(%M)T') / 15 ))
+  local i=$(( $(printf '%(%-M)T') / 15 ))
   echo "${v[i]}"
 }
 
+hours_fraction() {
+  local v=(¼ ½ ¾ ⅟)
+  local i=$(( $(printf '%(%-M)T') / 15 ))
+  printf "%b" "${v[i]}"
+}
 fmt="$1"
+case "$fmt" in
+  *%ms*) fmt="${fmt//%ms/$(months_astrological_sign)}" ;;
+esac
 case "$fmt" in
   *%as*) fmt="${fmt//%as/$(days_astrological_sign)}" ;;
   *%ak*) fmt="${fmt//%ak/$(days_kanji)}" ;;
@@ -44,5 +70,8 @@ case "$fmt" in
 esac
 case "$fmt" in
   *%HQ*) fmt="${fmt//%HQ/$(hours_quarter)}" ;;
+esac
+case "$fmt" in
+  *%HF*) fmt="${fmt//%HF/$(hours_fraction)}" ;;
 esac
 printf '%s\n' "$fmt"

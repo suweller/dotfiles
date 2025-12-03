@@ -320,6 +320,8 @@ function! Main()
   let g:tinted_colorspace = 256
   let l:current_theme_name = GetTintyTheme()
   execute "colorscheme " . l:current_theme_name
+  highlight Normal ctermbg=NONE guibg=NONE  " Set background to none
+
   augroup TintyThemeChange
     autocmd!
     autocmd FocusGained * call HandleFocusGained()

@@ -1,4 +1,4 @@
-# Steven Weller's dot files
+# Steven Weller's dotfiles
 
 These are configuration files to set up a system the way I like it.
 Vim-users are likely to find useful stuff in `vimrc`,
@@ -19,7 +19,3 @@ be sure to substitute `id_rsa.pub` with your own.
 
 ## VIM
 
-Vim plugins are handled by (`vim-plug`)[https://github.com/junegunn/vim-plug].
-This plugin is fetched and placed in the correct directory by cloning the repo.
-After its fetched,
-it will launch vim to fetch and install all other plugins.

@@ -23,7 +23,7 @@ _open_project() {
 zle -N _open_project
 bindkey '^mj' _open_project
 
-_present_vimwiki() {
+_open_vimwiki() {
   A_DIR='/Users/suweller/vimwiki/work/diary/'
   R_DIR='~/vimwiki/work/diary/'
   CMD='presenterm --enable-snippet-execution'
@@ -34,15 +34,15 @@ _present_vimwiki() {
     --bind="enter:replace-query+become(echo '$CMD $R_DIR{1}')" \
     --bind="tab:replace-query" \
     --nth=1 \
-    --history="$XDG_DATA_HOME/fzf/history-present_vimwiki" \
+    --history="$XDG_DATA_HOME/fzf/history-open_vimwiki" \
     --preview-window="right,70%" \
     --preview="bat --color=always --language=md --line-range=:30 --style='snip' $R_DIR{1}" \
   )
   zle end-of-line
   zle accept-line
 }
-zle -N _present_vimwiki
-bindkey '^mp' _present_vimwiki
+zle -N _open_vimwiki
+bindkey '^mw' _open_vimwiki
 
 fzf-bindkey() {
   ( bindkey \
@@ -66,10 +66,14 @@ jira() {
 }
 
 zsh-performance() {
-  echo " 󰓅\e[0;32m PLAIN= zsh\e[0;37m"
-  repeat 3 time PLAIN= zsh --interactive -c exit
-  echo "\n 󰾅\e[0;32m zsh\e[0;37m"
-  repeat 3 time zsh --interactive -c exit
+  if (( hyperfine )); then
+    hyperfine --shell=none 'env PLAIN= zsh --interactive -c exit' 'env zsh --interactive -c exit'
+  else
+    echo " 󰓅\e[0;32m PLAIN= zsh\e[0;37m"
+    repeat 3 time PLAIN= zsh --interactive -c exit
+    echo "\n 󰾅\e[0;32m zsh\e[0;37m"
+    repeat 3 time zsh --interactive -c exit
+  fi
   echo "\n 󰾆\e[0;31m Slow?\e[0;37m Run:"
   echo "  ZPROF= zsh --interactive -c exit"
 }

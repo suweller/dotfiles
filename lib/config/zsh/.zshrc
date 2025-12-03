@@ -3,6 +3,12 @@ if [[ -v ZPROF ]]; then
   zmodload zsh/zprof
 fi
 
+if [[ -v PLAIN ]]; then
+  PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
+elif [[ -r "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Make the $path array have unique values.
 typeset -U path
 function add2path() {
@@ -13,16 +19,13 @@ function add2fpath() {
   fpath=("$1" $fpath)
 }
 
-add2fpath "/opt/homebrew/share/zsh/site-functions"
 add2fpath "$XDG_CONFIG_HOME/docker"
-
 add2path "$HOME/.dotfiles/bin"
-add2path "/opt/homebrew/sbin"
-add2path "/opt/homebrew/bin"
-add2path "/opt/workbrew/bin"
 add2path "/sbin"
 add2path "/usr/local/bin"
 add2path "/usr/sbin"
+add2path "/opt/homebrew/sbin"
+add2path "/opt/homebrew/bin"
 
 # Set Options {{{
 setopt append_history
@@ -74,8 +77,8 @@ zstyle ':hist:*' expand-aliases yes
 source "$ZDOTDIR/aliases.zsh"
 source "$ZDOTDIR/functions.zsh"
 
-PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
 if [[ -v PLAIN ]]; then
+  PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
 else
   if [[ -z "$TMUX" ]]; then
     (tmux  -T 256 attach -t default || tmux  -T 256 new-session -s default -c ~/.dotfiles) && exit 0
@@ -87,6 +90,7 @@ else
 
   # zgenom autoupdate
   if ! zgenom saved; then
+    zgenom load 'romkatv/powerlevel10k' powerlevel10k
     zgenom load 'jandamm/zgenom-ext-eval'
     zgenom eval <<-ZSH # {{{
       $(fzf --zsh)
@@ -95,6 +99,7 @@ else
       # bindkey -r '^G'
       $(mise activate zsh)
       $(mise hook-env -s zsh)
+      $(/opt/homebrew/bin/brew shellenv)
 ZSH
 # }}}
     zgenom load 'Aloxaf/fzf-tab'
@@ -104,6 +109,8 @@ ZSH
     zgenom save
     zsh-performance
   fi
+
+  [[ ! -f $XDG_CONFIG_HOME/zsh/.p10k.zsh ]] || source $XDG_CONFIG_HOME/zsh/.p10k.zsh
 fi
 
 # Unset local functions

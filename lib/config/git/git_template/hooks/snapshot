@@ -1,4 +1,5 @@
 #!/bin/sh
 set -e
-mkdir -p ~/.gitshots
-imagesnap -q -w 1 ~/.gitshots/$(date +%s)-$(basename $PWD)-$(git log -1 --format=%H-%s|sed -e 's/ /_/g').jpg
+GITSHOTS_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/gitshots"
+mkdir -p "$GITSHOTS_DIR"
+imagesnap -q -w 1 "$GITSHOTS_DIR/$(date +%s)-$(basename "$PWD")-$(git log -1 --format=%H-%s | sed -e 's/ /_/g').jpg"

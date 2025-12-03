@@ -5,14 +5,14 @@ tmux_stub=$(sed '/AUTO SOLARIZED/q' < ~/.tmux.conf)
 update_theme () {
   SCHEME=$1
   # update TMUX
-  (echo "${tmux_stub}"; cat ~/.dotfiles/lib/vim/bundle/solarized/tmux/tmuxcolors-${SCHEME}.conf) > ~/.tmux.conf
+  (echo "${tmux_stub}"; cat ~/.dotfiles/lib/vim/bundle/solarized/tmux/tmuxcolors-"${SCHEME}".conf) > ~/.tmux.conf
   [[ "${TMUX}" ]] && tmux source-file ~/.tmux.conf &> /dev/null
 }
 
 case $1 in
   light|dark)
-    update_theme $1
-    echo "\ePtmux;\033]9;SetProfile=${SCHEME}\a"
+    update_theme "$1"
+    printf '\ePtmux;\033]9;SetProfile=%s\a' "${SCHEME}"
     ;;
   *)
     echo "try calling me with 'light' or 'dark'"

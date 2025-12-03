@@ -10,3 +10,5 @@ node_modules/
 Thumbs.db
 projections.json
 tags
+
+**/.claude/settings.local.json

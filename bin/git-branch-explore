@@ -5,14 +5,14 @@ while out=$(git branch -v "$@" |
     --print-query --query="$query" --expect=ctrl-m,ctrl-b,ctrl-e,del);
 do
   # Tokenize selection by newline
-  selection=("${(f)out}")
+  mapfile -t selection <<< "$out"
 
-  # Keep the query accross fzf calls
-  query="$selection[1]"
+  # Keep the query across fzf calls
+  query="${selection[0]}"
 
-  branch=$(echo "$selection[3]" | tr -s ' ' | cut -d ' ' -f 2)
+  branch=$(echo "${selection[2]}" | tr -s ' ' | cut -d ' ' -f 2)
 
-  case "$selection[2]" in
+  case "${selection[1]}" in
     # enter or ctrl-m is just a diff
     ctrl-m)
     git show --patience --color=always "$branch" | less -R

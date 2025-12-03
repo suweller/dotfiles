@@ -11,6 +11,7 @@ lib/vim/**
 lib/config/.jira/
 lib/config/btop/
 lib/config/bundle
+lib/config/docker/
 lib/config/fontforge/FontsOpenAtLastQuit
 lib/config/fontforge/prefs
 lib/config/glow/

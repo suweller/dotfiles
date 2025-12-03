@@ -8,8 +8,8 @@ battery_percent() {
         percent=$(linux_acpi percent)
         [ -n "$percent" ] && echo " $percent"
         ;;
-    Darwin) echo $(pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%' | sed 's/%//g') ;;
-    FreeBSD) echo $(apm | sed '8,11d' | grep life | awk '{print $4}') ;;
+    Darwin) pmset -g batt | grep -Eo '[0-9]?[0-9]?[0-9]%' | sed 's/%//g' ;;
+    FreeBSD) apm | sed '8,11d' | grep life | awk '{print $4}' ;;
     esac
 }
 
@@ -72,7 +72,7 @@ main() {
           exit;;
       esac
     done
-    echo $result
+    echo "$result"
   }
 
 main "$@"

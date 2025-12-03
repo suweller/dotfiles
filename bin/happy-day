@@ -3,7 +3,7 @@
 read -p "Run brew cleanup? /yn/i " yn
 set -x
 case $yn in
-  [Yy]* ) brew cleanup; break;;
+  [Yy]* ) brew cleanup;;
   * ) echo "skipping brew cleanup";;
 esac
 brew update && brew upgrade \

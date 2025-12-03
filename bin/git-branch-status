@@ -221,14 +221,14 @@ function GenerateReport # (a_local_branch_name a_remote_branch_name)
   does_local_exist=$(DoesBranchExist $local_branch)
 
   # filter branches per CLI arg
-  [ $branch ] && [ "$branch" != "$local" ] && continue
+  [ $branch ] && [ "$branch" != "$local" ] && return
 
   # filter heads
-  [ "$local" == "HEAD" ] && continue
+  [ "$local" == "HEAD" ] && return
 
   # parse local<->remote sync status
   if (($does_local_exist)) && [ $remote ] ; then
-    status=$(GetStatus) ; (($?)) && continue ;
+    status=$(GetStatus) ; (($?)) && return ;
 
     n_behind=$(echo $status | tr " " "\n" | grep -c '^>')
     n_ahead=$( echo $status | tr " " "\n" | grep -c '^<')
@@ -236,7 +236,7 @@ function GenerateReport # (a_local_branch_name a_remote_branch_name)
     n_total_differences=$(($n_total_differences + $n_differences))
 
     # filter branches by status
-    (($SHOW_ALL_UPSTREAM)) || (($n_differences)) || continue
+    (($SHOW_ALL_UPSTREAM)) || (($n_differences)) || return
 
     # set data for branches with upstream
     local_color=$CDEFAULT
@@ -261,7 +261,7 @@ function GenerateReport # (a_local_branch_name a_remote_branch_name)
     behind_color="$CDEFAULT" ; behind_msg="n/a" ;
     ahead_color="$CDEFAULT" ;  ahead_msg="n/a" ;
     remote_color=$CDEFAULT
-  else continue
+  else return
   fi
 
   # populate lists

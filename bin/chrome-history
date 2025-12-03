@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-local cols sep
 cols=$(( COLUMNS / 3 ))
 sep='{{::}}'
 # Copy History DB to circumvent the lock

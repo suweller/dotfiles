@@ -24,7 +24,7 @@ shift $((OPTIND - 1))
 function countdown {
   local OLD_IFS="${IFS}"
   IFS=":"
-  local ARR=( $1 )
+  read -ra ARR <<< "$1"
   local SECONDS=$((  (ARR[0] * 60 * 60) + (ARR[1] * 60) + ARR[2]  ))
   local START=$(date +%s)
   local END=$((START + SECONDS))

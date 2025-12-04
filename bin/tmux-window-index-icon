@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Display window index as icon, using different icon when multiple panes
+# Usage: tmux-window-index-icon <idx> [pane_count]
+
+one_fill=(󰎡 󰎤 󰎧 󰎪 󰎭 󰎱 󰎳 󰎶 󰎹 󰎼 󰽽)
+two_fill=(󰼏 󰼐 󰼑 󰼒 󰼓 󰼔 󰼕 󰼖 󰼗 󰿪)
+
+idx=${1:0}
+pane_count=${2:-1}
+
+# Use 0-based index for array (window 1 = index 0)
+
+# Clamp to array bounds
+if ((idx < 0)); then idx=0; fi
+if ((idx >= ${#one_fill[@]})); then idx=$((${#one_fill[@]})); fi
+
+if ((pane_count > 1)); then
+  echo "${two_fill[$idx]}"
+else
+  echo "${one_fill[$idx]}"
+fi

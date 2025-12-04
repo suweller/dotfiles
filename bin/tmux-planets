@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+# Display moon phase and planetary retrograde status for tmux status bar
+# Planets ordered by distance from Earth (closest to furthest)
+# Planets colored differently when in retrograde
+
+# Planet symbols: ♀ Venus, ♂ Mars, ☿ Mercury, ♃ Jupiter, ♄ Saturn, ⛢ Uranus, ♆ Neptune
+# Using color08 for retrograde (dimmed), default fg for direct
+
+today=$(date +%Y%m%d)
+
+# Calculate moon phase (0-27 for 28 phases)
+moon_phase() {
+  local known_new=20000106  # Known new moon: Jan 6, 2000
+  local synodic=2953        # Synodic month in hundredths of days (29.53 * 100)
+
+  # Calculate days since known new moon
+  local days=$(( ($(date -j -f %Y%m%d "$today" +%s) - $(date -j -f %Y%m%d "$known_new" +%s)) / 86400 ))
+
+  # Days into current cycle (multiply by 100 to match synodic scale)
+  local cycle_pos=$(( (days * 100) % synodic ))
+
+  # Convert to phase (0-27)
+  local phase=$(( cycle_pos * 28 / synodic ))
+
+  # Nerd Font weather-moon icons (E38D-E3A8) in lunar cycle order
+  # 0: new, 1-6: waxing crescent, 7: first quarter, 8-13: waxing gibbous,
+  # 14: full, 15-20: waning gibbous, 21: third quarter, 22-27: waning crescent
+  local symbols=(
+                 
+                 
+  )
+  echo "${symbols[$phase]}"
+}
+
+# Check if date is within range (inclusive)
+in_range() {
+  local start=$1 end=$2
+  [[ $today -ge $start && $today -le $end ]]
+}
+
+# Retrograde periods 2025-2027
+mercury_retro() {
+  in_range 20250315 20250407 || \
+  in_range 20250718 20250811 || \
+  in_range 20251109 20251129 || \
+  in_range 20260226 20260320 || \
+  in_range 20260629 20260723 || \
+  in_range 20261023 20261113
+}
+
+venus_retro() {
+  in_range 20250301 20250412 || \
+  in_range 20261003 20261113
+}
+
+mars_retro() {
+  in_range 20241206 20250223
+}
+
+jupiter_retro() {
+  in_range 20251111 20260310
+}
+
+saturn_retro() {
+  in_range 20250712 20251127 || \
+  in_range 20260726 20261210
+}
+
+uranus_retro() {
+  in_range 20250906 20260203 || \
+  in_range 20260910 20270208
+}
+
+neptune_retro() {
+  in_range 20250704 20251210 || \
+  in_range 20260707 20261212
+}
+
+# Output with colors
+# Direct: default color, Retrograde: color08 (dimmed)
+# Order: Moon, then planets by distance from Earth (Venus, Mars, Mercury, Jupiter, Saturn, Uranus, Neptune)
+output=""
+
+# Moon phase (always first, closest to Earth)
+output+="$(moon_phase) "
+
+if venus_retro; then
+  output+="#[fg=color08]♀ #[fg=default]"
+else
+  output+="♀ "
+fi
+
+if mars_retro; then
+  output+="#[fg=color08]♂ #[fg=default]"
+else
+  output+="♂ "
+fi
+
+if mercury_retro; then
+  output+="#[fg=color08]☿ #[fg=default]"
+else
+  output+="☿ "
+fi
+
+if jupiter_retro; then
+  output+="#[fg=color08]♃ #[fg=default]"
+else
+  output+="♃ "
+fi
+
+if saturn_retro; then
+  output+="#[fg=color08]♄ #[fg=default]"
+else
+  output+="♄ "
+fi
+
+if uranus_retro; then
+  output+="#[fg=color08]⛢ #[fg=default]"
+else
+  output+="⛢ "
+fi
+
+if neptune_retro; then
+  output+="#[fg=color08]♆ #[fg=default]"
+else
+  output+="♆"
+fi
+
+echo "$output"

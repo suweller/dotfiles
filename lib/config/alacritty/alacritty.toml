@@ -20,11 +20,11 @@ style = "Bold"
 style = "Italic"
 
 [window]
-blur = true
+blur = false
 decorations = "Transparent"
 decorations_theme_variant = "Dark"
 # dynamic_padding = true
-opacity = 0.7
+opacity = 0.97
 resize_increments = true
 startup_mode = "SimpleFullscreen"
 

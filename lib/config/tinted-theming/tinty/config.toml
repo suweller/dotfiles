@@ -35,7 +35,7 @@ name = "tinted-tmux"
 path = "https://github.com/tinted-theming/tinted-tmux"
 # Check if tmux is in use and if it is, reload the config file
 hooks = ["tmux source-file $XDG_CONFIG_HOME/tmux/tmux.conf"]
-hook = "tmux run 2> /dev/null && tmux source-file %f"
+hook = "tmux run 2> /dev/null && tmux source-file %f && tmux set -g status-style bg=default && tmux set -g window-style bg=default && tmux set -g window-active-style bg=default"
 themes-dir = "colors"
 
 [[items]]

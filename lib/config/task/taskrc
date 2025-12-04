@@ -1,6 +1,6 @@
 data.location=~/Dropbox/tasks
 news.version=3.4.1
-include /opt/homebrew/Cellar/task/3.4.1/share/doc/task/rc/dark-16.theme
+include /opt/homebrew/opt/task/share/doc/task/rc/dark-16.theme
 
 uda.reviewed.type=date
 uda.reviewed.label=Reviewed

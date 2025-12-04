@@ -1,0 +1,4 @@
+jira_api_base_url: 'https://fugamusic.atlassian.net'
+jira_api_token: 'ATATT3xFfGF0J3f8u2YlFNNN0BNm3ZMPYzId5-XV0sl2PLIv2ipPiXOkG3oFGWjeViz2Px_fM4T-_5cZ_R3W8oJR_0sYC_BONStEWU5hcZG7hreRirDEmBFRACmM8Bj2d0ncEI270maN8wbT1DGUlsEWFPzCAVlC_n1Bp02PqOuXn6pL1mH119I=81FAF29E'
+jira_api_username: 'steven.weller@fuga.com'
+theme: 'textual-ansi'

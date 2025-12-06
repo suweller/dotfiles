@@ -2,15 +2,44 @@
 # Display moon phase and planetary retrograde status for tmux status bar
 # Planets ordered by distance from Earth (closest to furthest)
 # Planets colored differently when in retrograde
+#
+# Usage: tmux-planets [TIMESTAMP]
+#   TIMESTAMP: Optional. Either YYYYMMDD format or Unix timestamp.
+#              Defaults to current date if not provided.
+#
+# Examples:
+#   tmux-planets              # Current date
+#   tmux-planets 20250315     # March 15, 2025
+#   tmux-planets 1741996800   # Unix timestamp
 
-# Planet symbols: ♀ Venus, ♂ Mars, ☿ Mercury, ♃ Jupiter, ♄ Saturn, ⛢ Uranus, ♆ Neptune
+# Planet symbols:
+#   ♀ Venus
+#   ♂ Mars
+#   ☿ Mercury
+#   ♃ Jupiter
+#   ♄ Saturn
+#   ⛢ Uranus
+#   ♆ Neptune
 # Using color08 for retrograde (dimmed), default fg for direct
 
-today=$(date +%Y%m%d)
+if [[ -n "$1" ]]; then
+  if [[ "$1" =~ ^[0-9]{8}$ ]]; then
+    # YYYYMMDD format
+    today="$1"
+  elif [[ "$1" =~ ^[0-9]+$ ]]; then
+    # Unix timestamp
+    today=$(date -r "$1" +%Y%m%d)
+  else
+    echo "Error: Invalid timestamp format. Use YYYYMMDD or Unix timestamp." >&2
+    exit 1
+  fi
+else
+  today=$(date +%Y%m%d)
+fi
 
 # Calculate moon phase (0-27 for 28 phases)
 moon_phase() {
-  local known_new=20000106  # Known new moon: Jan 6, 2000
+  local known_new=20251119  # Reference: 2025-11-20 ~07:00 UTC, offset for phase alignment
   local synodic=2953        # Synodic month in hundredths of days (29.53 * 100)
 
   # Calculate days since known new moon
@@ -121,7 +150,7 @@ else
 fi
 
 if neptune_retro; then
-  output+="#[fg=color08]♆ #[fg=default]"
+  output+="#[fg=color08]♆#[fg=default]"
 else
   output+="♆"
 fi

@@ -219,7 +219,7 @@ endfunction
 command! UnicodeFzF call fzf#run(fzf#wrap({
       \ 'source': 'unicode-list-fzf',
       \ 'sink': function('s:unicode_sink'),
-      \ 'options': ['-i', '--border-label=Unicode + Nerd Fonts', '--reverse', '--style=minimal'],
+      \ 'options': ['-i', '--border-label=Unicode + Nerd Fonts', '--reverse', '--style=minimal', '--tiebreak=index'],
       \ }))
 
 nnoremap <C-F>c :Commands<CR>

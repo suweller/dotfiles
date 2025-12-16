@@ -211,6 +211,17 @@ command! -bang -nargs=* GGrep
     \   'git grep --line-number '.shellescape(<q-args>), 0,
     \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
 
+function! s:unicode_sink(line)
+  let char = split(a:line, "\t")[0]
+  execute "normal! a" . char
+endfunction
+
+command! UnicodeFzF call fzf#run(fzf#wrap({
+      \ 'source': 'unicode-list-fzf',
+      \ 'sink': function('s:unicode_sink'),
+      \ 'options': ['-i', '--border-label=Unicode + Nerd Fonts', '--reverse', '--style=minimal'],
+      \ }))
+
 nnoremap <C-F>c :Commands<CR>
 nnoremap <C-F>l :Commits<CR>
 nnoremap <C-F>d :BCommits<CR>
@@ -219,7 +230,7 @@ nnoremap <C-F>t :Tags<CR>
 nnoremap <C-P> :FZFiles<CR>
 
 nnoremap <C-T> :Buffers<CR>
-nnoremap <c-x><c-i> :NerdfontsFzF<CR>
+nnoremap <c-x><c-u> :UnicodeFzF<CR>
 
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
@@ -476,7 +487,6 @@ nnoremap <LEADER>bx :tabe ~/Dropbox<CR>
 nnoremap <LEADER>vi :tabe ~/.config/vim/vimrc<CR>
 nnoremap <LEADER>tm :tabe ~/.config/tmux/tmux.conf<CR>
 nnoremap <LEADER>zh :tabe ~/.config/zsh/.zshrc<CR>
-nnoremap <LEADER>nf :NerdFontsFzF<CR>
 
 nnoremap <LEADER>lcd :lcd %:p:h<CR>
 nnoremap <LEADER>cd :cd %:p:h<CR>

@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+# Combined Unicode + Nerd Font character list for fzf selection
+# Downloads UnicodeData.txt on first use, extracts Nerd Fonts from vim plugin
+
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/unicode"
+UNICODE_DATA="$CACHE_DIR/UnicodeData.txt"
+UNICODE_LIST="$CACHE_DIR/unicode-list.txt"
+NERD_LIST="$CACHE_DIR/nerd-list.txt"
+NERD_PLUGIN="$HOME/.config/vim/plugged/fzf-vim-nerdpicker/plugin/fzf-vim-nerdpicker.vim"
+
+mkdir -p "$CACHE_DIR"
+
+# Download Unicode data if not present
+if [[ ! -f "$UNICODE_DATA" ]]; then
+  curl -sL "https://www.unicode.org/Public/UNIDATA/UnicodeData.txt" -o "$UNICODE_DATA"
+fi
+
+# Generate Unicode list if not present or data file is newer
+if [[ ! -f "$UNICODE_LIST" || "$UNICODE_DATA" -nt "$UNICODE_LIST" ]]; then
+  while IFS=';' read -r codepoint name rest; do
+    [[ "$name" == "<control>" ]] && continue
+    [[ "$name" == "<"*">" ]] && continue
+
+    dec=$((16#$codepoint))
+    ((dec >= 0xD800 && dec <= 0xDFFF)) && continue
+    ((dec > 0x10FFFF)) && continue
+
+    if ((dec < 0x80)); then
+      char=$(printf "\\x$(printf '%02x' "$dec")")
+    else
+      char=$(printf "\U$(printf '%08X' "$dec")")
+    fi
+
+    printf '%s\t%s\t%s\tUTF-8\n' "$char" "$codepoint" "$name"
+  done < "$UNICODE_DATA" > "$UNICODE_LIST"
+fi
+
+# Generate Nerd Font list if not present or plugin is newer
+if [[ -f "$NERD_PLUGIN" && ( ! -f "$NERD_LIST" || "$NERD_PLUGIN" -nt "$NERD_LIST" ) ]]; then
+  awk '
+    /"[a-z].*": \{/ {
+      match($0, /"[^"]+":/)
+      name = substr($0, RSTART+1, RLENGTH-3)
+      gsub(/-/, " ", name)
+      gsub(/_/, " ", name)
+      name = toupper(name)
+    }
+    /"char":/ {
+      match($0, /"char": "[^"]*"/)
+      char = substr($0, RSTART+9, RLENGTH-10)
+    }
+    /"code":/ {
+      match($0, /"code": "[^"]*"/)
+      code = substr($0, RSTART+9, RLENGTH-10)
+      code = toupper(code)
+    }
+    /\},/ && char && code && name {
+      printf "%s\t%s\t%s\tNerd\n", char, code, name
+      char = ""; code = ""; name = ""
+    }
+  ' "$NERD_PLUGIN" > "$NERD_LIST"
+fi
+
+# Output UTF-8 first (preferred), then Nerd Fonts
+cat "$UNICODE_LIST"
+[[ -f "$NERD_LIST" ]] && cat "$NERD_LIST"

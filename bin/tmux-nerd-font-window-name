@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+
+# tmux-nerd-font-window-name - Display nerd font icons for tmux window names
+# Improvements: XDG support, caching, case-insensitive lookup
+
+NAME="$1"
+PANES="${2:-1}"
+ICON_ONLY="${3:-}"  # Pass "icon-only" to skip show-name logic
+PLUGIN_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins/tmux-nerd-font-window-name"
+DEFAULT_CONFIG="$PLUGIN_DIR/bin/defaults.yml"
+USER_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux-nerd-font-window-name.yml"
+FALLBACK_DEFAULT="?"
+
+# Normalize name to lowercase for case-insensitive matching
+NAME_LOWER="${NAME,,}"
+
+# Check if cached config exists (set by plugin loader)
+if [[ -n "$TMUX_NERD_FONT_ICONS" ]]; then
+  # Use cached config from environment (all keys are lowercase)
+  get_cached_icon() {
+    local name_lower="$1"
+    local icon=""
+    if [[ "$TMUX_NERD_FONT_ICONS" == *"|${name_lower}="* ]]; then
+      icon="${TMUX_NERD_FONT_ICONS#*|${name_lower}=}"
+      icon="${icon%%|*}"
+    fi
+    echo "$icon"
+  }
+
+  ICON="$(get_cached_icon "$NAME_LOWER")"
+  FALLBACK_ICON="${TMUX_NERD_FONT_FALLBACK:-$FALLBACK_DEFAULT}"
+  MULTI_PANE_ICON="${TMUX_NERD_FONT_MULTI_PANE:-}"
+  SHOW_NAME="${TMUX_NERD_FONT_SHOW_NAME:-false}"
+  ICON_POSITION="${TMUX_NERD_FONT_ICON_POSITION:-left}"
+
+else
+  # Check if yq is available for non-cached lookups
+  if ! command -v yq >/dev/null 2>&1; then
+    echo "$NAME ⚠︎ yq missing"
+    exit 1
+  fi
+
+  # Use yq for config lookup (slower, but works without cache)
+  get_config_value() {
+    local key="$1"
+    local value=""
+    if [[ -f "$USER_CONFIG" ]]; then
+      value="$(yq -r "$key" "$USER_CONFIG" 2>/dev/null)"
+      if [[ "$value" == "null" || -z "$value" ]]; then
+        value="$(yq -r "$key" "$DEFAULT_CONFIG" 2>/dev/null)"
+      fi
+    else
+      value="$(yq -r "$key" "$DEFAULT_CONFIG" 2>/dev/null)"
+    fi
+    echo "$value"
+  }
+
+  # Case-insensitive lookup using lowercase name
+  ICON="$(get_config_value ".icons[\"$NAME_LOWER\"]")"
+
+  FALLBACK_ICON="$(get_config_value '.config["fallback-icon"]')"
+  MULTI_PANE_ICON="$(get_config_value '.config["multi-pane-icon"]')"
+  SHOW_NAME="$(get_config_value '.config["show-name"]')"
+  ICON_POSITION="$(get_config_value '.config["icon-position"]')"
+fi
+
+# Apply fallback if no icon found
+if [[ -z "$ICON" || "$ICON" == "null" ]]; then
+  ICON="${FALLBACK_ICON:-$FALLBACK_DEFAULT}"
+fi
+
+# Add multi-pane indicator
+if [[ "$PANES" -gt 1 && -n "$MULTI_PANE_ICON" && "$MULTI_PANE_ICON" != "null" ]]; then
+  ICON="${MULTI_PANE_ICON}${ICON}"
+fi
+
+# Add window name if configured (skip if icon-only mode)
+if [[ "$ICON_ONLY" != "icon-only" && "$SHOW_NAME" == "true" ]]; then
+  if [[ "$ICON_POSITION" == "right" ]]; then
+    ICON="$NAME $ICON"
+  else
+    ICON="$ICON $NAME"
+  fi
+fi
+
+echo "$ICON"

@@ -21,11 +21,13 @@ style = "Italic"
 
 [window]
 blur = false
+# decorations = "Full"
 decorations = "Transparent"
 decorations_theme_variant = "Dark"
 # dynamic_padding = true
-opacity = 0.97
+# opacity = 0.75
 resize_increments = true
+# startup_mode = "Fullscreen"
 startup_mode = "SimpleFullscreen"
 
 [general]

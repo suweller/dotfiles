@@ -37,6 +37,16 @@ else
   today=$(date +%Y%m%d)
 fi
 
+# Cache mechanism - output only changes with date
+cache_file="${TMPDIR:-/tmp}/tmux-planets-cache"
+if [[ -f "$cache_file" ]]; then
+  read -r cached_date cached_output < "$cache_file"
+  if [[ "$cached_date" == "$today" ]]; then
+    echo "$cached_output"
+    exit 0
+  fi
+fi
+
 # Calculate moon phase (0-27 for 28 phases)
 moon_phase() {
   local known_new=20251119  # Reference: 2025-11-20 ~07:00 UTC, offset for phase alignment
@@ -154,5 +164,8 @@ if neptune_retro; then
 else
   output+="♆"
 fi
+
+# Save to cache
+echo "$today $output" > "$cache_file"
 
 echo "$output"

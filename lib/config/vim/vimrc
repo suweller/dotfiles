@@ -244,7 +244,6 @@ imap <c-x><c-b> <plug>(fzf-complete-buffer-line)
 
 " }}}
 Plug 'tpope/vim-vinegar' " Util: netrw {{{
-nmap _ <plug>VinegarUp
 " }}}
 Plug 'w0rp/ale' " Util: Code lint {{{
 let g:ale_lint_on_enter = 0

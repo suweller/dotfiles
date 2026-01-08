@@ -597,7 +597,7 @@ function! OpenURL(url)
 endfunction
 " }}}
 
-" {{{ Search in Repo with 
+" {{{ Search in Repo with
 command! -bang -nargs=* Rg
       \ call fzf#vim#grep(
       \   "rg --ignore-file=~/.ignore --no-require-git --column --line-number --hidden --ignore-case --no-heading --color=always ".shellescape(<q-args>), 1,
@@ -605,4 +605,38 @@ command! -bang -nargs=* Rg
       \           : fzf#vim#with_preview({'options': '--delimiter : --nth 4..'}, 'right:50%:hidden', '?'),
       \   <bang>0)
 nnoremap <C-S> :Rg<Cr>
+" }}}
+
+" {{{ Task Management - Convert text to task (operator)
+nnoremap <silent> t :set operatorfunc=<SID>TaskOperator<CR>g@
+vnoremap <silent> t :<C-U>call <SID>TaskOperator(visualmode())<CR>
+
+function! s:TaskOperator(type)
+    let saved_unnamed_register = @@
+
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'V'
+        normal! `<V`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    elseif a:type ==# 'line'
+        normal! `[V`]y
+    else
+        return
+    endif
+
+    " Clean up the text (remove leading/trailing whitespace and newlines)
+    let task_text = substitute(@@, '^\s\+\|\s\+$', '', 'g')
+    let task_text = substitute(task_text, '\n', ' ', 'g')
+    let task_text = substitute(task_text, '\s\+', ' ', 'g')
+
+    " Add the task
+    let output = system('task add ' . shellescape(task_text))
+
+    " Show feedback
+    echomsg 'Task added: ' . task_text
+
+    let @@ = saved_unnamed_register
+endfunction
 " }}}

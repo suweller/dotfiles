@@ -2,6 +2,21 @@ data.location=~/Dropbox/tasks
 news.version=3.4.1
 include /opt/homebrew/opt/task/share/doc/task/rc/dark-16.theme
 
+# ============================================================================
+# TASK DESCRIPTION CONVENTION
+# ============================================================================
+# ALL tasks MUST be written in PAST TENSE
+# Completing a task means affirming "yes, this happened" (true/false)
+#
+# Examples:
+#   CORRECT: "Learned vim operator t2j"
+#   CORRECT: "Fixed the authentication bug"
+#   CORRECT: "Reviewed pull request #123"
+#   WRONG:   "Learn vim operator t2j"
+#   WRONG:   "Fix the authentication bug"
+#   WRONG:   "Review pull request #123"
+# ============================================================================
+
 uda.reviewed.type=date
 uda.reviewed.label=Reviewed
 report._reviewed.columns=uuid
@@ -29,3 +44,49 @@ context.work.write=+work
 context.zouk.read=+zouk
 context.zouk.write=+zouk
 
+# ============================================================================
+# Task Planning System Configuration
+# ============================================================================
+
+# User Defined Attributes for planning system
+uda.review_type.type=string
+uda.review_type.label=Review Type
+uda.review_type.values=daily,weekly,monthly,yearly
+
+# Custom Reports for Planning
+
+# Today: Tasks due today
+report.today.description=Tasks due today
+report.today.columns=id,start.age,priority,description.count,tags,urgency
+report.today.labels=ID,Active,P,Description,Tags,Urg
+report.today.sort=urgency-
+report.today.filter=status:pending due:today
+
+# This Week: Tasks due this week
+report.thisweek.description=Tasks due this week
+report.thisweek.columns=id,due.relative,priority,description.count,tags,urgency
+report.thisweek.labels=ID,Due,P,Description,Tags,Urg
+report.thisweek.sort=due+,urgency-
+report.thisweek.filter=status:pending due.before:eow+1d
+
+# Stale: Old tasks needing review (>30 days)
+report.stale.description=Old tasks needing review
+report.stale.columns=id,entry.age,priority,description.count,tags
+report.stale.labels=ID,Age,P,Description,Tags
+report.stale.sort=entry+
+report.stale.filter=status:pending entry.before:today-30d
+
+# Goals: Yearly and monthly goals
+report.goals.description=Goals and major initiatives
+report.goals.columns=id,description,tags,due.relative
+report.goals.labels=ID,Goal,Tags,Due
+report.goals.sort=due+
+report.goals.filter=status:pending (+yearly_goal or +monthly_goal)
+
+# Urgency Coefficients - Tweaked for planning system
+urgency.uda.priority.H.coefficient=6.0
+urgency.due.coefficient=12.0
+urgency.blocking.coefficient=8.0
+urgency.age.coefficient=2.0
+
+context=home

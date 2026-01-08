@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+# Voice dictation for Claude Code
+# Records, transcribes, and either copies to clipboard or saves to file
+# Usage: voice-to-claude [output-file]
+
+set -euo pipefail
+
+VOICE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/voice"
+mkdir -p "$VOICE_DIR"
+TEMP_AUDIO="$VOICE_DIR/claude-$(date +%Y%m%d-%H%M%S).wav"
+OUTPUT_FILE="${1:-}"
+
+echo "🎙️  Voice to Claude"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "Speak your message for Claude..."
+echo "Press Ctrl+C when done."
+echo ""
+
+# Record audio
+if ! voice-record "$TEMP_AUDIO" >/dev/null 2>&1; then
+  echo "❌ Recording failed"
+  exit 1
+fi
+
+echo ""
+echo "🔄 Transcribing..."
+
+# Transcribe with base model for better accuracy
+TRANSCRIPTION=$(voice-transcribe "$TEMP_AUDIO" base 2>/dev/null)
+
+if [[ -z "$TRANSCRIPTION" ]]; then
+  echo "❌ Transcription failed or empty"
+  rm -f "$TEMP_AUDIO"
+  exit 1
+fi
+
+echo ""
+echo "📝 Transcribed:"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "$TRANSCRIPTION"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo ""
+
+# If output file specified, save there
+if [[ -n "$OUTPUT_FILE" ]]; then
+  echo "$TRANSCRIPTION" > "$OUTPUT_FILE"
+  echo "✅ Saved to: $OUTPUT_FILE"
+  echo "   Use with: claude -i $OUTPUT_FILE"
+  rm -f "$TEMP_AUDIO"
+  exit 0
+fi
+
+# Otherwise, copy to clipboard and show usage
+if command -v pbcopy &> /dev/null; then
+  echo "$TRANSCRIPTION" | pbcopy
+  echo "✅ Copied to clipboard!"
+  echo ""
+  echo "Paste into Claude Code with Cmd+V or:"
+  echo "  claude 'your context here' \"\$(pbpaste)\""
+elif command -v xclip &> /dev/null; then
+  echo "$TRANSCRIPTION" | xclip -selection clipboard
+  echo "✅ Copied to clipboard!"
+else
+  echo "📋 No clipboard tool found. Printing transcription:"
+  echo ""
+  echo "$TRANSCRIPTION"
+fi
+
+rm -f "$TEMP_AUDIO"

@@ -1,0 +1,74 @@
+#!/usr/bin/env zsh
+# Monthly planning - review monthly goals and plan major initiatives
+
+set -euo pipefail
+
+clear
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  MONTHLY PLANNING - $(date '+%B %Y')"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo
+
+# Last month summary
+LAST_MONTH_COMPLETED=$(task end.after:som-1mo end.before:som completed count 2>/dev/null || echo 0)
+echo "Last month completed: $LAST_MONTH_COMPLETED tasks"
+echo
+
+echo "━━━ Last Month's Highlights ━━━"
+task end.after:som-1mo end.before:som completed 2>/dev/null | head -15 || echo "No tasks completed last month"
+
+echo
+read -k 1 "?Continue to monthly planning? [Y/n] "
+echo
+[[ $REPLY =~ ^[Nn]$ ]] && exit 0
+
+# Current month planning by context
+for CONTEXT in home work zouk; do
+  clear
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "  MONTHLY PLAN: $CONTEXT"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+  task context "$CONTEXT" >/dev/null 2>&1
+
+  echo
+  echo "━━━ Due This Month ━━━"
+  task due.after:today due.before:eom+1d 2>/dev/null || echo "No tasks due this month"
+
+  echo
+  echo "━━━ High Priority ━━━"
+  task priority:H status:pending 2>/dev/null || echo "No high priority tasks"
+
+  echo
+  echo "━━━ Planning Questions ━━━"
+  echo "  • What are this month's 3 major goals for $CONTEXT?"
+  echo "  • What projects need to be started?"
+  echo "  • What habits or routines to establish?"
+  echo "  • What's blocking progress?"
+  echo
+
+  read -k 1 "?Add monthly goals for $CONTEXT? [Y/n] "
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+    echo
+    echo "Add monthly goals (Ctrl+C when done):"
+    while true; do
+      read "?Monthly goal: " GOAL
+      [[ -z "$GOAL" ]] && break
+      task add "$GOAL" +$CONTEXT +monthly_goal due:eom
+    done
+  fi
+
+  read -k 1 "?Continue to next context? [Y/n] "
+  echo
+  [[ $REPLY =~ ^[Nn]$ ]] && break
+done
+
+# Reset context
+task context none >/dev/null 2>&1
+
+# Record planning completion
+task add "Monthly planning completed" +review +monthly done:$(date '+%Y-%m-%d') >/dev/null 2>&1
+
+echo
+echo "✓ Monthly planning complete! 📅"

@@ -1,0 +1,61 @@
+#!/usr/bin/env zsh
+# Daily planning routine - review today's tasks and set priorities
+
+set -euo pipefail
+
+WIDTH=$((COLUMNS - 4))
+
+clear
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  DAILY PLANNING - $(date '+%A, %B %d, %Y')"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo
+
+# Show current context
+CURRENT_CONTEXT=$(task _get rc.context 2>/dev/null || echo "none")
+echo "Current context: $CURRENT_CONTEXT"
+echo
+
+# Select planning context
+echo "Which area to plan?"
+PLAN_CONTEXT=$(printf "home\nwork\nzouk\nall" | fzf \
+  --prompt="Plan context: " \
+  --height=7 \
+  --border \
+  --border-label=" Daily Planning ")
+
+# Set context if not "all"
+if [[ "$PLAN_CONTEXT" != "all" ]]; then
+  task context "$PLAN_CONTEXT" >/dev/null 2>&1
+fi
+
+echo
+echo "━━━ Tasks Due Today ━━━"
+task due:today 2>/dev/null || echo "No tasks due today"
+
+echo
+echo "━━━ Overdue Tasks ━━━"
+task +OVERDUE 2>/dev/null || echo "No overdue tasks"
+
+echo
+echo "━━━ This Week ━━━"
+task due.before:eow+1d 2>/dev/null || echo "No tasks due this week"
+
+echo
+echo "━━━ Actions ━━━"
+echo "1. Set priorities for today (mark with priority:H)"
+echo "2. Defer tasks if needed (modify due:tomorrow, due:eow, etc.)"
+echo "3. Break down large tasks"
+echo
+
+read -k 1 "?Open interactive task manager? [Y/n] "
+echo
+if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+  tw
+fi
+
+# Record that daily planning was done
+task add "Daily planning completed" +review +daily done:$(date '+%Y-%m-%d') >/dev/null 2>&1
+
+echo
+echo "✓ Daily planning complete. Make today count!"

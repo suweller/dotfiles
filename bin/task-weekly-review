@@ -1,0 +1,108 @@
+#!/usr/bin/env zsh
+# Weekly review - comprehensive review of all active work
+
+set -euo pipefail
+
+clear
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  WEEKLY REVIEW - Week of $(date '+%B %d, %Y')"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo
+
+# Summary statistics
+echo "━━━ This Week's Summary ━━━"
+echo
+COMPLETED_WEEK=$(task end.after:today-7d completed count 2>/dev/null || echo 0)
+ADDED_WEEK=$(task entry.after:today-7d count 2>/dev/null || echo 0)
+PENDING=$(task status:pending count 2>/dev/null || echo 0)
+
+echo "Tasks completed: $COMPLETED_WEEK"
+echo "Tasks added: $ADDED_WEEK"
+echo "Currently pending: $PENDING"
+echo
+
+echo "━━━ Completed This Week ━━━"
+task end.after:today-7d completed 2>/dev/null | head -20 || echo "No tasks completed this week"
+
+echo
+read -k 1 "?Continue to review by context? [Y/n] "
+echo
+[[ $REPLY =~ ^[Nn]$ ]] && exit 0
+
+# Review each context
+for CONTEXT in home work zouk; do
+  clear
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "  CONTEXT: $CONTEXT"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+  task context "$CONTEXT" >/dev/null 2>&1
+
+  echo
+  echo "━━━ All Pending Tasks ━━━"
+  task status:pending 2>/dev/null || echo "No pending tasks"
+
+  echo
+  echo "━━━ Old Tasks (>30 days) ━━━"
+  task status:pending entry.before:today-30d 2>/dev/null || echo "No old tasks"
+
+  echo
+  echo "━━━ Waiting/Blocked ━━━"
+  task status:waiting 2>/dev/null || echo "No blocked tasks"
+
+  echo
+  echo "━━━ Review Checklist ━━━"
+  echo "  [ ] Complete tasks that are done"
+  echo "  [ ] Defer/delete stale tasks (>30 days old)"
+  echo "  [ ] Unblock waiting tasks"
+  echo "  [ ] Set due dates for important items"
+  echo "  [ ] Break down large tasks"
+  echo "  [ ] Set priorities for next week"
+  echo
+
+  read -k 1 "?Open task manager for $CONTEXT? [Y/n] "
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+    tw
+  fi
+
+  read -k 1 "?Continue to next context? [Y/n] "
+  echo
+  [[ $REPLY =~ ^[Nn]$ ]] && break
+done
+
+# Reset context
+task context none >/dev/null 2>&1
+
+# Next week planning
+clear
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  PLAN NEXT WEEK"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo
+
+echo "━━━ Due Next Week ━━━"
+task due.after:today due.before:eow+8d 2>/dev/null || echo "No tasks due next week"
+
+echo
+echo "━━━ High Priority Items ━━━"
+task priority:H status:pending 2>/dev/null || echo "No high priority tasks"
+
+echo
+echo "Plan your week:"
+echo "  • What are the 3 most important outcomes?"
+echo "  • What needs to be scheduled?"
+echo "  • What can be delegated or deferred?"
+echo
+
+read -k 1 "?Add next week's priorities now? [Y/n] "
+echo
+if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+  tw
+fi
+
+# Record review completion
+task add "Weekly review completed" +review +weekly done:$(date '+%Y-%m-%d') >/dev/null 2>&1
+
+echo
+echo "✓ Weekly review complete! Ready for a great week! 🚀"

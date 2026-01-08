@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Records audio from the default microphone until interrupted
+# Usage: voice-record [output-file]
+# If no output file is specified, creates a temporary file
+
+set -euo pipefail
+
+OUTPUT_FILE="${1:-$(mktemp /tmp/voice-XXXXXX.wav)}"
+VOICE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/voice"
+mkdir -p "$VOICE_DIR"
+
+# If no argument provided, use timestamped file in voice dir
+if [[ $# -eq 0 ]]; then
+  OUTPUT_FILE="$VOICE_DIR/recording-$(date +%Y%m%d-%H%M%S).wav"
+fi
+
+echo "🎙️  Recording to: $OUTPUT_FILE"
+echo "Press Ctrl+C when done speaking..."
+echo ""
+
+# Record with sox: 16kHz, mono, wav format (required by whisper)
+# -q: quiet mode
+# -d: default audio device
+# Note: Ctrl+C (SIGINT) to stop recording is expected, not an error
+sox -q -d -r 16000 -c 1 "$OUTPUT_FILE" 2>/dev/null
+EXIT_CODE=$?
+
+# Check if recording was created successfully
+# Exit codes: 0 = normal, 130 = SIGINT (Ctrl+C), 2 = interrupted
+if [[ -f "$OUTPUT_FILE" ]] && [[ -s "$OUTPUT_FILE" ]] && [[ $EXIT_CODE -eq 0 || $EXIT_CODE -eq 130 || $EXIT_CODE -eq 2 ]]; then
+  echo ""
+  echo "✅ Saved to: $OUTPUT_FILE"
+  echo "$OUTPUT_FILE"
+else
+  echo "❌ Recording failed. Is sox installed? (brew install sox)"
+  rm -f "$OUTPUT_FILE"
+  exit 1
+fi

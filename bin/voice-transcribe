@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Transcribes audio files using whisper.cpp
+# Usage: voice-transcribe <audio-file> [model]
+# Models: tiny, base, small, medium, large (default: base)
+
+set -euo pipefail
+
+if [[ $# -lt 1 ]]; then
+  echo "Usage: voice-transcribe <audio-file> [model]"
+  echo "Models: tiny (fast), base (default), small, medium, large"
+  exit 1
+fi
+
+AUDIO_FILE="$1"
+MODEL="${2:-base}"
+WHISPER_MODELS="${XDG_DATA_HOME:-$HOME/.local/share}/whisper-models"
+MODEL_FILE="$WHISPER_MODELS/ggml-$MODEL.bin"
+
+# Check if whisper-cli is installed
+if ! command -v whisper-cli &> /dev/null; then
+  echo "❌ whisper-cli not found. Install with: brew install whisper-cpp"
+  exit 1
+fi
+
+# Check if model exists, if not, download it
+if [[ ! -f "$MODEL_FILE" ]]; then
+  echo "📦 Model not found. Downloading ggml-$MODEL.bin..."
+  mkdir -p "$WHISPER_MODELS"
+
+  MODEL_URL="https://huggingface.co/ggerganov/whisper.cpp/resolve/main/ggml-$MODEL.bin"
+
+  if command -v curl &> /dev/null; then
+    curl -L "$MODEL_URL" -o "$MODEL_FILE" --progress-bar
+  elif command -v wget &> /dev/null; then
+    wget "$MODEL_URL" -O "$MODEL_FILE"
+  else
+    echo "❌ Neither curl nor wget found. Cannot download model."
+    exit 1
+  fi
+
+  echo "✅ Model downloaded to: $MODEL_FILE"
+fi
+
+# Check if audio file exists
+if [[ ! -f "$AUDIO_FILE" ]]; then
+  echo "❌ Audio file not found: $AUDIO_FILE"
+  exit 1
+fi
+
+# Transcribe with whisper-cli
+# -m: model file
+# -f: input file (passed as argument)
+# -otxt: output as plain text to .txt file
+# -t: threads (4 default)
+# Suppress both stdout and stderr - we'll read from the .txt file
+whisper-cli -m "$MODEL_FILE" -otxt "$AUDIO_FILE" >/dev/null 2>&1
+
+# Output the transcription (whisper-cli appends .txt to the original filename)
+TXT_FILE="${AUDIO_FILE}.txt"
+if [[ -f "$TXT_FILE" ]]; then
+  cat "$TXT_FILE"
+  rm "$TXT_FILE"  # Clean up
+fi

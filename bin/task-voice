@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+# Voice-based task capture for taskwarrior
+# Records your voice, transcribes it, and adds it as a task
+
+set -euo pipefail
+
+# Determine diary location based on task context
+TASK_CONTEXT=$(task context show 2>/dev/null | grep "Context" | head -1 | awk -F"'" '{print $2}')
+if [[ "$TASK_CONTEXT" == "work" ]]; then
+  VIMWIKI_DIARY="$HOME/vimwiki/work/diary"
+else
+  # Default to play for home, zouk, or no context
+  VIMWIKI_DIARY="$HOME/vimwiki/play/diary"
+fi
+
+TODAY=$(date +%Y-%m-%d)
+DIARY_FILE="$VIMWIKI_DIARY/$TODAY.md"
+VOICE_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/voice"
+mkdir -p "$VOICE_DIR"
+mkdir -p "$VIMWIKI_DIARY"
+TEMP_AUDIO="$VOICE_DIR/task-$(date +%Y%m%d-%H%M%S).wav"
+
+echo "🎙️  Task Voice Capture [${TASK_CONTEXT:-play}]"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "Diary: $VIMWIKI_DIARY"
+echo "Speak your task description..."
+echo "Press Ctrl+C when done."
+echo ""
+
+# Record audio
+if ! voice-record "$TEMP_AUDIO" >/dev/null 2>&1; then
+  echo "❌ Recording failed"
+  exit 1
+fi
+
+echo ""
+echo "🔄 Transcribing..."
+
+# Transcribe
+TRANSCRIPTION=$(voice-transcribe "$TEMP_AUDIO" tiny 2>/dev/null | tr -d '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+
+if [[ -z "$TRANSCRIPTION" ]]; then
+  echo "❌ Transcription failed or empty"
+  rm -f "$TEMP_AUDIO"
+  exit 1
+fi
+
+echo ""
+echo "📝 Transcribed: \"$TRANSCRIPTION\""
+echo ""
+
+# Prompt for confirmation with option to edit
+echo "Add to diary and create task? (y/n/e to edit): "
+read -r response
+
+case "$response" in
+  y|Y|"")
+    # Add to diary
+    if [[ ! -f "$DIARY_FILE" ]]; then
+      echo "# $TODAY" > "$DIARY_FILE"
+      echo "" >> "$DIARY_FILE"
+    fi
+
+    {
+      echo ""
+      echo "## $(date +%H:%M) - Voice Task"
+      echo ""
+      echo "$TRANSCRIPTION"
+    } >> "$DIARY_FILE"
+
+    # Add as task
+    task add "$TRANSCRIPTION"
+    echo "✅ Task added and saved to diary!"
+    rm -f "$TEMP_AUDIO"
+    ;;
+  e|E)
+    # Open in editor for refinement
+    TEMP_FILE=$(mktemp)
+    echo "$TRANSCRIPTION" > "$TEMP_FILE"
+    ${EDITOR:-vim} "$TEMP_FILE"
+    EDITED=$(cat "$TEMP_FILE")
+    if [[ -n "$EDITED" ]]; then
+      # Add to diary
+      if [[ ! -f "$DIARY_FILE" ]]; then
+        echo "# $TODAY" > "$DIARY_FILE"
+        echo "" >> "$DIARY_FILE"
+      fi
+
+      {
+        echo ""
+        echo "## $(date +%H:%M) - Voice Task"
+        echo ""
+        echo "$EDITED"
+      } >> "$DIARY_FILE"
+
+      # Add as task
+      task add "$EDITED"
+      echo "✅ Task added and saved to diary!"
+    fi
+    rm -f "$TEMP_FILE" "$TEMP_AUDIO"
+    ;;
+  *)
+    echo "❌ Task cancelled"
+    rm -f "$TEMP_AUDIO"
+    exit 1
+    ;;
+esac

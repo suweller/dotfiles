@@ -1,0 +1,82 @@
+#!/usr/bin/env zsh
+# Yearly review and planning - annual reflection and goal setting
+
+set -euo pipefail
+
+YEAR=$(date '+%Y')
+LAST_YEAR=$((YEAR - 1))
+
+clear
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  YEARLY REVIEW & PLANNING - $YEAR"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo
+
+# Last year statistics
+echo "━━━ $LAST_YEAR in Numbers ━━━"
+echo
+COMPLETED_LAST_YEAR=$(task end.after:$LAST_YEAR-01-01 end.before:$YEAR-01-01 completed count 2>/dev/null || echo 0)
+echo "Tasks completed in $LAST_YEAR: $COMPLETED_LAST_YEAR"
+echo
+
+echo "Top achievements:"
+task end.after:$LAST_YEAR-01-01 end.before:$YEAR-01-01 completed 2>/dev/null | head -20 || echo "No tasks completed last year"
+
+echo
+read -k 1 "?Continue to yearly planning? [Y/n] "
+echo
+[[ $REPLY =~ ^[Nn]$ ]] && exit 0
+
+clear
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo "  YEARLY PLANNING - $YEAR"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+echo
+
+# Planning by context
+for CONTEXT in home work zouk; do
+  clear
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo "  $YEAR GOALS: $CONTEXT"
+  echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+  echo
+
+  echo "Reflection questions for $CONTEXT:"
+  echo "  • What went well last year?"
+  echo "  • What didn't go as planned?"
+  echo "  • What do you want to achieve this year?"
+  echo "  • What habits support those goals?"
+  echo "  • What might get in the way?"
+  echo
+
+  task context "$CONTEXT" >/dev/null 2>&1
+
+  echo "━━━ Existing Yearly Goals ━━━"
+  task +yearly_goal status:pending 2>/dev/null || echo "No yearly goals set yet"
+
+  echo
+  read -k 1 "?Add $YEAR goals for $CONTEXT? [Y/n] "
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+    echo
+    echo "Add yearly goals (3-5 recommended, Ctrl+C when done):"
+    while true; do
+      read "?$YEAR goal: " GOAL
+      [[ -z "$GOAL" ]] && break
+      task add "$GOAL" +$CONTEXT +yearly_goal due:$YEAR-12-31
+    done
+  fi
+
+  read -k 1 "?Continue to next context? [Y/n] "
+  echo
+  [[ $REPLY =~ ^[Nn]$ ]] && break
+done
+
+# Reset context
+task context none >/dev/null 2>&1
+
+# Record planning completion
+task add "Yearly planning completed" +review +yearly done:$(date '+%Y-%m-%d') >/dev/null 2>&1
+
+echo
+echo "✓ Yearly planning complete! Make $YEAR amazing! ✨"

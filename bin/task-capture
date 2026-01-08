@@ -1,0 +1,52 @@
+#!/usr/bin/env zsh
+# Quick task capture with context and due date prompts
+
+set -euo pipefail
+
+# Get task description
+if [[ -n "${1:-}" ]]; then
+  DESCRIPTION="$*"
+else
+  echo -n "Task: "
+  read DESCRIPTION
+  [[ -z "$DESCRIPTION" ]] && exit 0
+fi
+
+# Select context using fzf
+CONTEXT=$(printf "home\nwork\nzouk\nnone" | fzf \
+  --prompt="Context: " \
+  --height=8 \
+  --border \
+  --border-label=" Quick Capture " \
+  --no-info)
+
+[[ "$CONTEXT" == "none" ]] && CONTEXT=""
+
+# Quick due date selection
+DUE_CHOICE=$(printf "none\ntoday\ntomorrow\nthis week\nnext week\nthis month\ncustom" | fzf \
+  --prompt="Due: " \
+  --height=10 \
+  --border \
+  --no-info)
+
+case "$DUE_CHOICE" in
+  "today") DUE="due:today" ;;
+  "tomorrow") DUE="due:tomorrow" ;;
+  "this week") DUE="due:eow" ;;  # end of week
+  "next week") DUE="due:eow+1w" ;;
+  "this month") DUE="due:eom" ;;
+  "custom")
+    echo -n "Due date (YYYY-MM-DD or taskwarrior format): "
+    read CUSTOM_DUE
+    DUE="due:$CUSTOM_DUE"
+    ;;
+  *) DUE="" ;;
+esac
+
+# Build and execute command
+CMD="task add \"$DESCRIPTION\""
+[[ -n "$CONTEXT" ]] && CMD="$CMD +$CONTEXT"
+[[ -n "$DUE" ]] && CMD="$CMD $DUE"
+
+eval "$CMD"
+echo "✓ Task captured"

@@ -75,10 +75,6 @@ source "$ZDOTDIR/functions.zsh"
 if [[ -v PLAIN ]]; then
   PS1="%F{magenta}%(3~|%-1~/…/%1~|%1~)%F{white} $ %b "
 elif [[ -r "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  # Task planning reminders (only in tmux)
-  if [[ -n "$TMUX" ]]; then
-    _task_daily_reminder
-  fi
   source "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 

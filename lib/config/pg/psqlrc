@@ -2,12 +2,12 @@
 \set PROMPT2 '[more] %R > '
 
 \setenv PAGER pspg
-\pset border 1
+-- \pset border 1
 -- \pset linestyle unicode
 
 -- By default, NULL displays as an empty space. Is it actually an empty
 -- string, or is it null? This makes that distinction visible.
-\pset null ∅
+-- \pset null ∅
 
 -- Use table format (with headers across the top) by default, but switch to
 -- expanded table format when there's a lot of data, which makes it much

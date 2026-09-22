@@ -81,8 +81,8 @@ zsh-performance() {
 local workbrew_bleed=(
   /opt/homebrew/share/zsh
   /opt/homebrew/share/zsh/site-functions
-  /opt/homebrew/Cellar/zsh/5.9/share/zsh/functions
-  /opt/homebrew/Cellar/zsh/5.9/share/zsh
+  /opt/homebrew/Cellar/zsh/5.9.2/share/zsh/functions
+  /opt/homebrew/Cellar/zsh/5.9.2/share/zsh
 )
 
 embrew() {

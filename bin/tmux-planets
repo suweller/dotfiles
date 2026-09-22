@@ -71,49 +71,20 @@ moon_phase() {
   echo "${symbols[$phase]}"
 }
 
-# Check if date is within range (inclusive)
-in_range() {
-  local start=$1 end=$2
-  [[ $today -ge $start && $today -le $end ]]
+# Get retrograde status from astronomical calculations
+retrograde_data=$(planets-retrograde "$today" 2>/dev/null)
+
+is_retro() {
+  echo "$retrograde_data" | grep -q "^${1}=1$"
 }
 
-# Retrograde periods 2025-2027
-mercury_retro() {
-  in_range 20250315 20250407 || \
-  in_range 20250718 20250811 || \
-  in_range 20251109 20251129 || \
-  in_range 20260226 20260320 || \
-  in_range 20260629 20260723 || \
-  in_range 20261023 20261113
-}
-
-venus_retro() {
-  in_range 20250301 20250412 || \
-  in_range 20261003 20261113
-}
-
-mars_retro() {
-  in_range 20241206 20250223
-}
-
-jupiter_retro() {
-  in_range 20251111 20260310
-}
-
-saturn_retro() {
-  in_range 20250712 20251127 || \
-  in_range 20260726 20261210
-}
-
-uranus_retro() {
-  in_range 20250906 20260203 || \
-  in_range 20260910 20270208
-}
-
-neptune_retro() {
-  in_range 20250704 20251210 || \
-  in_range 20260707 20261212
-}
+mercury_retro() { is_retro mercury; }
+venus_retro()   { is_retro venus;   }
+mars_retro()    { is_retro mars;    }
+jupiter_retro() { is_retro jupiter; }
+saturn_retro()  { is_retro saturn;  }
+uranus_retro()  { is_retro uranus;  }
+neptune_retro() { is_retro neptune; }
 
 # Output with colors
 # Direct: default color, Retrograde: color08 (dimmed)

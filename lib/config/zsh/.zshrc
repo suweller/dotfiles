@@ -111,7 +111,10 @@ ZSH
     zsh-performance
   fi
 
-  [[ ! -f $XDG_CONFIG_HOME/zsh/.p10k.zsh ]] || source $XDG_CONFIG_HOME/zsh/.p10k.zsh
+  if [[ -v PLAIN ]]; then
+  else
+    [[ ! -f $XDG_CONFIG_HOME/zsh/.p10k.zsh ]] || source $XDG_CONFIG_HOME/zsh/.p10k.zsh
+  fi
 fi
 
 # Unset local functions

@@ -15,6 +15,7 @@ set updatetime=1000
 set nobackup
 set nowritebackup
 set noswapfile
+set nomodeline
 
 if empty(glob('~/.config/vim/autoload/plug.vim'))
   silent !curl
@@ -71,6 +72,7 @@ Plug 'tpope/vim-markdown' " Highlighter (adds fenced codeblock highlighting) {{{
 let g:markdown_fenced_languages=[
       \ 'bash=sh',
       \ 'css',
+      \ 'dot',
       \ 'erb=eruby',
       \ 'haskell',
       \ 'html',
@@ -253,12 +255,12 @@ let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '⬥ ok']
 let g:ale_echo_msg_format = '%linter%: %s'
 let g:ale_linters = {
 \   'javascript': ['eslint', 'flow'],
+\   'ruby': ['standardrb'],
 \}
 " }}}
 Plug 'tpope/vim-abolish' " Util: Pluralize (:crl), SnakeCase <-> camel_case (:crt), Replace (Subvert), made easy
 Plug 'tpope/vim-commentary' " Util: (Un)Comment made easy
 Plug 'tpope/vim-dispatch' " Util: Allow asynchronous tasks to be dispatched
-Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'tpope/vim-endwise' " Util: 'wisely' add `end` after `if` `do` etc.
 Plug 'vim-scripts/bufkill.vim' " Util: Kill buffers without closing splits
 Plug 'tpope/vim-afterimage' " Util: Edit (small) images
@@ -274,7 +276,8 @@ let g:vimwiki_list = [
       \ {'syntax': 'markdown', 'ext': '.md', 'path': '~/vimwiki/work/'},
       \ {'syntax': 'markdown', 'ext': '.md', 'path': '~/vimwiki/play/'},
       \ ]
-nmap <leader>mp :Spawn presenterm -x "%"<CR>
+nmap <leader>mp :Spawn presenterm --enable-snippet-execution-replace --enable-snippet-execution "%"<CR>
+nmap <leader>mg :Spawn glow --pager "%"<CR>
 " }}}
 Plug 'tpope/vim-rbenv' " Util: rbenv.vim
 Plug 'tpope/vim-surround' " Util: quoting/parenthesizing Enhancements
@@ -331,7 +334,6 @@ function! Main()
   let l:current_theme_name = GetTintyTheme()
   execute "colorscheme " . l:current_theme_name
   highlight Normal ctermbg=NONE guibg=NONE  " Set background to none
-
   augroup TintyThemeChange
     autocmd!
     autocmd FocusGained * call HandleFocusGained()
@@ -344,7 +346,7 @@ runtime macros/matchit.vim
 runtime! ftplugin/man.vim
 
 " Cursor on a command word and let vim help you: `:help <C-R><C-W>`
-set viminfo='10,f1,<100,:20,@20,/20,h,n~/.vim/.viminfo "-- Files & Directories {{{
+set viminfo='10,f1,<100,:20,@20,/20,h,n~/.config/vim/.viminfo "-- Files & Directories {{{
 "           |   |  |    |   |   |   | +-> Where to save the viminfo files
 "           |   |  |    |   |   |   +-> Disable 'hlsearch' highlights on start
 "           |   |  |    |   |   +-> # lines to save from the search history
@@ -355,8 +357,8 @@ set viminfo='10,f1,<100,:20,@20,/20,h,n~/.vim/.viminfo "-- Files & Directories {
 "           +-> marks for up to # previously edited files
 " Remember things when we exit
 " }}}
-set directory=~/.vim/tmp        " Don't clutter up dirs with swp files
-set backupdir=~/.vim/tmp        " nor tmp files
+set directory=~/.config/vim/tmp        " Don't clutter up dirs with swp files
+set backupdir=~/.config/vim/tmp        " nor tmp files
 set history=500                 " keep 500 lines of command line history
 set autoread                    " reload files only changed outside vim from disk
 set autowrite                   " write before :next/:cnext
@@ -429,12 +431,11 @@ if has("eval")
   endfunction
 endif
 
-let &fillchars = "vert: "
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
-  let &listchars = "tab:\u21e5\u00b7,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u26ad"
-  " let &fillchars = "vert:\u259a,fold:\u00b7"
+  let &listchars="eol:¶,extends:»,nbsp:␣,precedes:«,space:·,tab:→\ ,trail:•,lead:·,multispace:··,leadmultispace:·\ ,leadtab:→\ "
+  set fillchars=fold:·,foldclose:▸,foldopen:▾,foldsep:·,vert:┆
 else
-  set listchars=tab:>\ ,trail:-,extends:>,precedes:<
+  set listchars="tab:>\ ,trail:-,extends:>,precedes:<"
 endif
 " set cursorline
 

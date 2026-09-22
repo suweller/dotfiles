@@ -3,4 +3,26 @@
 options:
   implicit_slide_ends: true
 typst:
-  ppi: 100
+  ppi: 300
+snippet:
+  exec:
+    custom:
+      sql:
+        commands:
+          - ['psql', '--no-psqlrc', '--file=$pwd/queries.sql']
+        environment:
+          PGDATABASE: 'reporting'
+          PGHOST: 'localhost'
+          PGPASSWORD: 'reporting'
+          PGUSER: 'reporting'
+        filename: queries.sql
+        alternative:
+          duckdb:
+            filename: query.sql
+            commands:
+              - ['bash', '-c', 'W=$(stty size </dev/tty 2>/dev/null | cut -d" " -f2); duckdb -cmd ".large_number_rendering all" -cmd ".mode duckbox" -cmd ".maxwidth ${W:-120}" -s "$(cat $pwd/query.sql)"']
+      dot:
+        commands:
+          - ['dot', '-Tpng', '-Gdpi=300', '$pwd/diagram.dot']
+        filename: diagram.dot
+    enable: true

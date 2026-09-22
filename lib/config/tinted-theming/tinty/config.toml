@@ -10,10 +10,17 @@ preferred-schemes = [
   ]
 
 [[items]]
-name = "tinted-terminal"
+name = "tinted-alacritty"
 path = "https://github.com/tinted-theming/tinted-terminal"
 themes-dir = "themes/alacritty"
 hook = "cp -f %f ~/.local/state/alacritty/colors.toml && touch ~/.config/alacritty/alacritty.toml"
+supported-systems = ["base16", "base24"]
+
+[[items]]
+name = "tinted-kitty"
+path = "https://github.com/tinted-theming/tinted-terminal"
+themes-dir = "themes/kitty"
+hook = "[ -n \"$KITTY_PID\" ] && kill -USR1 \"$KITTY_PID\""
 supported-systems = ["base16", "base24"]
 
 [[items]]

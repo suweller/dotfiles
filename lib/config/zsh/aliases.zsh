@@ -1,3 +1,4 @@
+alias ag=rg
 alias aliases="cd ~/.dotfiles && \$EDITOR ${0:a} && source ${0:a}; popd # aliases"
 alias xsv="qsv"
 alias zshrc='cd ~/.dotfiles && $EDITOR lib/config/zsh/.zshrc && source lib/config/zsh/.zshrc; popd # zshrc'
@@ -12,6 +13,7 @@ alias du='dust'
 alias ls='eza --icons=auto'
 alias t='task'
 alias g='git'
+alias md='glow'
 
 function vim() {
   if [[ $# -eq 0 ]]; then

@@ -1,5 +1,4 @@
 [font]
-# family = "Inconsolata Nerd Font Mono"
 # size = 64 # Presenterm
 # size = 36 # McDipSize
 
@@ -7,12 +6,13 @@
 # size = 46 # McDipSize
 
 # family = "FantasqueSansM Nerd Font Mono"
-size = 36 # McDipSize
+# size = 36 # McDipSize
+size = 30 # Almost McDipSize - smallest bar at the bottom
+# size = 24
 
+# ✨
 [font.normal]
-# family = "FantasqueSansM Nerd Font Mono"
 family = "Inconsolata Nerd Font Mono"
-# family = "ProggyClean Nerd Font Mono"
 style = "Regular"
 [font.bold]
 style = "Bold"

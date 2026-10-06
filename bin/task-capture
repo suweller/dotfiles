@@ -7,14 +7,14 @@ set -euo pipefail
 if [[ -n "${1:-}" ]]; then
   DESCRIPTION="$*"
 else
-  echo -n "Task: "
+  echo -n "task add "
   read DESCRIPTION
   [[ -z "$DESCRIPTION" ]] && exit 0
 fi
 
 # Select context using fzf
 CONTEXT=$(printf "home\nwork\nzouk\nnone" | fzf \
-  --prompt="Context: " \
+  --prompt="task context " \
   --height=8 \
   --border \
   --border-label=" Quick Capture " \

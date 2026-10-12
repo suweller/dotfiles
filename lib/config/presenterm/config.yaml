@@ -10,11 +10,6 @@ snippet:
       sql:
         commands:
           - ['psql', '--no-psqlrc', '--file=$pwd/queries.sql']
-        environment:
-          PGDATABASE: 'reporting'
-          PGHOST: 'localhost'
-          PGPASSWORD: 'reporting'
-          PGUSER: 'reporting'
         filename: queries.sql
         alternative:
           duckdb:

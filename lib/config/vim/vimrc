@@ -8,6 +8,7 @@ let $PATH = $XDG_DATA_HOME . '/mise/shims:' . $PATH
 inoremap § <ESC>
 nnoremap <F1> <NOP>
 inoremap <F1> <ESC>
+noremap <F9> :set list! list?<CR>
 noremap <F10> :set spell! spell?<CR>
 
 " set synmaxcol=119
@@ -433,7 +434,7 @@ endif
 
 if (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8') && version >= 700
   let &listchars="eol:¶,extends:»,nbsp:␣,precedes:«,space:·,tab:→\ ,trail:•,lead:·,multispace:··,leadmultispace:·\ ,leadtab:→\ "
-  set fillchars=fold:·,foldclose:▸,foldopen:▾,foldsep:·,vert:┆
+  let &fillchars="fold:·,foldclose:▸,foldopen:▾,foldsep:·,vert:┆"
 else
   set listchars="tab:>\ ,trail:-,extends:>,precedes:<"
 endif

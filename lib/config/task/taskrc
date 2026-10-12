@@ -89,4 +89,3 @@ urgency.due.coefficient=12.0
 urgency.blocking.coefficient=8.0
 urgency.age.coefficient=2.0
 
-context=home

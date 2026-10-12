@@ -46,6 +46,11 @@ export GGML_METAL_PATH_RESOURCES="/opt/homebrew/share/whisper-cpp"
 
 export ZGEN_DIR="$XDG_DATA_HOME/zgenom"
 export ZGEN_CUSTOM_COMPDUMP="$XDG_CACHE_HOME/zgenom"
+export ZGEN_RESET_ON_CHANGE=(
+  $ZDOTDIR/.zshrc
+  $ZDOTDIR/aliases.zsh
+)
+
 export BLOCK_SIZE=human-readable # https://www.gnu.org/software/coreutils/manual/html_node/Block-size.html
 export CLICOLOR=1
 export EDITOR='vim'
@@ -58,7 +63,13 @@ export FZF_CTRL_R_OPTS="$(cat <<'FZF_FTW'
   --bind "ctrl-x:execute(hist delete {1})"
 FZF_FTW
 )"
+export MANPAGER='vim -M +MANPAGER -c \
+  " noremap <buffer> <C-c> :qa!<CR> \
+  | noremap <buffer> <Esc> :qa!<CR> \
+  | noremap <buffer> q :qa!<CR> \
+  " -'
 export FZF_DEFAULT_COMMAND='fd --type f --color=never'
+export FZF_DEFAULT_OPTS="--color=header:#d0d0d0"
 export FZF_DEFAULT_OPTS=" \
   --layout=reverse \
   --style=minimal \
@@ -73,10 +84,5 @@ export LANGUAGE=en_US.utf-8:C
 export LC_ALL=en_US.utf-8
 export LC_CTYPE=utf-8
 export LC_TIME=en_DK.UTF-8
-export MANPAGER='col -b | vim -c " \
-  set filetype=man tabstop=8 nomodifiable nomodeline nonumber nomagic \
-  | noremap <buffer> <C-c> :qa!<CR> \
-  | noremap <buffer> <Esc> :qa!<CR> \
-  | noremap <buffer> q :qa!<CR> \
-  " -'
 export SAVEHIST=10000
+export SHELL=/opt/homebrew/bin/zsh

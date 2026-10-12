@@ -16,6 +16,9 @@ if [[ ! "$(command -v brew)" ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
+
+brew tap tinted-theming/tinted
+brew trust tinted-theming/tinted
 function brew-all {
   function may-brew {
     printf "%-50s" $1
@@ -38,7 +41,6 @@ function brew-all {
     done
   }
 
-  brew tap tinted-theming/tinted
   local brews=(
     bash
     bat
@@ -66,6 +68,7 @@ function brew-all {
     ruby-build
     sd
     taskwarrior-tui
+    tinty
     tmux
     vim
     yq

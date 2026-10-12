@@ -19,7 +19,7 @@ fi
 function brew-all {
   function may-brew {
     printf "%-50s" $1
-    if brew ${assert} -1 | grep -q $(echo $1 | sed 's/caskroom\/cask\///'); then
+    if brew ${assert} -1 | grep --silent $(echo $1); then
       printf "%30s\n" '[OK]'
     else
       printf "%30s\n\n" '[INSTALLING]'
@@ -38,6 +38,7 @@ function brew-all {
     done
   }
 
+  brew tap tinted-theming/tinted
   local brews=(
     bash
     bat
@@ -64,7 +65,6 @@ function brew-all {
     ripgrep
     ruby-build
     sd
-    starship
     taskwarrior-tui
     tmux
     vim
@@ -82,5 +82,14 @@ cd ..
 
 ln -Ffs ~/.dotfiles/id_rsa.pub $HOME/.ssh/.id_rsa.pub
 
-sudo chsh -s "$(command -v zsh)" "${USER}"
-chsh -s "$(which zsh)"
+printf "%-50s" "Checking UserShell"
+user_shell=$(dscl . -read "/Users/$USER" UserShell | awk '{print $2}')
+if  echo $user_shell | grep --silent 'brew/bin/zsh'; then
+  printf "%30s\n\n" '[OK]'
+else
+  printf "%30s\n\n" '[Updating]'
+  echo "UserShell is currently: $user_shell"
+  echo "Changing to brew zsh!"
+  sudo chsh -s "$(command -v zsh)" "${USER}"
+  chsh -s "$(which zsh)"
+fi

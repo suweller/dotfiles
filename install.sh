@@ -73,6 +73,7 @@ function brew-all {
     shared-mime-info
     taskwarrior-tui
     tmux
+    tunnelblick
     vim
     yq
     zsh

@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+cd lib
+for entry in *; do
+  ln -Ffs ~/.dotfiles/lib/$entry $HOME/.$entry
+done
+cd ..
+
 function yes-no() {
   read -p "$1 [y/n]" -n 1 -r
   echo '' # make sure we're on a newline
@@ -17,8 +23,6 @@ if [[ ! "$(command -v brew)" ]]; then
 fi
 
 
-brew tap tinted-theming/tinted
-brew trust tinted-theming/tinted
 function brew-all {
   function may-brew {
     printf "%-50s" $1
@@ -67,8 +71,8 @@ function brew-all {
     ripgrep
     ruby-build
     sd
+    shared-mime-info
     taskwarrior-tui
-    tinty
     tmux
     vim
     yq
@@ -77,15 +81,29 @@ function brew-all {
   many-brew 'list' 'install'
 } && brew-all
 
-cd lib
-for entry in *; do
-  ln -Ffs ~/.dotfiles/lib/$entry $HOME/.$entry
-done
-cd ..
+printf "%-50s" "brew install tinty && tinty install"
+if brew list tinty -1 | grep --silent tinty; then
+  printf "%30s\n" '[OK]'
+else
+  printf "%30s\n" '[INSTALLING]'
+  brew install tinty
+  brew tap tinted-theming/tinted
+  brew trust tinted-theming/tinted
+  tinty install
+fi
+
+# Install rust
+printf "%-50s" "rust (through mise)"
+if $(mise list rust | grep --silent "missing"); then
+  printf "%30s\n" '[INSTALLING]'
+  mise install rust
+else
+  printf "%30s\n" '[OK]'
+fi
 
 ln -Ffs ~/.dotfiles/id_rsa.pub $HOME/.ssh/.id_rsa.pub
 
-printf "%-50s" "Checking UserShell"
+printf "%-50s" "UserShell == brew/zsh?"
 user_shell=$(dscl . -read "/Users/$USER" UserShell | awk '{print $2}')
 if  echo $user_shell | grep --silent 'brew/bin/zsh'; then
   printf "%30s\n\n" '[OK]'

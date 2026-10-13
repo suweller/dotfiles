@@ -22,7 +22,6 @@ if [[ ! "$(command -v brew)" ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-
 function brew-all {
   function may-brew {
     printf "%-50s" $1
@@ -81,27 +80,23 @@ function brew-all {
   many-brew 'list' 'install'
 } && brew-all
 
-printf "%-50s" "brew install tinty && tinty install"
+printf "%-50s" "brew tap/install tinty && tinty install"
 if brew list tinty -1 | grep --silent tinty; then
   printf "%30s\n" '[OK]'
 else
   printf "%30s\n" '[INSTALLING]'
-  brew install tinty
   brew tap tinted-theming/tinted
   brew trust tinted-theming/tinted
-  tinty install
+  brew install tinty && tinty install
 fi
 
-# Install rust
-printf "%-50s" "rust (through mise)"
+printf "%-50s" "mise install rust"
 if $(mise list rust | grep --silent "missing"); then
   printf "%30s\n" '[INSTALLING]'
   mise install rust
 else
   printf "%30s\n" '[OK]'
 fi
-
-ln -Ffs ~/.dotfiles/id_rsa.pub $HOME/.ssh/.id_rsa.pub
 
 printf "%-50s" "UserShell == brew/zsh?"
 user_shell=$(dscl . -read "/Users/$USER" UserShell | awk '{print $2}')
@@ -114,3 +109,6 @@ else
   sudo chsh -s "$(command -v zsh)" "${USER}"
   chsh -s "$(which zsh)"
 fi
+
+printf "%-50s" "Set my Public RSA ID"
+ln -Ffs ~/.dotfiles/id_rsa.pub $HOME/.ssh/.id_rsa.pub

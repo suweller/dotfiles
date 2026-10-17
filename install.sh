@@ -22,82 +22,9 @@ if [[ ! "$(command -v brew)" ]]; then
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-function brew-all {
-  function may-brew {
-    printf "%-50s" $1
-    if brew ${assert} -1 | grep --silent $(echo $1); then
-      printf "%30s\n" '[OK]'
-    else
-      printf "%30s\n\n" '[INSTALLING]'
-      brew ${action} $1
-      printf "\n\n"
-    fi
-    return 0
-  }
-
-  function many-brew {
-    printf "\nbrew $2\n\n"
-    local assert=$1
-    local action=$2
-    for item in ${brews[@]}; do
-      may-brew $item
-    done
-  }
-
-  local brews=(
-    bash
-    bat
-    chruby
-    cloc
-    ctags
-    curl
-    dust
-    eza
-    fd
-    fzf
-    git
-    git-delta
-    grep
-    hyperfine
-    imagesnap
-    jq
-    k9s
-    mise
-    procs
-    qsv
-    readline
-    reattach-to-user-namespace
-    ripgrep
-    ruby-build
-    sd
-    shared-mime-info
-    taskwarrior-tui
-    tmux
-    tunnelblick
-    vim
-    yq
-    zsh
-  )
-  many-brew 'list' 'install'
-} && brew-all
-
-printf "%-50s" "brew tap/install tinty && tinty install"
-if brew list tinty -1 | grep --silent tinty; then
-  printf "%30s\n" '[OK]'
-else
-  printf "%30s\n" '[INSTALLING]'
-  brew tap tinted-theming/tinted
-  brew trust tinted-theming/tinted
-  brew install tinty && tinty install
-fi
-
-printf "%-50s" "mise install rust"
-if $(mise list rust | grep --silent "missing"); then
-  printf "%30s\n" '[INSTALLING]'
-  mise install rust
-else
-  printf "%30s\n" '[OK]'
-fi
+brew bundle
+tinty install
+mise install rust
 
 printf "%-50s" "UserShell == brew/zsh?"
 user_shell=$(dscl . -read "/Users/$USER" UserShell | awk '{print $2}')

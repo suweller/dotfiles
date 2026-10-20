@@ -27,5 +27,6 @@ lib/config/vim/autoload/
 lib/config/vim/colors/
 lib/config/vim/config/
 lib/config/vim/fzf/
+lib/config/vim/.viminfo
 lib/config/weechat/
 lib/config/zellij/
